@@ -9,20 +9,20 @@
 
 using namespace std;
 
-class MenuElementABC;
+class MenuElement;
 class MenuElementTitle;
 class MenuElementSubtitle;
 class MenuElementFunctionButton;
 class MenuElementEditField;
 
-class MenuElementABC
+class MenuElement
 {
 protected:
 	string text;
 public:
 	// Создание и разрушение
-	MenuElementABC(string text) : text(text) {};
-	virtual ~MenuElementABC() {};
+	MenuElement(string text) : text(text) {};
+	virtual ~MenuElement() {};
 
 	// Интерфейс
 	virtual void print() const = 0;
@@ -31,11 +31,11 @@ public:
 	virtual void reset() = 0;
 };
 
-class MenuElementTitle : public MenuElementABC
+class MenuElementTitle : public MenuElement
 {
 public:
 	// Создание и разрушение
-	MenuElementTitle(string text) : MenuElementABC(text) {};
+	MenuElementTitle(string text) : MenuElement(text) {};
 	~MenuElementTitle() {};
 
 	// Интерфейс
@@ -45,11 +45,11 @@ public:
 	void reset() {};
 };
 
-class MenuElementSubtitle : public MenuElementABC
+class MenuElementSubtitle : public MenuElement
 {
 public:
 	// Создание и разрушение
-	MenuElementSubtitle(string text) : MenuElementABC(text) {};
+	MenuElementSubtitle(string text) : MenuElement(text) {};
 	~MenuElementSubtitle() {};
 
 	// Интерфейс
@@ -59,13 +59,13 @@ public:
 	void reset() {};
 };
 
-class MenuElementFunctionButton : public MenuElementABC
+class MenuElementFunctionButton : public MenuElement
 {
 private:
 	void (*func)();
 public:
 	// Создание и разрушение
-	MenuElementFunctionButton(string text, void(*func)()) : MenuElementABC(text), func(func) {};
+	MenuElementFunctionButton(string text, void(*func)()) : MenuElement(text), func(func) {};
 	~MenuElementFunctionButton() {};
 
 	// Интерфейс
@@ -75,7 +75,7 @@ public:
 	void reset() {};
 };
 
-class MenuElementEditField : public MenuElementABC
+class MenuElementEditField : public MenuElement
 {
 	//  TODO: Реагирует только на клавиши, прописанные в векторе allowedCodes.
 private:
@@ -83,7 +83,7 @@ private:
 	bool isTextHidden;
 public:
 	// Создание и разрушение
-	MenuElementEditField(string text, bool isTextHidden = false) : MenuElementABC(text), input(""), isTextHidden(isTextHidden) {};
+	MenuElementEditField(string text, bool isTextHidden = false) : MenuElement(text), input(""), isTextHidden(isTextHidden) {};
 	~MenuElementEditField() {};
 
 	// Интерфейс

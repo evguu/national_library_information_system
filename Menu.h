@@ -10,7 +10,7 @@ class Menu
 {
 private:
 	static stack<Menu *> menuStack;
-	vector<MenuElementABC *> elements;
+	vector<MenuElement *> elements;
 	int chosenElementIndex;
 public:
 	// Создание и разрушение
@@ -19,14 +19,15 @@ public:
 	{
 		for (auto it:elements)
 		{ 
-			// TODO:
+			delete it;
+			cout << ";";
 		}
 	};
 
 	// Интерфейс
 	void print() const;
 	void recvCommand(int keyEvent);
-	void addElement(MenuElementABC* ref);
+	void addElement(MenuElement* ref);
 	void addToStack();
 	auto& getElements() { return elements; }
 	void initChosenElementIndex();

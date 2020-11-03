@@ -7,10 +7,7 @@ stack<Menu *> Menu::menuStack = stack<Menu *>();
 
 void Menu::print() const
 {
-	// Меню не может быть пустым
 	assert(elements.size());
-
-	// В меню должен быть выбран элемент
 	assert((chosenElementIndex != -1));
 
 	int index = 0;
@@ -38,7 +35,7 @@ void Menu::recvCommand(int keyEvent)
 {
 	int index;
 	bool tmp;
-	vector<MenuElementABC *>::iterator lim;
+	vector<MenuElement *>::iterator lim;
 	switch (keyEvent)
 	{
 	case -KC_DOWN:
@@ -73,7 +70,7 @@ void Menu::recvCommand(int keyEvent)
 	}
 }
 
-void Menu::addElement(MenuElementABC * ref)
+void Menu::addElement(MenuElement * ref)
 {
 	elements.push_back(ref);
 }
