@@ -61,3 +61,39 @@ void MenuElementEditField::recvCommand(int keyEvent)
 		if(input.length()) input.pop_back();
 	}
 }
+
+void MenuElementChoice::print() const
+{
+	int len = options.size();
+	if (activeOption == 0)
+	{
+		cout << "  " << text << ": --" << options[activeOption] << "->" << endl;
+	}
+	else if (len == activeOption + 1)
+	{
+		cout << "  " << text << ": <-" << options[activeOption] << "--" << endl;
+	}
+	else
+	{
+		cout << "  " << text << ": <-" << options[activeOption] << "->" << endl;
+	}
+}
+
+void MenuElementChoice::recvCommand(int keyEvent)
+{
+	switch (keyEvent)
+	{
+	case -KC_LEFT:
+		if (activeOption != 0)
+		{
+			--activeOption;
+		}
+		break;
+	case -KC_RIGHT:
+		if (activeOption + 1 < options.size())
+		{
+			++activeOption;
+		}
+		break;
+	}
+}

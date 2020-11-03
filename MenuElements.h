@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <iostream>
 
-#define NMEC_TITLE(...) menu->addElement(new MenuElementTitle(__VA_ARGS__))
-#define NMEC_SUBTITLE(...) menu->addElement(new MenuElementSubtitle(__VA_ARGS__))
-#define NMEC_FUNCTION_BUTTON(...) menu->addElement(new MenuElementFunctionButton(__VA_ARGS__))
-#define NMEC_EDIT_FIELD(...) menu->addElement(new MenuElementEditField(__VA_ARGS__))
+#define NME_TITLE(...) menu->addElement(new MenuElementTitle(__VA_ARGS__))
+#define NME_SUBTITLE(...) menu->addElement(new MenuElementSubtitle(__VA_ARGS__))
+#define NME_FUNC_BUTTON(...) menu->addElement(new MenuElementFunctionButton(__VA_ARGS__))
+#define NME_EDIT_FIELD(...) menu->addElement(new MenuElementEditField(__VA_ARGS__))
+#define NME_CHOICE(...) menu->addElement(new MenuElementChoice(__VA_ARGS__))
 
 using namespace std;
 
@@ -14,6 +16,7 @@ class MenuElementTitle;
 class MenuElementSubtitle;
 class MenuElementFunctionButton;
 class MenuElementEditField;
+class MenuElementChoice;
 
 class MenuElement
 {
@@ -92,4 +95,20 @@ public:
 	void recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { input = ""; };
+};
+
+class MenuElementChoice : public MenuElement
+{
+private:
+	vector<string> options;
+	int activeOption = 0;
+public:
+	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
+	~MenuElementChoice() {};
+
+	void print() const;
+	string getChoice() { return options[activeOption]; };
+	void recvCommand(int keyEvent);
+	bool isChoosable() { return true; };
+	void reset() { activeOption = 0; };
 };

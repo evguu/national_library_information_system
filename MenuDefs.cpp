@@ -19,12 +19,12 @@ void initLoginMenu()
 	auto& menu = loginMenu;
 	menu = new Menu();
 
-	NMEC_TITLE("Вход в систему");
-	NMEC_SUBTITLE("Ввод данных");
-	NMEC_EDIT_FIELD("Логин");
-	NMEC_EDIT_FIELD("Пароль", true);
-	NMEC_SUBTITLE("Навигация");
-	NMEC_FUNCTION_BUTTON("Войти", []() {
+	NME_TITLE("Вход в систему");
+	NME_SUBTITLE("Ввод данных");
+	NME_EDIT_FIELD("Логин");
+	NME_EDIT_FIELD("Пароль", true);
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Войти", []() {
 		auto menuElements = Menu::getActive()->getElements();
 		string login, password;
 		auto it = menuElements.begin();
@@ -48,7 +48,7 @@ void initLoginMenu()
 			}
 		}
 	});
-	NMEC_FUNCTION_BUTTON("Назад", []() {
+	NME_FUNC_BUTTON("Назад", []() {
 		loginMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -61,13 +61,13 @@ void initRegisterMenu()
 	auto& menu = registerMenu;
 	menu = new Menu();
 
-	NMEC_TITLE("Регистрация");
-	NMEC_SUBTITLE("Ввод данных");
-	NMEC_EDIT_FIELD("Логин");
-	NMEC_EDIT_FIELD("Пароль", true);
-	NMEC_EDIT_FIELD("Повторите пароль", true);
-	NMEC_SUBTITLE("Навигация");
-	NMEC_FUNCTION_BUTTON("Зарегистрироваться", []() {
+	NME_TITLE("Регистрация");
+	NME_SUBTITLE("Ввод данных");
+	NME_EDIT_FIELD("Логин");
+	NME_EDIT_FIELD("Пароль", true);
+	NME_EDIT_FIELD("Повторите пароль", true);
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Зарегистрироваться", []() {
 		auto menuElements = Menu::getActive()->getElements();
 		string login, password, repeatPassword;
 		auto it = menuElements.begin();
@@ -82,7 +82,7 @@ void initRegisterMenu()
 		MainTypes::User::register_(login, password, repeatPassword);
 		Menu::multiPopMenuStack(1);
 	});
-	NMEC_FUNCTION_BUTTON("Назад", []() {
+	NME_FUNC_BUTTON("Назад", []() {
 		registerMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -95,14 +95,14 @@ void initUserMenu()
 	auto& menu = userMenu;
 	menu = new Menu();
 
-	NMEC_TITLE("Меню пользователя");
-	NMEC_SUBTITLE("Работа с данными");
-	NMEC_FUNCTION_BUTTON("Обзор данных", []() {});
-	NMEC_FUNCTION_BUTTON("Изменение данных", []() {});
-	NMEC_SUBTITLE("Основные функции");
-	NMEC_FUNCTION_BUTTON("Выдать книгу", []() {});
-	NMEC_SUBTITLE("Навигация");
-	NMEC_FUNCTION_BUTTON("Назад", []() {
+	NME_TITLE("Меню пользователя");
+	NME_SUBTITLE("Работа с данными");
+	NME_FUNC_BUTTON("Обзор данных", []() {});
+	NME_FUNC_BUTTON("Изменение данных", []() {});
+	NME_SUBTITLE("Основные функции");
+	NME_FUNC_BUTTON("Выдать книгу", []() {});
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
 		userMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -115,12 +115,12 @@ void initAdminMenu()
 	auto& menu = adminMenu;
 	menu = new Menu();
 
-	NMEC_TITLE("Меню администратора");
-	NMEC_SUBTITLE("Работа с пользователями");
-	NMEC_FUNCTION_BUTTON("Блокировка пользователей", []() {});
-	NMEC_FUNCTION_BUTTON("Отчеты о данных", []() {});
-	NMEC_SUBTITLE("Навигация");
-	NMEC_FUNCTION_BUTTON("Назад", []() {
+	NME_TITLE("Меню администратора");
+	NME_SUBTITLE("Работа с пользователями");
+	NME_FUNC_BUTTON("Блокировка пользователей", []() {});
+	NME_FUNC_BUTTON("Отчеты о данных", []() {});
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
 		adminMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -133,12 +133,13 @@ void initStartMenu()
 	auto& menu = startMenu;
 	menu = new Menu();
 
-	NMEC_TITLE("Информационная система национальной библиотеки");
-	NMEC_SUBTITLE("Авторизация");
-	NMEC_FUNCTION_BUTTON("Войти", []() {loginMenu->addToStack(); });
-	NMEC_FUNCTION_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
-	NMEC_SUBTITLE("Навигация");
-	NMEC_FUNCTION_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
+	NME_TITLE("Информационная система национальной библиотеки");
+	NME_SUBTITLE("Авторизация");
+	NME_FUNC_BUTTON("Войти", []() {loginMenu->addToStack(); });
+	NME_CHOICE("Выбор", vector<string>{"Лукашенко", "Путин", "ГУЛАГ"});
+	NME_FUNC_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
 
 	startMenu->initChosenElementIndex();
 }
