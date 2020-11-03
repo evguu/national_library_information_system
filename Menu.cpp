@@ -13,15 +13,11 @@ void Menu::print() const
 	// В меню должен быть выбран элемент
 	assert((chosenElementIndex != -1));
 
-	// Суть проста: пройтись по всем элементам меню и вызвать для них метод печати.
-	// Но есть загвоздка: именно этот метод должен показывать, какой именно элемент выбран.
-	// Для этого здесь ведется подсчет индекса выводимого элемента.
-	// Если он равен индексу активного элемента меню, обозначить его активность выбранным методом.
 	int index = 0;
 	bool tmp;
 	for (const auto& it : elements)
 	{
-		RMEC_WRAP__EXTERN_REF(it,tmp=,->isChoosable());
+		tmp = it->isChoosable();
 		if (tmp)
 		{
 			if (chosenElementIndex == index)
@@ -42,7 +38,7 @@ void Menu::recvCommand(int keyEvent)
 {
 	int index;
 	bool tmp;
-	vector<MenuElementContainer *>::iterator lim;
+	vector<MenuElementABC *>::iterator lim;
 	switch (keyEvent)
 	{
 	case -KC_DOWN:
@@ -50,7 +46,7 @@ void Menu::recvCommand(int keyEvent)
 		lim = elements.end();
 		for (auto it = elements.begin() + chosenElementIndex + 1; it != lim; ++it)
 		{
-			RMEC_WRAP__EXTERN_REF((*it), tmp=, ->isChoosable());
+			tmp= (*it)->isChoosable();
 			if (tmp)
 			{
 				chosenElementIndex = index;
@@ -64,7 +60,7 @@ void Menu::recvCommand(int keyEvent)
 		lim = elements.begin() + chosenElementIndex;
 		for (auto it = elements.begin(); it != lim; ++it)
 		{
-			RMEC_WRAP__EXTERN_REF((*it), tmp=, ->isChoosable());
+			tmp= (*it)->isChoosable();
 			if (tmp)
 			{
 				chosenElementIndex = index;
@@ -77,7 +73,7 @@ void Menu::recvCommand(int keyEvent)
 	}
 }
 
-void Menu::addElement(MenuElementContainer * ref)
+void Menu::addElement(MenuElementABC * ref)
 {
 	elements.push_back(ref);
 }
@@ -93,7 +89,7 @@ void Menu::initChosenElementIndex()
 	bool tmp;
 	for (const auto& it : elements)
 	{
-		RMEC_WRAP__EXTERN_REF(it,tmp=,->isChoosable());
+		tmp= it->isChoosable();
 		if (tmp)
 		{
 			chosenElementIndex = index;

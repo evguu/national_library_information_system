@@ -7,62 +7,6 @@ using namespace std;
 
 namespace Utils
 {
-	// Источник функции: https://www.cyberforum.ru/cpp-beginners/thread1840198.html#post9717879
-	// Используется для перевода широких символов в обычные с учетом русской кодировки.
-	// На данный момент не используется.
-	std::string ws2s(const std::wstring& wstr, const std::locale& loc)
-	{
-		if (wstr.empty())
-			return std::string();
-
-		typedef std::wstring::traits_type::state_type state_type;
-		typedef std::codecvt<wchar_t, char, state_type> convert;
-
-		const convert& cvt = std::use_facet<convert>(loc);
-		std::string str(cvt.max_length()*wstr.size(), '\0');
-		state_type state = state_type();
-
-		const wchar_t* from_beg = &wstr[0];
-		const wchar_t* from_end = from_beg + wstr.size();
-		const wchar_t* from_nxt;
-		char* to_beg = &str[0];
-		char* to_end = to_beg + str.size();
-		char* to_nxt;
-
-		std::string::size_type sz = 0;
-		std::codecvt_base::result r;
-		do
-		{
-			r = cvt.out(state, from_beg, from_end, from_nxt,
-				to_beg, to_end, to_nxt);
-			switch (r)
-			{
-			case std::codecvt_base::error:
-				throw std::runtime_error("error converting wstring to string");
-
-			case std::codecvt_base::partial:
-				sz += to_nxt - to_beg;
-				str.resize(2 * str.size());
-				to_beg = &str[sz];
-				to_end = &str[0] + str.size();
-				break;
-
-			case std::codecvt_base::noconv:
-				str.resize(sz + (from_end - from_beg) * sizeof(wchar_t));
-				std::memcpy(&str[sz], from_beg, (from_end - from_beg) * sizeof(wchar_t));
-				r = std::codecvt_base::ok;
-				break;
-
-			case std::codecvt_base::ok:
-				sz += to_nxt - to_beg;
-				str.resize(sz);
-				break;
-			}
-		} while (r != std::codecvt_base::ok);
-
-		return str;
-	}
-
 	// Переводит широкий символ в обычный.
 	char wc2c(wchar_t w)
 	{
@@ -390,7 +334,6 @@ namespace Utils
 	{
 		wchar_t wide;
 		wide = _getwch();
-		//wide = wcin.get();
 
 		switch (wide)
 		{

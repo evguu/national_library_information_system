@@ -29,9 +29,9 @@ void initLoginMenu()
 		string login, password;
 		auto it = menuElements.begin();
 		it += 2;
-		login = ((MenuElementEditField *)((*it)->getElement()))->getInput();
+		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
-		password = ((MenuElementEditField *)((*it)->getElement()))->getInput();
+		password = ((MenuElementEditField *)(*it))->getInput();
 		// TODO: Здесь будут проверки данных
 		// TODO: Функция сама сообщит об успешности входа.
 		MainTypes::User::login_(login, password);
@@ -72,11 +72,11 @@ void initRegisterMenu()
 		string login, password, repeatPassword;
 		auto it = menuElements.begin();
 		it += 2;
-		login = ((MenuElementEditField *)((*it)->getElement()))->getInput();
+		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
-		password = ((MenuElementEditField *)((*it)->getElement()))->getInput();
+		password = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
-		repeatPassword = ((MenuElementEditField *)((*it)->getElement()))->getInput();
+		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
 		// TODO: Здесь будут проверки данных
 		// TODO: Функция регистрации сама выводит сообщения пользователю.
 		MainTypes::User::register_(login, password, repeatPassword);

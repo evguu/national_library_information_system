@@ -2,22 +2,6 @@
 #include "MenuElements.h"
 #include "Input.h"
 
-void MenuElementContainer::print() const
-{
-	// Необходимо расшифровать указатель в соответствии с заданным форматом и вызвать его метод печати.
-	RMEC_WRAP__NATIVE_REF(,->print());
-}
-
-void MenuElementContainer::recvCommand(int keyEvent)
-{
-	RMEC_WRAP__NATIVE_REF(,->recvCommand(keyEvent));
-}
-
-void MenuElementContainer::reset()
-{
-	RMEC_WRAP__NATIVE_REF(, ->reset());
-}
-
 void MenuElementTitle::print() const
 {
 	cout << "-< " << text << " >- " << endl;
@@ -48,7 +32,7 @@ void MenuElementEditField::print() const
 	if (isTextHidden)
 	{
 		cout << "  " << text << ": ";
-		for (int i = 0; i < input.length(); i++)
+		for (int i = 0; i < (int)input.length(); i++)
 		{
 			cout << "*";
 		}

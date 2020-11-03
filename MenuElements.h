@@ -2,86 +2,18 @@
 #include <string>
 #include <iostream>
 
-// "Resolve MenuElementContainer and Call. #Native #Reference"
-#define RMEC_WRAP__NATIVE_REF(pretxt, posttxt) \
-	switch (elementType) \
-	{ \
-	case TITLE: \
-		pretxt((MenuElementTitle *)element)posttxt; \
-		break; \
-	case SUBTITLE: \
-		pretxt((MenuElementSubtitle *)element)posttxt; \
-		break; \
-	case FUNCTION_BUTTON: \
-		pretxt((MenuElementFunctionButton *)element)posttxt; \
-		break; \
-	case EDIT_FIELD: \
-		pretxt((MenuElementEditField *)element)posttxt; \
-		break; \
-	}
-
-// "Resolve MenuElementContainer and Call. #External #Reference"
-#define RMEC_WRAP__EXTERN_REF(containerName, pretxt, posttxt) \
-	MenuElementContainer::MenuElementType elementType = containerName->getType();\
-	void* element = containerName -> getElement(); \
-	switch (elementType) \
-	{ \
-	case MenuElementContainer::TITLE: \
-		pretxt((MenuElementTitle *)element)posttxt; \
-		break; \
-	case MenuElementContainer::SUBTITLE: \
-		pretxt((MenuElementSubtitle *)element)posttxt; \
-		break; \
-	case MenuElementContainer::FUNCTION_BUTTON: \
-		pretxt((MenuElementFunctionButton *)element)posttxt; \
-		break; \
-	case MenuElementContainer::EDIT_FIELD: \
-		pretxt((MenuElementEditField *)element)posttxt; \
-		break; \
-	}
-
-#define NMEC_TITLE(...) menu->addElement(new MenuElementContainer(new MenuElementTitle(__VA_ARGS__)))
-#define NMEC_SUBTITLE(...) menu->addElement(new MenuElementContainer(new MenuElementSubtitle(__VA_ARGS__)))
-#define NMEC_FUNCTION_BUTTON(...) menu->addElement(new MenuElementContainer(new MenuElementFunctionButton(__VA_ARGS__)))
-#define NMEC_EDIT_FIELD(...) menu->addElement(new MenuElementContainer(new MenuElementEditField(__VA_ARGS__)))
+#define NMEC_TITLE(...) menu->addElement(new MenuElementTitle(__VA_ARGS__))
+#define NMEC_SUBTITLE(...) menu->addElement(new MenuElementSubtitle(__VA_ARGS__))
+#define NMEC_FUNCTION_BUTTON(...) menu->addElement(new MenuElementFunctionButton(__VA_ARGS__))
+#define NMEC_EDIT_FIELD(...) menu->addElement(new MenuElementEditField(__VA_ARGS__))
 
 using namespace std;
 
-class MenuElementContainer;
 class MenuElementABC;
 class MenuElementTitle;
 class MenuElementSubtitle;
 class MenuElementFunctionButton;
 class MenuElementEditField;
-
-class MenuElementContainer
-{
-public:
-	enum MenuElementType
-	{
-		TITLE,
-		SUBTITLE,
-		FUNCTION_BUTTON,
-		EDIT_FIELD
-	};
-private:
-	MenuElementType elementType;
-	void* element;
-public:
-	// Создание и разрушение
-	MenuElementContainer(MenuElementTitle* ref) : elementType(TITLE), element(ref) {};
-	MenuElementContainer(MenuElementSubtitle* ref) : elementType(SUBTITLE), element(ref) {};
-	MenuElementContainer(MenuElementFunctionButton* ref) : elementType(FUNCTION_BUTTON), element(ref) {};
-	MenuElementContainer(MenuElementEditField* ref) : elementType(EDIT_FIELD), element(ref) {};
-	~MenuElementContainer() {};
-
-	// Интерфейс
-	void print() const;
-	void recvCommand(int keyEvent);
-	void* getElement() { return element; };
-	MenuElementType getType() { return elementType; };
-	void reset();
-};
 
 class MenuElementABC
 {
@@ -90,7 +22,7 @@ protected:
 public:
 	// Создание и разрушение
 	MenuElementABC(string text) : text(text) {};
-	~MenuElementABC() {};
+	virtual ~MenuElementABC() {};
 
 	// Интерфейс
 	virtual void print() const = 0;
