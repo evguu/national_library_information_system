@@ -17,14 +17,15 @@ void MenuElementFunctionButton::print() const
 	cout << "  " << text << endl;
 }
 
-void MenuElementFunctionButton::recvCommand(int keyEvent)
+bool MenuElementFunctionButton::recvCommand(int keyEvent)
 {
 	switch (keyEvent)
 	{
 	case -KC_ENTER:
 		func();
-		break;
+		return true;
 	}
+	return false;
 }
 
 void MenuElementEditField::print() const
@@ -49,17 +50,19 @@ string MenuElementEditField::getInput()
 	return input;
 }
 
-void MenuElementEditField::recvCommand(int keyEvent)
+bool MenuElementEditField::recvCommand(int keyEvent)
 {
 	if (keyEvent > 0)
 	{
 		input += (char)keyEvent;
-		return;
+		return true;
 	}
 	if (keyEvent == -KC_DELETE || keyEvent == -KC_BACKSPACE)
 	{
 		if(input.length()) input.pop_back();
+		return true;
 	}
+	return false;
 }
 
 void MenuElementChoice::print() const
@@ -79,7 +82,7 @@ void MenuElementChoice::print() const
 	}
 }
 
-void MenuElementChoice::recvCommand(int keyEvent)
+bool MenuElementChoice::recvCommand(int keyEvent)
 {
 	switch (keyEvent)
 	{
@@ -88,12 +91,13 @@ void MenuElementChoice::recvCommand(int keyEvent)
 		{
 			--activeOption;
 		}
-		break;
+		return true;
 	case -KC_RIGHT:
 		if (activeOption + 1 < options.size())
 		{
 			++activeOption;
 		}
-		break;
+		return true;
 	}
+	return false;
 }

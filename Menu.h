@@ -26,7 +26,7 @@ public:
 
 	// Èםעונפויס
 	void print() const;
-	void recvCommand(int keyEvent);
+	bool recvCommand(int keyEvent);
 	void addElement(MenuElement* ref);
 	void addToStack();
 	auto& getElements() { return elements; }

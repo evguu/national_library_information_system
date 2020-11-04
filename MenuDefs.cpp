@@ -5,6 +5,7 @@
 #include "User.h"
 #include "Input.h"
 #include <Windows.h>
+#include <mutex>
 using namespace std;
 
 Menu* loginMenu;
@@ -13,6 +14,9 @@ Menu* userMenu;
 Menu* adminMenu;
 Menu* startMenu;
 bool isLoopRunning = true;
+clock_t lastKeyPressTime = -1;
+mutex g_lock;
+long elapsed;
 
 void initLoginMenu()
 {
@@ -136,7 +140,6 @@ void initStartMenu()
 	NME_TITLE("Информационная система национальной библиотеки");
 	NME_SUBTITLE("Авторизация");
 	NME_FUNC_BUTTON("Войти", []() {loginMenu->addToStack(); });
-	NME_CHOICE("Выбор", vector<string>{"Лукашенко", "Путин", "ГУЛАГ"});
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
@@ -160,7 +163,13 @@ void menuControlLoop()
 	while (isLoopRunning)
 	{
 		keyEvent = Utils::inputKeyEvent();
-		Menu::getActive()->recvCommand(keyEvent);
+		bool hasReacted = Menu::getActive()->recvCommand(keyEvent);
+		if (hasReacted)
+		{
+			g_lock.lock();
+			lastKeyPressTime = clock();
+			g_lock.unlock();
+		}
 	}
 }
 
@@ -168,10 +177,19 @@ void menuPrintLoop()
 {
 	while (isLoopRunning)
 	{
-		system("cls");
-		cout << endl;
-		Menu::printActive();
-		cout << endl << endl << endl;
+		g_lock.lock();
+		if (clock() - lastKeyPressTime < 200 || lastKeyPressTime == -1)
+		{
+			if (lastKeyPressTime == -1)
+			{
+				lastKeyPressTime = 0;
+			}
+			system("cls");
+			cout << endl;
+			Menu::printActive();
+			cout << endl << endl << endl;
+		}
+		g_lock.unlock();
 		Sleep(100);
 	}
 }

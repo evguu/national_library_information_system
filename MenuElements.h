@@ -29,7 +29,7 @@ public:
 
 	// Èםעונפויס
 	virtual void print() const = 0;
-	virtual void recvCommand(int keyEvent) = 0;
+	virtual bool recvCommand(int keyEvent) = 0;
 	virtual bool isChoosable() = 0;
 	virtual void reset() = 0;
 };
@@ -43,7 +43,7 @@ public:
 
 	// Èםעונפויס
 	void print() const;
-	void recvCommand(int keyEvent) {/*TODO: throw exception*/};
+	bool recvCommand(int keyEvent) { return false; };
 	bool isChoosable() { return false; };
 	void reset() {};
 };
@@ -57,7 +57,7 @@ public:
 
 	// Èםעונפויס
 	void print() const;
-	void recvCommand(int keyEvent) {};
+	bool recvCommand(int keyEvent) { return false; };
 	bool isChoosable() { return false; };
 	void reset() {};
 };
@@ -73,7 +73,7 @@ public:
 
 	// Èםעונפויס
 	void print() const;
-	void recvCommand(int keyEvent);
+	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() {};
 };
@@ -92,7 +92,7 @@ public:
 	// Èםעונפויס
 	void print() const;
 	string getInput();
-	void recvCommand(int keyEvent);
+	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { input = ""; };
 };
@@ -108,7 +108,7 @@ public:
 
 	void print() const;
 	string getChoice() { return options[activeOption]; };
-	void recvCommand(int keyEvent);
+	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { activeOption = 0; };
 };

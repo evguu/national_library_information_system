@@ -31,7 +31,7 @@ void Menu::print() const
 	}
 }
 
-void Menu::recvCommand(int keyEvent)
+bool Menu::recvCommand(int keyEvent)
 {
 	int index;
 	bool tmp;
@@ -47,11 +47,11 @@ void Menu::recvCommand(int keyEvent)
 			if (tmp)
 			{
 				chosenElementIndex = index;
-				return;
+				return true;
 			}
 			++index;
 		}
-		break;
+		return true;
 	case -KC_UP:
 		index = 0;
 		lim = elements.begin() + chosenElementIndex;
@@ -64,9 +64,9 @@ void Menu::recvCommand(int keyEvent)
 			}
 			++index;
 		}
-		break;
+		return true;
 	default:
-		(*(elements.begin() + chosenElementIndex))->recvCommand(keyEvent);
+		return (*(elements.begin() + chosenElementIndex))->recvCommand(keyEvent);
 	}
 }
 
