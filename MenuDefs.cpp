@@ -190,6 +190,6 @@ void menuPrintLoop()
 			cout << endl << endl << endl;
 		}
 		g_lock.unlock();
-		Sleep(100);
+		//Sleep(20);
 	}
 }

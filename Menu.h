@@ -25,7 +25,7 @@ public:
 	};
 
 	// Èםעונפויס
-	void print() const;
+	string str() const;
 	bool recvCommand(int keyEvent);
 	void addElement(MenuElement* ref);
 	void addToStack();

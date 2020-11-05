@@ -1,14 +1,17 @@
 #include "pch.h"
 #include <cassert>
 #include "Input.h"
+#include <sstream>
 #include "Menu.h"
 
 stack<Menu *> Menu::menuStack = stack<Menu *>();
 
-void Menu::print() const
+string Menu::str() const
 {
-	assert(elements.size());
-	assert((chosenElementIndex != -1));
+	assert(elements.size()); // Меню пустое
+	assert((chosenElementIndex != -1)); // Активный элемент не установлен
+
+	stringstream ss;
 
 	int index = 0;
 	bool tmp;
@@ -19,16 +22,17 @@ void Menu::print() const
 		{
 			if (chosenElementIndex == index)
 			{
-				cout << ">>";
+				ss << ">>";
 			}
 			else
 			{
-				cout << " +";
+				ss << " +";
 			}
 		}
-		it->print();
+		ss << it->str();//FIXME
 		++index;
 	}
+	return ss.str();
 }
 
 bool Menu::recvCommand(int keyEvent)
@@ -108,7 +112,7 @@ void Menu::reset()
 
 void Menu::printActive()
 {
-	menuStack.top()->print();
+	cout << menuStack.top()->str();
 }
 
 void Menu::multiPopMenuStack(int popCount)

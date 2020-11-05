@@ -1,20 +1,27 @@
 #include "pch.h"
 #include "MenuElements.h"
 #include "Input.h"
+#include <sstream>
 
-void MenuElementTitle::print() const
+string MenuElementTitle::str() const
 {
-	cout << "-< " << text << " >- " << endl;
+	stringstream ss;
+	ss << "-< " << text << " >- " << endl;
+	return ss.str();
 }
 
-void MenuElementSubtitle::print() const
+string MenuElementSubtitle::str() const
 {
-	cout << endl << "      [ " << text << " ]" << endl;
+	stringstream ss;
+	ss << endl << "      [ " << text << " ]" << endl;
+	return ss.str();
 }
 
-void MenuElementFunctionButton::print() const
+string MenuElementFunctionButton::str() const
 {
-	cout << "  " << text << endl;
+	stringstream ss;
+	ss << "  " << text << endl;
+	return ss.str();
 }
 
 bool MenuElementFunctionButton::recvCommand(int keyEvent)
@@ -28,21 +35,23 @@ bool MenuElementFunctionButton::recvCommand(int keyEvent)
 	return false;
 }
 
-void MenuElementEditField::print() const
+string MenuElementEditField::str() const
 {
+	stringstream ss;
 	if (isTextHidden)
 	{
-		cout << "  " << text << ": ";
+		ss << "  " << text << ": ";
 		for (int i = 0; i < (int)input.length(); i++)
 		{
-			cout << "*";
+			ss << "*";
 		}
-		cout << endl;
+		ss << endl;
 	}
 	else
 	{
-		cout << "  " << text << ": " << input << endl;
+		ss << "  " << text << ": " << input << endl;
 	}
+	return ss.str();
 }
 
 string MenuElementEditField::getInput()
@@ -65,21 +74,23 @@ bool MenuElementEditField::recvCommand(int keyEvent)
 	return false;
 }
 
-void MenuElementChoice::print() const
+string MenuElementChoice::str() const
 {
+	stringstream ss;
 	int len = options.size();
 	if (activeOption == 0)
 	{
-		cout << "  " << text << ": --" << options[activeOption] << "->" << endl;
+		ss << "  " << text << ": --" << options[activeOption] << "->" << endl;
 	}
 	else if (len == activeOption + 1)
 	{
-		cout << "  " << text << ": <-" << options[activeOption] << "--" << endl;
+		ss << "  " << text << ": <-" << options[activeOption] << "--" << endl;
 	}
 	else
 	{
-		cout << "  " << text << ": <-" << options[activeOption] << "->" << endl;
+		ss << "  " << text << ": <-" << options[activeOption] << "->" << endl;
 	}
+	return ss.str();
 }
 
 bool MenuElementChoice::recvCommand(int keyEvent)
