@@ -180,16 +180,13 @@ void menuPrintLoop()
 		g_lock.lock();
 		if (clock() - lastKeyPressTime < 200 || lastKeyPressTime == -1)
 		{
-			if (lastKeyPressTime == -1)
-			{
-				lastKeyPressTime = 0;
-			}
+			lastKeyPressTime = 0;
 			system("cls");
 			cout << endl;
 			Menu::printActive();
 			cout << endl << endl << endl;
 		}
 		g_lock.unlock();
-		//Sleep(20);
+		Sleep(100);
 	}
 }
