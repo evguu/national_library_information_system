@@ -25,7 +25,7 @@ public:
 	};
 
 	// Интерфейс
-	void print() const;
+	string str() const;
 	bool recvCommand(int keyEvent);
 	void addElement(MenuElement* ref);
 	void addToStack();
@@ -35,7 +35,6 @@ public:
 	void reset();
 
 	// Статический интерфейс
-	static void printActive();
 	static Menu* getActive() { return menuStack.top(); };
 	static void multiPopMenuStack(int popCount = 1);
 };

@@ -28,7 +28,7 @@ public:
 	virtual ~MenuElement() {};
 
 	// Èםעונפויס
-	virtual void print() const = 0;
+	virtual string str() const = 0;
 	virtual bool recvCommand(int keyEvent) = 0;
 	virtual bool isChoosable() = 0;
 	virtual void reset() = 0;
@@ -42,7 +42,7 @@ public:
 	~MenuElementTitle() {};
 
 	// Èםעונפויס
-	void print() const;
+	string str() const;
 	bool recvCommand(int keyEvent) { return false; };
 	bool isChoosable() { return false; };
 	void reset() {};
@@ -56,7 +56,7 @@ public:
 	~MenuElementSubtitle() {};
 
 	// Èםעונפויס
-	void print() const;
+	string str() const;
 	bool recvCommand(int keyEvent) { return false; };
 	bool isChoosable() { return false; };
 	void reset() {};
@@ -72,7 +72,7 @@ public:
 	~MenuElementFunctionButton() {};
 
 	// Èםעונפויס
-	void print() const;
+	string str() const;
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() {};
@@ -90,7 +90,7 @@ public:
 	~MenuElementEditField() {};
 
 	// Èםעונפויס
-	void print() const;
+	string str() const;
 	string getInput();
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
@@ -106,7 +106,7 @@ public:
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
 	~MenuElementChoice() {};
 
-	void print() const;
+	string str() const;
 	string getChoice() { return options[activeOption]; };
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
