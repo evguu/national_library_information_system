@@ -175,14 +175,12 @@ void menuControlLoop()
 
 void menuPrintLoop()
 {
-	//auto hC = GetStdHandle(STD_OUTPUT_HANDLE);
 	while (isLoopRunning)
 	{
 		g_lock.lock();
 		if (hasMenuChanged)
 		{
 			hasMenuChanged = false;
-			//SetConsoleCursorPosition(hC, {0,0});
 			system("cls");
 			cout << Menu::getActive()->str();
 		}
