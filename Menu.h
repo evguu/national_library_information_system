@@ -35,7 +35,6 @@ public:
 	void reset();
 
 	// Статический интерфейс
-	static void printActive();
 	static Menu* getActive() { return menuStack.top(); };
 	static void multiPopMenuStack(int popCount = 1);
 };

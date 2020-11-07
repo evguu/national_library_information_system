@@ -14,7 +14,7 @@ Menu* userMenu;
 Menu* adminMenu;
 Menu* startMenu;
 bool isLoopRunning = true;
-clock_t lastKeyPressTime = -1;
+bool hasMenuChanged = true;
 mutex g_lock;
 long elapsed;
 
@@ -167,7 +167,7 @@ void menuControlLoop()
 		if (hasReacted)
 		{
 			g_lock.lock();
-			lastKeyPressTime = clock();
+			hasMenuChanged = true;
 			g_lock.unlock();
 		}
 	}
@@ -175,16 +175,16 @@ void menuControlLoop()
 
 void menuPrintLoop()
 {
+	//auto hC = GetStdHandle(STD_OUTPUT_HANDLE);
 	while (isLoopRunning)
 	{
 		g_lock.lock();
-		if (clock() - lastKeyPressTime < 200 || lastKeyPressTime == -1)
+		if (hasMenuChanged)
 		{
-			lastKeyPressTime = 0;
+			hasMenuChanged = false;
+			//SetConsoleCursorPosition(hC, {0,0});
 			system("cls");
-			cout << endl;
-			Menu::printActive();
-			cout << endl << endl << endl;
+			cout << Menu::getActive()->str();
 		}
 		g_lock.unlock();
 		Sleep(100);

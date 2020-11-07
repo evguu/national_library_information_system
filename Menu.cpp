@@ -110,11 +110,6 @@ void Menu::reset()
 	initChosenElementIndex();
 }
 
-void Menu::printActive()
-{
-	cout << menuStack.top()->str();
-}
-
 void Menu::multiPopMenuStack(int popCount)
 {
 	for (int i = 0; i < popCount; ++i)
