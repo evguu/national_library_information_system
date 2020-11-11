@@ -75,6 +75,9 @@
     <ClInclude Include="User.h">
       <Filter>Файлы заголовков\MainTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Publisher.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -120,6 +123,9 @@
       <Filter>Исходные файлы\MainTypes</Filter>
     </ClCompile>
     <ClCompile Include="DocumentAuthorBind.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Publisher.cpp">
       <Filter>Исходные файлы\MainTypes</Filter>
     </ClCompile>
   </ItemGroup>
