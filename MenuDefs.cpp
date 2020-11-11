@@ -38,11 +38,11 @@ void initLoginMenu()
 		password = ((MenuElementEditField *)(*it))->getInput();
 		// TODO: Здесь будут проверки данных
 		// TODO: Функция сама сообщит об успешности входа.
-		User::login_(login, password);
-		if (User::getActive())
+		User::loginUser(login, password);
+		if (User::getActiveUser())
 		{
 			Menu::multiPopMenuStack(1);
-			if (User::getActive()->getIsAdmin())
+			if (User::getActiveUser()->getIsAdmin())
 			{
 				adminMenu->addToStack();
 			}
@@ -83,7 +83,7 @@ void initRegisterMenu()
 		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
 		// TODO: Здесь будут проверки данных
 		// TODO: Функция регистрации сама выводит сообщения пользователю.
-		User::register_(login, password, repeatPassword);
+		User::registerUser(login, password, repeatPassword);
 		registerMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});

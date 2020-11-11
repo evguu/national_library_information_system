@@ -78,6 +78,9 @@
     <ClInclude Include="Publisher.h">
       <Filter>Файлы заголовков\MainTypes</Filter>
     </ClInclude>
+    <ClInclude Include="FileBindedVector.h">
+      <Filter>Файлы заголовков\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="Publisher.cpp">
       <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="FileBindedVector.cpp">
+      <Filter>Исходные файлы\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

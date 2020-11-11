@@ -157,6 +157,7 @@
     <ClInclude Include="DocumentAuthorBind.h" />
     <ClInclude Include="DocumentUseRecord.h" />
     <ClInclude Include="Encrypt.h" />
+    <ClInclude Include="FileBindedVector.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuDefs.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="DocumentAuthorBind.cpp" />
     <ClCompile Include="DocumentUseRecord.cpp" />
     <ClCompile Include="Encrypt.cpp" />
+    <ClCompile Include="FileBindedVector.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MenuDefs.cpp" />
