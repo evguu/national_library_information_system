@@ -39,6 +39,7 @@ void initLoginMenu()
 		User::loginUser(login, password);
 		if (User::getActiveUser())
 		{
+			loginMenu->reset();
 			Menu::multiPopMenuStack(1);
 			if (User::getActiveUser()->getIsAdmin())
 			{
@@ -102,14 +103,13 @@ void initUserMenu()
 	menu = new Menu();
 
 	NME_TITLE("Меню пользователя");
-	NME_SUBTITLE("Работа с данными");
-	NME_FUNC_BUTTON("Обзор данных", []() {});
-	NME_FUNC_BUTTON("Изменение данных", []() {});
-	NME_SUBTITLE("Основные функции");
+	NME_SUBTITLE("Работа");
+	NME_FUNC_BUTTON("Действия с данными", []() {});
 	NME_FUNC_BUTTON("Выдать книгу", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		userMenu->reset();
+		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
 
@@ -128,6 +128,7 @@ void initAdminMenu()
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		adminMenu->reset();
+		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
 

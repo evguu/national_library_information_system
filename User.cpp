@@ -13,13 +13,13 @@ User * User::loadRecord(ifstream & fin)
 	string fullName;
 	string login;
 	string encryptedPassword;
-	bool isAdmin;
+	string isAdmin;
 	getline(fin, fullName);
 	getline(fin, login);
 	getline(fin, encryptedPassword);
-	fin >> isAdmin;
+	getline(fin, isAdmin);
 	if (fin.eof() || fin.fail()) return nullptr;
-	return new User(fullName, login, encryptedPassword, isAdmin);
+	return new User(fullName, login, encryptedPassword, isAdmin=="1");
 }
 
 void User::saveRecord(ofstream & fout)
