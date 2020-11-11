@@ -14,8 +14,11 @@ User * User::loadRecord(ifstream & fin)
 	string login;
 	string encryptedPassword;
 	bool isAdmin;
-	fin >> fullName >> login >> encryptedPassword >> isAdmin;
-	if (fin.eof()) return nullptr;
+	getline(fin, fullName);
+	getline(fin, login);
+	getline(fin, encryptedPassword);
+	fin >> isAdmin;
+	if (fin.eof() || fin.fail()) return nullptr;
 	return new User(fullName, login, encryptedPassword, isAdmin);
 }
 
@@ -113,4 +116,6 @@ void User::loginUser(string login, string password)
 			return;
 		}
 	}
+	cout << "Аккаунт не найден." << endl;
+	system("pause");
 }

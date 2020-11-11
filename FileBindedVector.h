@@ -24,7 +24,7 @@ namespace Utils
 			ifstream fin;
 			records.clear();
 			fin.open(filename, ios::in);
-			while (!fin.eof())
+			while (!fin.eof() && !fin.fail())
 			{
 				T* record = T::loadRecord(fin);
 				if (record)
