@@ -131,8 +131,5 @@
     <ClCompile Include="Publisher.cpp">
       <Filter>Исходные файлы\MainTypes</Filter>
     </ClCompile>
-    <ClCompile Include="FileBindedVector.cpp">
-      <Filter>Исходные файлы\Utils</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

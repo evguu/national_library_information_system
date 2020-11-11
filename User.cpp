@@ -4,6 +4,7 @@
 using namespace std;
 
 User* User::activeUser = nullptr;
+Utils::FileBindedVector<User> User::binder("users.txt");
 
 void User::registerUser(string login, string password, string repeatPassword)
 {
