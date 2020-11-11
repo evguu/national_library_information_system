@@ -5,6 +5,7 @@ void initRegisterMenu();
 void initUserMenu();
 void initAdminMenu();
 void initStartMenu();
+void initDataTypeMenu();
 void menuInitAll();
 void menuControlLoop();
 void menuPrintLoop();

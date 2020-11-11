@@ -13,6 +13,7 @@ Menu* registerMenu;
 Menu* userMenu;
 Menu* adminMenu;
 Menu* startMenu;
+Menu* dataTypeMenu;
 bool isLoopRunning = true;
 bool hasMenuChanged = true;
 mutex g_lock;
@@ -104,7 +105,7 @@ void initUserMenu()
 
 	NME_TITLE("Меню пользователя");
 	NME_SUBTITLE("Работа");
-	NME_FUNC_BUTTON("Действия с данными", []() {});
+	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
 	NME_FUNC_BUTTON("Выдать книгу", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
@@ -122,9 +123,11 @@ void initAdminMenu()
 	menu = new Menu();
 
 	NME_TITLE("Меню администратора");
-	NME_SUBTITLE("Работа с пользователями");
+	NME_SUBTITLE("Управление");
+	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
+	NME_FUNC_BUTTON("Манипуляции данными пользователей", []() {});
 	NME_FUNC_BUTTON("Блокировка пользователей", []() {});
-	NME_FUNC_BUTTON("Отчеты о данных", []() {});
+	NME_FUNC_BUTTON("Логи", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		adminMenu->reset();
@@ -150,6 +153,25 @@ void initStartMenu()
 	startMenu->initChosenElementIndex();
 }
 
+void initDataTypeMenu()
+{
+	auto& menu = dataTypeMenu;
+	menu = new Menu();
+
+	NME_TITLE("Выбор типа данных");
+	NME_SUBTITLE("Типы");
+	NME_FUNC_BUTTON("Авторы", []() {});
+	NME_FUNC_BUTTON("Читатели", []() {});
+	NME_FUNC_BUTTON("Документы", []() {});
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() { 
+		dataTypeMenu->reset(); 
+		Menu::multiPopMenuStack(1);
+	});
+
+	dataTypeMenu->initChosenElementIndex();
+}
+
 void menuInitAll()
 {
 	initLoginMenu();
@@ -157,6 +179,7 @@ void menuInitAll()
 	initAdminMenu();
 	initUserMenu();
 	initStartMenu();
+	initDataTypeMenu();
 	startMenu->addToStack();
 }
 
