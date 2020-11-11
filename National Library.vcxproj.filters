@@ -13,60 +13,114 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Menu">
+      <UniqueIdentifier>{1bc33329-382e-4d3f-9d39-346b29e5acf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Utils">
+      <UniqueIdentifier>{fbe7452e-44f3-4d08-b686-34481dbe4355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\MainTypes">
+      <UniqueIdentifier>{5a3707f3-0c4a-4f04-a2dc-38bd11d191d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Menu">
+      <UniqueIdentifier>{6b1cda7a-9fe1-485c-b49b-08689d998a69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Utils">
+      <UniqueIdentifier>{34f7d944-07a0-463c-a65b-53d08c7fc8e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\MainTypes">
+      <UniqueIdentifier>{52a1833d-2d9b-46d2-a303-68dc6b4717ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="MenuElements.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="Menu.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Menu</Filter>
     </ClInclude>
     <ClInclude Include="MenuDefs.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuElements.h">
+      <Filter>Файлы заголовков\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Файлы заголовков\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Encrypt.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Author.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Document.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentAuthorBind.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentUseRecord.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Reader.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Файлы заголовков\MainTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="MenuElements.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="User.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="MenuDefs.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Исходные файлы\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuDefs.cpp">
+      <Filter>Исходные файлы\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuElements.cpp">
+      <Filter>Исходные файлы\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="Encrypt.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Author.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Document.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Person.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="Reader.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentUseRecord.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentAuthorBind.cpp">
+      <Filter>Исходные файлы\MainTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
