@@ -31,6 +31,10 @@ namespace Utils
 				{
 					records.push_back(record);
 				}
+				else
+				{
+					break;
+				}
 			}
 			fin.close();
 		};

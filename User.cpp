@@ -80,5 +80,37 @@ void User::registerUser(string fullName, string login, string password, string r
 
 void User::loginUser(string login, string password)
 {
-
+	for (auto it : binder.getRecords())
+	{
+		if (login == it->login)
+		{
+			if (Utils::encrypt(password) == it->encryptedPassword)
+			{
+				activeUser = it;
+				cout << "Добро пожаловать, " << it->getFullName() << "!" << endl;
+			}
+			else
+			{
+				cout << "Пароль неверный." << endl;
+			}
+			system("pause");
+			return;
+		}
+	}
+	for (auto it : binderUnconfirmed.getRecords())
+	{
+		if (login == it->login)
+		{
+			if (Utils::encrypt(password) == it->encryptedPassword)
+			{
+				cout << it->getFullName() << ", ваш аккаунт требует подтверждения администратором." << endl;
+			}
+			else
+			{
+				cout << "Пароль неверный." << endl;
+			}
+			system("pause");
+			return;
+		}
+	}
 }

@@ -36,8 +36,6 @@ void initLoginMenu()
 		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		password = ((MenuElementEditField *)(*it))->getInput();
-		// TODO: Здесь будут проверки данных
-		// TODO: Функция сама сообщит об успешности входа.
 		User::loginUser(login, password);
 		if (User::getActiveUser())
 		{
