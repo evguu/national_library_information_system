@@ -26,7 +26,7 @@ namespace Utils
 			fin.open(filename, ios::in);
 			while (!fin.eof())
 			{
-				T* record = T::loadRecord();
+				T* record = T::loadRecord(fin);
 				if (record)
 				{
 					records.push_back(record);

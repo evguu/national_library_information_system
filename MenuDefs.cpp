@@ -67,15 +67,18 @@ void initRegisterMenu()
 
 	NME_TITLE("Регистрация");
 	NME_SUBTITLE("Ввод данных");
+	NME_EDIT_FIELD("ФИО");
 	NME_EDIT_FIELD("Логин");
 	NME_EDIT_FIELD("Пароль", true);
 	NME_EDIT_FIELD("Повторите пароль", true);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {
 		auto menuElements = Menu::getActive()->getElements();
-		string login, password, repeatPassword;
+		string fullName, login, password, repeatPassword;
 		auto it = menuElements.begin();
 		it += 2;
+		fullName = ((MenuElementEditField *)(*it))->getInput();
+		it += 1;
 		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		password = ((MenuElementEditField *)(*it))->getInput();
@@ -83,7 +86,7 @@ void initRegisterMenu()
 		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
 		// TODO: Здесь будут проверки данных
 		// TODO: Функция регистрации сама выводит сообщения пользователю.
-		User::registerUser(login, password, repeatPassword);
+		User::registerUser(fullName, login, password, repeatPassword);
 		registerMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
