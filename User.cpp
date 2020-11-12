@@ -8,6 +8,19 @@ User* User::activeUser = nullptr;
 Utils::FileBindedVector<User> User::binder("users.txt");
 Utils::FileBindedVector<User> User::binderUnconfirmed("users_unconfirmed.txt");
 
+namespace Constraints
+{
+	namespace User
+	{
+		const int LOGIN_MIN_LENGTH = 5;
+		const int LOGIN_MAX_LENGTH = 16;
+		const string LOGIN_ALLOWED_CHARS = Constraints::CharacterSets::ENGLISH + Constraints::CharacterSets::NUMBERS + "_";
+		const int PASSWORD_MIN_LENGTH = 6;
+		const int PASSWORD_MAX_LENGTH = 32;
+		const string PASSWORD_ALLOWED_CHARS = Constraints::CharacterSets::ENGLISH + Constraints::CharacterSets::NUMBERS + "_";
+	}
+};
+
 User * User::loadRecord(ifstream & fin)
 {
 	string fullName;
@@ -27,27 +40,33 @@ void User::saveRecord(ofstream & fout)
 	fout << getFullName() << endl << login << endl << encryptedPassword << endl << isAdmin << endl;
 }
 
-void User::registerUser(string fullName, string login, string password, string repeatPassword)
+bool User::registerUser(string fullName, string login, string password, string repeatPassword)
 {
+	bool res;
 	if (password != repeatPassword)
 	{
 		cout << "Пароли не совпадают." << endl;
+		res = false;
 	}
 	else if (!fullName.length() || !login.length() || !password.length() || !repeatPassword.length())
 	{
 		cout << "Все поля должны быть заполнены." << endl;
+		res = false;
 	}
 	else if (fullName.length() < Constraints::Person::FULL_NAME_MIN_LENGTH)
 	{
 		cout << "ФИО не может быть короче " << Constraints::Person::FULL_NAME_MIN_LENGTH << " символов." << endl;
+		res = false;
 	}
 	else if (login.length() < Constraints::User::LOGIN_MIN_LENGTH)
 	{
 		cout << "Логин не может быть короче " << Constraints::User::LOGIN_MIN_LENGTH << " символов." << endl;
+		res = false;
 	}
 	else if (password.length() < Constraints::User::PASSWORD_MIN_LENGTH)
 	{
 		cout << "Пароль не может быть короче " << Constraints::User::PASSWORD_MIN_LENGTH << " символов." << endl;
+		res = false;
 	}
 	else
 	{
@@ -58,6 +77,7 @@ void User::registerUser(string fullName, string login, string password, string r
 			{
 				cout << "Логин уже занят." << endl;
 				isLoginAlreadyTaken = true;
+				res = false;
 				break;
 			}
 		}
@@ -68,6 +88,7 @@ void User::registerUser(string fullName, string login, string password, string r
 			{
 				cout << "Логин уже занят неподтвержденным пользователем." << endl;
 				isLoginAlreadyTaken = true;
+				res = false;
 				break;
 			}
 		}
@@ -76,9 +97,11 @@ void User::registerUser(string fullName, string login, string password, string r
 			cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
 			binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
 			binderUnconfirmed.saveRecords();
+			res = true;
 		}
 	}
 	system("pause");
+	return res;
 }
 
 void User::loginUser(string login, string password)

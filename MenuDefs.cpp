@@ -29,8 +29,8 @@ void initLoginMenu()
 
 	NME_TITLE("Âõîä â ñèñòåìó");
 	NME_SUBTITLE("Ââîä äàííûõ");
-	NME_EDIT_FIELD("Ëîãèí");
-	NME_EDIT_FIELD("Ïàğîëü", true);
+	NME_EDIT_FIELD("Ëîãèí", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
+	NME_EDIT_FIELD("Ïàğîëü", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
 	NME_SUBTITLE("Íàâèãàöèÿ");
 	NME_FUNC_BUTTON("Âîéòè", []() {
 		auto menuElements = Menu::getActive()->getElements();
@@ -71,10 +71,10 @@ void initRegisterMenu()
 
 	NME_TITLE("Ğåãèñòğàöèÿ");
 	NME_SUBTITLE("Ââîä äàííûõ");
-	NME_EDIT_FIELD("ÔÈÎ");
-	NME_EDIT_FIELD("Ëîãèí");
-	NME_EDIT_FIELD("Ïàğîëü", true);
-	NME_EDIT_FIELD("Ïîâòîğèòå ïàğîëü", true);
+	NME_EDIT_FIELD("ÔÈÎ", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
+	NME_EDIT_FIELD("Ëîãèí", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
+	NME_EDIT_FIELD("Ïàğîëü", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	NME_EDIT_FIELD("Ïîâòîğèòå ïàğîëü", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
 	NME_SUBTITLE("Íàâèãàöèÿ");
 	NME_FUNC_BUTTON("Çàğåãèñòğèğîâàòüñÿ", []() {
 		auto menuElements = Menu::getActive()->getElements();
@@ -88,11 +88,11 @@ void initRegisterMenu()
 		password = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
-		// TODO: Çäåñü áóäóò ïğîâåğêè äàííûõ
-		// TODO: Ôóíêöèÿ ğåãèñòğàöèè ñàìà âûâîäèò ñîîáùåíèÿ ïîëüçîâàòåëş.
-		User::registerUser(fullName, login, password, repeatPassword);
-		registerMenu->reset();
-		Menu::multiPopMenuStack(1);
+		if (User::registerUser(fullName, login, password, repeatPassword))
+		{
+			registerMenu->reset();
+			Menu::multiPopMenuStack(1);
+		}
 	});
 	NME_FUNC_BUTTON("Íàçàä", []() {
 		registerMenu->reset();

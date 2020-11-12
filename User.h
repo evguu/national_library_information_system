@@ -4,6 +4,7 @@
 #include "Person.h"
 #include <vector>
 #include "FileBindedVector.h"
+#include "CharacterSets.h"
 using namespace std;
 
 class User;
@@ -32,7 +33,7 @@ public:
 	static User* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
 
-	static void registerUser(string fullName, string login, string password, string repeatPassword);
+	static bool registerUser(string fullName, string login, string password, string repeatPassword);
 	static void loginUser(string login, string password);
 };
 
@@ -40,9 +41,11 @@ namespace Constraints
 {
 	namespace User
 	{
-		const int LOGIN_MIN_LENGTH = 5;
-		const int LOGIN_MAX_LENGTH = 16;
-		const int PASSWORD_MIN_LENGTH = 6;
-		const int PASSWORD_MAX_LENGTH = 32;
+		extern const int LOGIN_MIN_LENGTH;
+		extern const int LOGIN_MAX_LENGTH;
+		extern const string LOGIN_ALLOWED_CHARS;
+		extern const int PASSWORD_MIN_LENGTH;
+		extern const int PASSWORD_MAX_LENGTH;
+		extern const string PASSWORD_ALLOWED_CHARS;
 	}
 };

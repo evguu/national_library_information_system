@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "CharacterSets.h"
 using namespace std;
 
 class Person
@@ -17,8 +18,8 @@ namespace Constraints
 {
 	namespace Person
 	{
-		const int FULL_NAME_MIN_LENGTH = 6;
-		const int FULL_NAME_MAX_LENGTH = 100;
-		const char FULL_NAME_ALLOWED_CHARS[] = "יצףךוםדרשחץתפûגאןנמכהז‎ÿקסלטעüב‏ÉÖÓÊÅÍÃØÙÇÕÚÔÛÂÀÏÐÎËÄÆÝ‗×ÑÌÈÒÜÁÞ -";
+		extern const int FULL_NAME_MIN_LENGTH;
+		extern const int FULL_NAME_MAX_LENGTH;
+		extern const string FULL_NAME_ALLOWED_CHARS;
 	}
 };

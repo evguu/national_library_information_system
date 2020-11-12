@@ -81,6 +81,9 @@
     <ClInclude Include="FileBindedVector.h">
       <Filter>Файлы заголовков\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterSets.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Publisher.cpp">
       <Filter>Исходные файлы\MainTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterSets.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

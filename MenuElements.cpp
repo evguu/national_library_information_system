@@ -63,8 +63,11 @@ bool MenuElementEditField::recvCommand(int keyEvent)
 {
 	if (keyEvent > 0)
 	{
-		input += (char)keyEvent;
-		return true;
+		if (((allowedSymbols.length() == 0) || (allowedSymbols.find((char)keyEvent) != string::npos)) && ((maxLength == 0) || (input.length() < maxLength)))
+		{
+			input += (char)keyEvent;
+			return true;
+		}
 	}
 	if (keyEvent == -KC_DELETE || keyEvent == -KC_BACKSPACE)
 	{
