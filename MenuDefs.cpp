@@ -195,7 +195,27 @@ void initRegisterConfirmationMenu()
 	}
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
-		// TODO: Тут считываем все данные и интерпретируем
+		auto elemIt = registerConfirmationMenu->getElements().begin();
+		elemIt += 2;
+		int offset = 0;
+		int size = User::getBinderUnconfirmed().getRecords().size();
+		for (int i = 0; i < size; ++i)
+		{
+			if (((MenuElementChoice*)(*elemIt))->getChoice() == "Подтвердить регистрацию")
+			{
+				User::getBinder().getRecords().push_back(User::getBinderUnconfirmed().getRecords()[i-offset]);
+				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin()+i-offset);
+				++offset;
+			}
+			else if (((MenuElementChoice*)(*elemIt))->getChoice() == "Отклонить регистрацию")
+			{
+				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin() + i - offset);
+				++offset;
+			}
+			++elemIt;
+		}
+		User::getBinder().saveRecords();
+		User::getBinderUnconfirmed().saveRecords();
 		registerConfirmationMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
