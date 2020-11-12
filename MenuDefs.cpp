@@ -8,12 +8,14 @@
 #include <mutex>
 using namespace std;
 
-Menu* loginMenu;
-Menu* registerMenu;
-Menu* userMenu;
-Menu* adminMenu;
-Menu* startMenu;
-Menu* dataTypeMenu;
+Menu* loginMenu = nullptr;
+Menu* registerMenu = nullptr;
+Menu* userMenu = nullptr;
+Menu* adminMenu = nullptr;
+Menu* startMenu = nullptr;
+Menu* dataTypeMenu = nullptr;
+Menu* registerConfirmationMenu = nullptr;
+
 bool isLoopRunning = true;
 bool hasMenuChanged = true;
 mutex g_lock;
@@ -22,6 +24,7 @@ long elapsed;
 void initLoginMenu()
 {
 	auto& menu = loginMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Вход в систему");
@@ -63,6 +66,7 @@ void initLoginMenu()
 void initRegisterMenu()
 {
 	auto& menu = registerMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Регистрация");
@@ -101,6 +105,7 @@ void initRegisterMenu()
 void initUserMenu()
 {
 	auto& menu = userMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Меню пользователя");
@@ -120,12 +125,14 @@ void initUserMenu()
 void initAdminMenu()
 {
 	auto& menu = adminMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Меню администратора");
 	NME_SUBTITLE("Управление");
 	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
 	NME_FUNC_BUTTON("Манипуляции данными пользователей", []() {});
+	NME_FUNC_BUTTON("Запросы на регистрацию", []() { initRegisterConfirmationMenu(); registerConfirmationMenu->addToStack(); });
 	NME_FUNC_BUTTON("Блокировка пользователей", []() {});
 	NME_FUNC_BUTTON("Логи", []() {});
 	NME_SUBTITLE("Навигация");
@@ -141,6 +148,7 @@ void initAdminMenu()
 void initStartMenu()
 {
 	auto& menu = startMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Информационная система национальной библиотеки");
@@ -156,6 +164,7 @@ void initStartMenu()
 void initDataTypeMenu()
 {
 	auto& menu = dataTypeMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Выбор типа данных");
@@ -170,6 +179,32 @@ void initDataTypeMenu()
 	});
 
 	dataTypeMenu->initChosenElementIndex();
+}
+
+void initRegisterConfirmationMenu()
+{
+	auto& menu = registerConfirmationMenu;
+	if (menu) { delete menu; };
+	menu = new Menu();
+
+	NME_TITLE("Запросы на регистрацию");
+	NME_SUBTITLE("Неподтвержденные запросы");
+	for (auto it : User::getBinderUnconfirmed().getRecords())
+	{
+		NME_CHOICE("ФИО: " + it->getFullName() + ", логин: " + it->getLogin(), {"Оставить неподтвержденным", "Подтвердить регистрацию", "Отклонить регистрацию"});
+	}
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить", []() {
+		// TODO: Тут считываем все данные и интерпретируем
+		registerConfirmationMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	NME_FUNC_BUTTON("Назад", []() {
+		registerConfirmationMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+
+	registerConfirmationMenu->initChosenElementIndex();
 }
 
 void menuInitAll()
