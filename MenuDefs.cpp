@@ -8,11 +8,14 @@
 #include <mutex>
 using namespace std;
 
-Menu* loginMenu;
-Menu* registerMenu;
-Menu* userMenu;
-Menu* adminMenu;
-Menu* startMenu;
+Menu* loginMenu = nullptr;
+Menu* registerMenu = nullptr;
+Menu* userMenu = nullptr;
+Menu* adminMenu = nullptr;
+Menu* startMenu = nullptr;
+Menu* dataTypeMenu = nullptr;
+Menu* registerConfirmationMenu = nullptr;
+
 bool isLoopRunning = true;
 bool hasMenuChanged = true;
 mutex g_lock;
@@ -21,12 +24,13 @@ long elapsed;
 void initLoginMenu()
 {
 	auto& menu = loginMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Вход в систему");
 	NME_SUBTITLE("Ввод данных");
-	NME_EDIT_FIELD("Логин");
-	NME_EDIT_FIELD("Пароль", true);
+	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
+	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Войти", []() {
 		auto menuElements = Menu::getActive()->getElements();
@@ -36,13 +40,12 @@ void initLoginMenu()
 		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		password = ((MenuElementEditField *)(*it))->getInput();
-		// TODO: Здесь будут проверки данных
-		// TODO: Функция сама сообщит об успешности входа.
-		MainTypes::User::login_(login, password);
-		if (MainTypes::User::getActive())
+		User::loginUser(login, password);
+		if (User::getActiveUser())
 		{
+			loginMenu->reset();
 			Menu::multiPopMenuStack(1);
-			if (MainTypes::User::getActive()->getIsAdmin())
+			if (User::getActiveUser()->getIsAdmin())
 			{
 				adminMenu->addToStack();
 			}
@@ -63,28 +66,33 @@ void initLoginMenu()
 void initRegisterMenu()
 {
 	auto& menu = registerMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Регистрация");
 	NME_SUBTITLE("Ввод данных");
-	NME_EDIT_FIELD("Логин");
-	NME_EDIT_FIELD("Пароль", true);
-	NME_EDIT_FIELD("Повторите пароль", true);
+	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
+	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
+	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	NME_EDIT_FIELD("Повторите пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {
 		auto menuElements = Menu::getActive()->getElements();
-		string login, password, repeatPassword;
+		string fullName, login, password, repeatPassword;
 		auto it = menuElements.begin();
 		it += 2;
+		fullName = ((MenuElementEditField *)(*it))->getInput();
+		it += 1;
 		login = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		password = ((MenuElementEditField *)(*it))->getInput();
 		it += 1;
 		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
-		// TODO: Здесь будут проверки данных
-		// TODO: Функция регистрации сама выводит сообщения пользователю.
-		MainTypes::User::register_(login, password, repeatPassword);
-		Menu::multiPopMenuStack(1);
+		if (User::registerUser(fullName, login, password, repeatPassword))
+		{
+			registerMenu->reset();
+			Menu::multiPopMenuStack(1);
+		}
 	});
 	NME_FUNC_BUTTON("Назад", []() {
 		registerMenu->reset();
@@ -97,17 +105,17 @@ void initRegisterMenu()
 void initUserMenu()
 {
 	auto& menu = userMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Меню пользователя");
-	NME_SUBTITLE("Работа с данными");
-	NME_FUNC_BUTTON("Обзор данных", []() {});
-	NME_FUNC_BUTTON("Изменение данных", []() {});
-	NME_SUBTITLE("Основные функции");
+	NME_SUBTITLE("Работа");
+	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
 	NME_FUNC_BUTTON("Выдать книгу", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		userMenu->reset();
+		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
 
@@ -117,15 +125,20 @@ void initUserMenu()
 void initAdminMenu()
 {
 	auto& menu = adminMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Меню администратора");
-	NME_SUBTITLE("Работа с пользователями");
+	NME_SUBTITLE("Управление");
+	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
+	NME_FUNC_BUTTON("Манипуляции данными пользователей", []() {});
+	NME_FUNC_BUTTON("Запросы на регистрацию", []() { initRegisterConfirmationMenu(); registerConfirmationMenu->addToStack(); });
 	NME_FUNC_BUTTON("Блокировка пользователей", []() {});
-	NME_FUNC_BUTTON("Отчеты о данных", []() {});
+	NME_FUNC_BUTTON("Логи", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		adminMenu->reset();
+		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
 
@@ -135,6 +148,7 @@ void initAdminMenu()
 void initStartMenu()
 {
 	auto& menu = startMenu;
+	if (menu) { delete menu; };
 	menu = new Menu();
 
 	NME_TITLE("Информационная система национальной библиотеки");
@@ -147,6 +161,72 @@ void initStartMenu()
 	startMenu->initChosenElementIndex();
 }
 
+void initDataTypeMenu()
+{
+	auto& menu = dataTypeMenu;
+	if (menu) { delete menu; };
+	menu = new Menu();
+
+	NME_TITLE("Выбор типа данных");
+	NME_SUBTITLE("Типы");
+	NME_FUNC_BUTTON("Авторы", []() {});
+	NME_FUNC_BUTTON("Читатели", []() {});
+	NME_FUNC_BUTTON("Документы", []() {});
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() { 
+		dataTypeMenu->reset(); 
+		Menu::multiPopMenuStack(1);
+	});
+
+	dataTypeMenu->initChosenElementIndex();
+}
+
+void initRegisterConfirmationMenu()
+{
+	auto& menu = registerConfirmationMenu;
+	if (menu) { delete menu; };
+	menu = new Menu();
+
+	NME_TITLE("Запросы на регистрацию");
+	NME_SUBTITLE("Неподтвержденные запросы");
+	for (auto it : User::getBinderUnconfirmed().getRecords())
+	{
+		NME_CHOICE("ФИО: " + it->getFullName() + ", логин: " + it->getLogin(), {"Оставить неподтвержденным", "Подтвердить регистрацию", "Отклонить регистрацию"});
+	}
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить", []() {
+		auto elemIt = registerConfirmationMenu->getElements().begin();
+		elemIt += 2;
+		int offset = 0;
+		int size = User::getBinderUnconfirmed().getRecords().size();
+		for (int i = 0; i < size; ++i)
+		{
+			if (((MenuElementChoice*)(*elemIt))->getChoice() == "Подтвердить регистрацию")
+			{
+				User::getBinder().getRecords().push_back(User::getBinderUnconfirmed().getRecords()[i-offset]);
+				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin()+i-offset);
+				++offset;
+			}
+			else if (((MenuElementChoice*)(*elemIt))->getChoice() == "Отклонить регистрацию")
+			{
+				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin() + i - offset);
+				++offset;
+			}
+			++elemIt;
+		}
+		User::getBinder().saveRecords();
+		User::getBinderUnconfirmed().saveRecords();
+		registerConfirmationMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	NME_FUNC_BUTTON("Назад", []() {
+		registerConfirmationMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+
+	registerConfirmationMenu->initChosenElementIndex();
+}
+
 void menuInitAll()
 {
 	initLoginMenu();
@@ -154,6 +234,7 @@ void menuInitAll()
 	initAdminMenu();
 	initUserMenu();
 	initStartMenu();
+	initDataTypeMenu();
 	startMenu->addToStack();
 }
 
@@ -175,14 +256,12 @@ void menuControlLoop()
 
 void menuPrintLoop()
 {
-	//auto hC = GetStdHandle(STD_OUTPUT_HANDLE);
 	while (isLoopRunning)
 	{
 		g_lock.lock();
 		if (hasMenuChanged)
 		{
 			hasMenuChanged = false;
-			//SetConsoleCursorPosition(hC, {0,0});
 			system("cls");
 			cout << Menu::getActive()->str();
 		}

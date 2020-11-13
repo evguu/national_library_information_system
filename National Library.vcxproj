@@ -151,17 +151,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Author.h" />
+    <ClInclude Include="CharacterSets.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Document.h" />
+    <ClInclude Include="DocumentAuthorBind.h" />
+    <ClInclude Include="DocumentUseRecord.h" />
     <ClInclude Include="Encrypt.h" />
+    <ClInclude Include="FileBindedVector.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuDefs.h" />
     <ClInclude Include="MenuElements.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Publisher.h" />
+    <ClInclude Include="Reader.h" />
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Author.cpp" />
+    <ClCompile Include="CharacterSets.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Document.cpp" />
+    <ClCompile Include="DocumentAuthorBind.cpp" />
+    <ClCompile Include="DocumentUseRecord.cpp" />
     <ClCompile Include="Encrypt.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -174,6 +188,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Publisher.cpp" />
+    <ClCompile Include="Reader.cpp" />
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

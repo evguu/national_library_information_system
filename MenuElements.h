@@ -80,13 +80,15 @@ public:
 
 class MenuElementEditField : public MenuElement
 {
-	//  TODO: Реагирует только на клавиши, прописанные в векторе allowedCodes.
 private:
 	string input;
 	bool isTextHidden;
+	string allowedSymbols;
+	int maxLength;
 public:
 	// Создание и разрушение
-	MenuElementEditField(string text, bool isTextHidden = false) : MenuElement(text), input(""), isTextHidden(isTextHidden) {};
+	MenuElementEditField(string text, bool isTextHidden = false, string allowedSymbols = "", int maxLength = 0):
+		MenuElement(text), input(""), isTextHidden(isTextHidden), allowedSymbols(allowedSymbols), maxLength(maxLength) {};
 	~MenuElementEditField() {};
 
 	// Интерфейс
