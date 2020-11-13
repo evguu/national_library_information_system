@@ -15,6 +15,14 @@ Menu* adminMenu = nullptr;
 Menu* startMenu = nullptr;
 Menu* dataTypeMenu = nullptr;
 Menu* registerConfirmationMenu = nullptr;
+Menu* authorListMenu = nullptr;
+Menu* readerListMenu = nullptr;
+Menu* documentListMenu = nullptr;
+Menu* publisherListMenu = nullptr;
+Menu* userListMenu = nullptr;
+Menu* logMenu = nullptr;
+Menu* documentGivingMenu = nullptr;
+Menu* readerDebtListMenu = nullptr;
 
 bool isLoopRunning = true;
 bool hasMenuChanged = true;
@@ -23,10 +31,7 @@ long elapsed;
 
 void initLoginMenu()
 {
-	auto& menu = loginMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(loginMenu);
 	NME_TITLE("Вход в систему");
 	NME_SUBTITLE("Ввод данных");
 	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
@@ -59,16 +64,12 @@ void initLoginMenu()
 		loginMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
-
-	loginMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initRegisterMenu()
 {
-	auto& menu = registerMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(registerMenu);
 	NME_TITLE("Регистрация");
 	NME_SUBTITLE("Ввод данных");
 	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
@@ -98,95 +99,76 @@ void initRegisterMenu()
 		registerMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
-
-	registerMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initUserMenu()
 {
-	auto& menu = userMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(userMenu);
 	NME_TITLE("Меню пользователя");
 	NME_SUBTITLE("Работа");
 	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
-	NME_FUNC_BUTTON("Выдать книгу", []() {});
+	NME_FUNC_BUTTON("Выдать документ", []() { initDocumentGivingMenu(); documentGivingMenu->addToStack(); });
+	NME_FUNC_BUTTON("Просмотреть задолженности читателя", []() { initReaderDebtListMenu(); readerDebtListMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		userMenu->reset();
 		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
-
-	userMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initAdminMenu()
 {
-	auto& menu = adminMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(adminMenu);
 	NME_TITLE("Меню администратора");
 	NME_SUBTITLE("Управление");
 	NME_FUNC_BUTTON("Действия с данными", []() { dataTypeMenu->addToStack(); });
-	NME_FUNC_BUTTON("Манипуляции данными пользователей", []() {});
+	NME_FUNC_BUTTON("Действия с пользователями", []() { initUserListMenu(); userListMenu->addToStack(); });
 	NME_FUNC_BUTTON("Запросы на регистрацию", []() { initRegisterConfirmationMenu(); registerConfirmationMenu->addToStack(); });
-	NME_FUNC_BUTTON("Блокировка пользователей", []() {});
-	NME_FUNC_BUTTON("Логи", []() {});
+	NME_FUNC_BUTTON("Просмотр логов", []() { initLogMenu(); logMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		adminMenu->reset();
 		User::getActiveUser() = nullptr;
 		Menu::multiPopMenuStack(1);
 	});
-
-	adminMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initStartMenu()
 {
-	auto& menu = startMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(startMenu);
 	NME_TITLE("Информационная система национальной библиотеки");
 	NME_SUBTITLE("Авторизация");
 	NME_FUNC_BUTTON("Войти", []() {loginMenu->addToStack(); });
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
-
-	startMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initDataTypeMenu()
 {
-	auto& menu = dataTypeMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(dataTypeMenu);
 	NME_TITLE("Выбор типа данных");
 	NME_SUBTITLE("Типы");
-	NME_FUNC_BUTTON("Авторы", []() {});
-	NME_FUNC_BUTTON("Читатели", []() {});
-	NME_FUNC_BUTTON("Документы", []() {});
+	NME_FUNC_BUTTON("Авторы", []() { initAuthorListMenu(); authorListMenu->addToStack(); });
+	NME_FUNC_BUTTON("Читатели", []() { initReaderListMenu(); readerListMenu->addToStack(); });
+	NME_FUNC_BUTTON("Документы", []() { initDocumentListMenu(); documentListMenu->addToStack(); });
+	NME_FUNC_BUTTON("Издатели", []() { initPublisherListMenu(); publisherListMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() { 
 		dataTypeMenu->reset(); 
 		Menu::multiPopMenuStack(1);
 	});
-
-	dataTypeMenu->initChosenElementIndex();
+	MI_END;
 }
 
 void initRegisterConfirmationMenu()
 {
-	auto& menu = registerConfirmationMenu;
-	if (menu) { delete menu; };
-	menu = new Menu();
-
+	MI_START(registerConfirmationMenu);
 	NME_TITLE("Запросы на регистрацию");
 	NME_SUBTITLE("Неподтвержденные запросы");
 	for (auto it : User::getBinderUnconfirmed().getRecords())
@@ -223,8 +205,108 @@ void initRegisterConfirmationMenu()
 		registerConfirmationMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
+	MI_END;
+}
 
-	registerConfirmationMenu->initChosenElementIndex();
+void initAuthorListMenu()
+{
+	MI_START(authorListMenu);
+	NME_TITLE("Список авторов");
+	NME_SUBTITLE("Список");
+	// TODO
+	NME_SUBTITLE("Параметры представления");
+	// TODO
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		authorListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
+}
+
+void initDocumentListMenu()
+{
+	MI_START(documentListMenu);
+	NME_TITLE("Список документов");
+	NME_SUBTITLE("Список");
+	// TODO
+	NME_SUBTITLE("Параметры представления");
+	// TODO
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		documentListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
+}
+
+void initReaderListMenu()
+{
+	MI_START(readerListMenu);
+	NME_TITLE("Список читателей");
+	NME_SUBTITLE("Список");
+	// TODO
+	NME_SUBTITLE("Параметры представления");
+	// TODO
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		readerListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
+}
+
+void initPublisherListMenu()
+{
+	MI_START(publisherListMenu);
+	NME_TITLE("Список издателей");
+	NME_SUBTITLE("Список");
+	// TODO
+	NME_SUBTITLE("Параметры представления");
+	// TODO
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		publisherListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
+}
+
+void initUserListMenu()
+{
+	MI_START(userListMenu);
+	NME_TITLE("Список пользователей");
+	NME_SUBTITLE("Список");
+	// TODO
+	NME_SUBTITLE("Параметры представления");
+	// TODO
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		userListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
+}
+
+void initLogMenu()
+{
+	MI_START(logMenu);
+	//TODO
+	MI_END;
+}
+
+void initDocumentGivingMenu()
+{
+	MI_START(documentGivingMenu);
+	//TODO
+	MI_END;
+}
+
+void initReaderDebtListMenu()
+{
+	MI_START(readerDebtListMenu);
+	//TODO
+	MI_END;
 }
 
 void menuInitAll()

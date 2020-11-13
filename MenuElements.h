@@ -8,6 +8,8 @@
 #define NME_FUNC_BUTTON(...) menu->addElement(new MenuElementFunctionButton(__VA_ARGS__))
 #define NME_EDIT_FIELD(...) menu->addElement(new MenuElementEditField(__VA_ARGS__))
 #define NME_CHOICE(...) menu->addElement(new MenuElementChoice(__VA_ARGS__))
+#define MI_START(x) auto& menu = x; if (menu) { delete menu; }; menu = new Menu();
+#define MI_END menu->initChosenElementIndex();
 
 using namespace std;
 
