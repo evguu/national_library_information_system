@@ -20,7 +20,6 @@ public:
 		for (auto it:elements)
 		{ 
 			delete it;
-			cout << ";";
 		}
 	};
 

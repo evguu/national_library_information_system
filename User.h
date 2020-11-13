@@ -1,43 +1,51 @@
 #pragma once
 #include <string>
 #include "Encrypt.h"
+#include "Person.h"
+#include <vector>
+#include "FileBindedVector.h"
+#include "CharacterSets.h"
 using namespace std;
 
-namespace MainTypes
+class User;
+
+class User :
+	public Person
 {
-	class User;
+private:
+	string login; // UID
+	string encryptedPassword;
+	bool isAdmin;
+	static User* activeUser;
+	static Utils::FileBindedVector<User> binder;
+	static Utils::FileBindedVector<User> binderUnconfirmed;
+public:
+	User(string fullName, string login, string password, bool isAdmin) : Person(fullName), login(login), encryptedPassword(Utils::encrypt(password)), isAdmin(isAdmin) {};
+	~User() {};
 
-	class User
+	const auto& getLogin() { return login; };
+	auto& getEncryptedPassword() { return encryptedPassword; };
+	auto& getIsAdmin() { return isAdmin; };
+	static auto& getActiveUser() { return activeUser; };
+
+	static auto& getBinder() { return binder; };
+	static auto& getBinderUnconfirmed() { return binderUnconfirmed; };
+	static User* loadRecord(ifstream& fin);
+	void saveRecord(ofstream& fout);
+
+	static bool registerUser(string fullName, string login, string password, string repeatPassword);
+	static void loginUser(string login, string password);
+};
+
+namespace Constraints
+{
+	namespace User
 	{
-	private:
-		static User* active;
-		string login;
-		string encryptedPassword;
-		string firstName;
-		string lastName;
-		bool isAdmin;
-	public:
-		// Создание и разрушение
-		User(string login, string password, bool isAdmin, string firstName, string lastName) :
-			login(login), encryptedPassword(Utils::encrypt(password)), isAdmin(isAdmin), firstName(firstName), lastName(lastName) {};
-		~User();
-
-		// Интерфейс
-		static void setActive(User* user) { active = user; };
-		static User* getActive() { return active; };
-
-		void setIsAdmin(bool isAdmin) { this->isAdmin = isAdmin; };
-		void setFirstName(string firstName) { this->firstName = firstName; };
-		void setLastName(string firstName) { this->lastName = lastName; };
-		void setEncryptedPassword(string password) { encryptedPassword = Utils::encrypt(password); };
-
-		bool getIsAdmin() { return isAdmin; }
-		string getFirstName() { return firstName; };
-		string getLastName() { return lastName; };
-		string getEncryptedPassword(string password) { return encryptedPassword; };
-		string getLogin() { return login; };
-
-		static void login_(string login, string password);
-		static void register_(string login, string password, string repeatPassword);
-	};
-}
+		extern const int LOGIN_MIN_LENGTH;
+		extern const int LOGIN_MAX_LENGTH;
+		extern const string LOGIN_ALLOWED_CHARS;
+		extern const int PASSWORD_MIN_LENGTH;
+		extern const int PASSWORD_MAX_LENGTH;
+		extern const string PASSWORD_ALLOWED_CHARS;
+	}
+};
