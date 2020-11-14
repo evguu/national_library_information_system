@@ -26,7 +26,7 @@ int main()
 	User::getBinderUnconfirmed().loadRecords();
 	IDBI(Publisher);
 	IDBI(Document);
-	// IDBI(Author);
+	IDBI(Author);
 	// IDBI(Reader);
 	// DocunentAuthorBind::getBinder().loadRecords();
 	// DocunentUseRecord::getBinder().loadRecords();
