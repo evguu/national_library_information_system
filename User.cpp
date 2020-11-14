@@ -21,7 +21,7 @@ namespace Constraints
 	}
 };
 
-User * User::loadRecord(ifstream & fin)
+User* User::loadRecord(ifstream & fin)
 {
 	string fullName;
 	string login;

@@ -22,6 +22,11 @@ namespace Utils
 		void loadRecords() 
 		{
 			ifstream fin;
+			// Защита от утечки памяти
+			for (auto it : records)
+			{
+				delete it;
+			}
 			records.clear();
 			fin.open(filename, ios::in);
 			while (!fin.eof() && !fin.fail())
