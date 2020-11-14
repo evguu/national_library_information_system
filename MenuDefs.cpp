@@ -60,7 +60,7 @@ void initLoginMenu()
 			}
 		}
 	});
-	NME_FUNC_BUTTON("Назад", []() {
+	NME_FUNC_BUTTON("Отмена", []() {
 		loginMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -95,7 +95,7 @@ void initRegisterMenu()
 			Menu::multiPopMenuStack(1);
 		}
 	});
-	NME_FUNC_BUTTON("Назад", []() {
+	NME_FUNC_BUTTON("Отмена", []() {
 		registerMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
@@ -291,21 +291,53 @@ void initUserListMenu()
 void initLogMenu()
 {
 	MI_START(logMenu);
-	//TODO
+	NME_TITLE("Просмотр логов");
+	NME_SUBTITLE("Список");
+	//TODO Здесь будет выводиться список сохраненных ротаций логов
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Назад", []() {
+		logMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
 	MI_END;
 }
 
 void initDocumentGivingMenu()
 {
 	MI_START(documentGivingMenu);
+	NME_TITLE("Выдача документов");
+	NME_SUBTITLE("Выбор");
 	//TODO
+	// Здесь будет choice из возможных айди читателей. По легенде библиотекарь знает айди читателя из его читательского билета.
+	NME_CHOICE("ID читателя", {});
+	// Здесь будет choice из возможных айди документов, ибо другие реализации слишком сложны. Библиотекарь предварительно ищет документы для читателя через другое меню.
+	NME_CHOICE("ID документа", {});
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Подтвердить выдачу", [](){});
+	NME_FUNC_BUTTON("Отмена", []() {
+		documentGivingMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
 	MI_END;
 }
 
 void initReaderDebtListMenu()
 {
 	MI_START(readerDebtListMenu);
-	//TODO
+	NME_TITLE("Список задолженностей");
+	NME_SUBTITLE("Выбор читателя");
+	// TODO: Тут будет выбор айди читателя
+	NME_CHOICE("ID читателя", {});
+	NME_FUNC_BUTTON("Выбрать читателя без сохранения данных", []() {});
+	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {});
+	NME_SUBTITLE("Задолженнности читателя");
+	// TODO: Список задолженностей выбранного читателя
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить и выйти", []() {});
+	NME_FUNC_BUTTON("Отмена", []() {
+		readerDebtListMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
 	MI_END;
 }
 

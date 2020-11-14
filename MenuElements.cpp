@@ -81,7 +81,15 @@ string MenuElementChoice::str() const
 {
 	stringstream ss;
 	int len = options.size();
-	if (activeOption == 0)
+	if (len == 0)
+	{
+		ss << "  " << text << ": -- ÑÏÈÑÎÊ ÂÛÁÎÐÀ ÏÓÑÒ! --" << endl;
+	}
+	else if (len == 1)
+	{
+		ss << "  " << text << ": --" << options[activeOption] << "--" << endl;
+	}
+	else if (activeOption == 0)
 	{
 		ss << "  " << text << ": --" << options[activeOption] << "->" << endl;
 	}
