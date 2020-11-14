@@ -3,9 +3,13 @@
 #include "MenuDefs.h"
 #include "Console.h"
 #include <thread>
-#include <mutex>
 #include "User.h"
 #include "Publisher.h"
+#include "Document.h"
+#include "Author.h"
+#include "Reader.h"
+#include "DocumentAuthorBind.h"
+#include "DocumentUseRecord.h"
 using namespace std;
 
 int main()
@@ -21,6 +25,11 @@ int main()
 	User::getBinder().loadRecords();
 	User::getBinderUnconfirmed().loadRecords();
 	IDBI(Publisher);
+	IDBI(Document);
+	// IDBI(Author);
+	// IDBI(Reader);
+	// DocunentAuthorBind::getBinder().loadRecords();
+	// DocunentUseRecord::getBinder().loadRecords();
 
 	// Запускаем циклы работы с меню в отдельных потоках
 	thread t1(menuControlLoop);

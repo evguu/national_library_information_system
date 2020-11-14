@@ -137,5 +137,8 @@
     <ClCompile Include="CharacterSets.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="FileBindedVector.cpp">
+      <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,15 +2,18 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <iostream>
 
 // Используется для корректной загрузки объектов класса, использующего FileBindedVector.
-// Стоит учитывать, что данный макрос не сработает, если целевой FileBindedVector недоступен по функции getBinder().
+// Стоит учитывать, что макрос не сработает, если целевой FileBindedVector недоступен по функции getBinder().
 #define IDBI(x) x::getBinder().loadRecords(); if (x::getBinder().getRecords().size()) { x::getLastId() = x::getBinder().getRecords().rend().operator*()->getId(); } else { x::getLastId() = 0; }
 
 using namespace std;
 
 namespace Utils
 {
+	extern const void* FBV_CORRUPTED_DATA;
+
 	template <class T>
 	class FileBindedVector
 	{
@@ -31,14 +34,20 @@ namespace Utils
 			ifstream fin;
 			for (auto it : records)
 			{
-				delete it;
+				if (it) delete it;
 			}
 			records.clear();
 			fin.open(filename, ios::in);
 			while (!fin.eof() && !fin.fail())
 			{
 				T* record = T::loadRecord(fin);
-				if (record)
+				if((void *)record == FBV_CORRUPTED_DATA)
+				{
+					cout << "Обнаружено повреждение данных. Пожалуйста, сообщите администратору. В повреждении подозревается файл: " << filename << ", а также его зависимые файлы." << endl;
+					system("pause");
+					break;
+				}
+				else if (record)
 				{
 					records.push_back(record);
 				}
