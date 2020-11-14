@@ -2,6 +2,9 @@
 #include <vector>
 #include <string>
 #include <fstream>
+
+#define IDBI(x) x::getBinder().loadRecords(); if (x::getBinder().getRecords().size()) { x::getLastId() = x::getBinder().getRecords().rend().operator*()->getId(); } else { x::getLastId() = 0; }
+
 using namespace std;
 
 namespace Utils

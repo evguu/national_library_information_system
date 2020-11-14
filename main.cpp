@@ -7,7 +7,6 @@
 #include "User.h"
 #include "Publisher.h"
 using namespace std;
-//mutex g_mutex;
 
 int main()
 {
@@ -21,15 +20,7 @@ int main()
 	// Загружаем данные
 	User::getBinder().loadRecords();
 	User::getBinderUnconfirmed().loadRecords();
-	Publisher::getBinder().loadRecords();
-	if (Publisher::getBinder().getRecords().size())
-	{
-		Publisher::getLastId() = Publisher::getBinder().getRecords().rend().operator*()->getId();
-	}
-	else
-	{
-		Publisher::getLastId() = 0;
-	}
+	IDBI(Publisher);
 
 	// Запускаем циклы работы с меню в отдельных потоках
 	thread t1(menuControlLoop);
