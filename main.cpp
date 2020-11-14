@@ -22,7 +22,7 @@ int main()
 	User::getBinder().loadRecords();
 	User::getBinderUnconfirmed().loadRecords();
 	Publisher::getBinder().loadRecords();
-	Publisher::getLastId() = Publisher::getBinder().getRecords().end().operator*()->getId();
+	Publisher::getLastId() = Publisher::getBinder().getRecords().rend().operator*()->getId();
 
 	// Запускаем циклы работы с меню в отдельных потоках
 	thread t1(menuControlLoop);
