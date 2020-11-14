@@ -112,6 +112,7 @@ public:
 
 	string str() const;
 	string getChoice() { return options[activeOption]; };
+	auto& getOptions() { return options; };
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { activeOption = 0; };

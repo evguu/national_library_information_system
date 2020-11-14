@@ -392,22 +392,69 @@ void initDocumentGivingMenu()
 	MI_END;
 }
 
+int _chosenReaderIdForDebtListing = -1;
+
 void initReaderDebtListMenu()
 {
 	MI_START(readerDebtListMenu);
 	NME_TITLE("Список задолженностей");
 	NME_SUBTITLE("Выбор читателя");
-	// TODO: Тут будет выбор айди читателя
-	NME_CHOICE("ID читателя", {});
-	NME_FUNC_BUTTON("Выбрать читателя без сохранения данных", []() {});
-	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {});
-	NME_SUBTITLE("Задолженнности читателя");
-	// TODO: Список задолженностей выбранного читателя
+	vector<string> readers;
+	for (auto it : Reader::getBinder().getRecords())
+	{
+		readers.push_back(to_string(it->getId()));
+	}
+	NME_CHOICE("ID читателя", readers);
+	NME_FUNC_BUTTON("Выбрать читателя без сохранения данных", []() {
+		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
+		{
+			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+		}
+		else
+		{
+			_chosenReaderIdForDebtListing = -1;
+		}
+		readerDebtListMenu->reset();
+		Menu::multiPopMenuStack(1);
+		initReaderDebtListMenu();
+		readerDebtListMenu->addToStack();
+	});
+	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {
+		// TODO data save
+		DocumentUseRecord::getBinder().saveRecords();
+		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
+		{
+			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+		}
+		else
+		{
+			_chosenReaderIdForDebtListing = -1;
+		}
+		readerDebtListMenu->reset();
+		Menu::multiPopMenuStack(1);
+		initReaderDebtListMenu();
+		readerDebtListMenu->addToStack();
+	});
+	NME_SUBTITLE("Задолженности читателя");
+	for (auto it : DocumentUseRecord::getBinder().getRecords())
+	{
+		if (_chosenReaderIdForDebtListing == it->getReader()->getId())
+		{
+			NME_CHOICE(it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
+		}
+	}
 	NME_SUBTITLE("Навигация");
-	NME_FUNC_BUTTON("Сохранить и выйти", []() {});
+	NME_FUNC_BUTTON("Сохранить и выйти", []() {
+		// TODO data save
+		DocumentUseRecord::getBinder().saveRecords();
+		readerDebtListMenu->reset();
+		Menu::multiPopMenuStack(1);
+		_chosenReaderIdForDebtListing = -1;
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
+		_chosenReaderIdForDebtListing = -1;
 	});
 	MI_END;
 }
