@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "DocumentAuthorBind.h"
 
+Utils::FileBindedVector<DocumentAuthorBind> DocumentAuthorBind::binder("document_author_binds.txt");
+
 DocumentAuthorBind * DocumentAuthorBind::loadRecord(ifstream & fin)
 {
 	string document;

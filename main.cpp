@@ -28,7 +28,7 @@ int main()
 	IDBI(Document);
 	IDBI(Author);
 	Reader::getBinder().loadRecords();
-	// DocunentAuthorBind::getBinder().loadRecords();
+	DocumentAuthorBind::getBinder().loadRecords();
 	// DocunentUseRecord::getBinder().loadRecords();
 
 	// Запускаем циклы работы с меню в отдельных потоках
