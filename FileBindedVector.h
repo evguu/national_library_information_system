@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 
+// Используется для корректной загрузки объектов класса, использующего FileBindedVector.
+// Стоит учитывать, что данный макрос не сработает, если целевой FileBindedVector недоступен по функции getBinder().
 #define IDBI(x) x::getBinder().loadRecords(); if (x::getBinder().getRecords().size()) { x::getLastId() = x::getBinder().getRecords().rend().operator*()->getId(); } else { x::getLastId() = 0; }
 
 using namespace std;
@@ -15,6 +17,8 @@ namespace Utils
 		// Класс T должен иметь два метода:
 		// static T* loadRecord(ifstream& fin)
 		// void saveRecord(ofstream& fout)
+
+		// Класс FileBindedVector используется для упрощения связи классов, предусматривающих хранение объектов в централизированном векторе, с файлами.
 	private:
 		string filename;
 		vector<T*> records;
@@ -25,7 +29,6 @@ namespace Utils
 		void loadRecords() 
 		{
 			ifstream fin;
-			// Защита от утечки памяти
 			for (auto it : records)
 			{
 				delete it;
