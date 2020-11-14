@@ -29,7 +29,7 @@ int main()
 	IDBI(Author);
 	Reader::getBinder().loadRecords();
 	DocumentAuthorBind::getBinder().loadRecords();
-	// DocunentUseRecord::getBinder().loadRecords();
+	DocumentUseRecord::getBinder().loadRecords();
 
 	// Запускаем циклы работы с меню в отдельных потоках
 	thread t1(menuControlLoop);
