@@ -20,6 +20,16 @@ Menu* readerListMenu = nullptr;
 Menu* documentListMenu = nullptr;
 Menu* publisherListMenu = nullptr;
 Menu* userListMenu = nullptr;
+Menu* authorAddMenu = nullptr;
+Menu* readerAddMenu = nullptr;
+Menu* documentAddMenu = nullptr;
+Menu* publisherAddMenu = nullptr;
+Menu* userAddMenu = nullptr;
+Menu* authorEditMenu = nullptr;
+Menu* readerEditMenu = nullptr;
+Menu* documentEditMenu = nullptr;
+Menu* publisherEditMenu = nullptr;
+Menu* userEditMenu = nullptr;
 Menu* logMenu = nullptr;
 Menu* documentGivingMenu = nullptr;
 Menu* readerDebtListMenu = nullptr;
@@ -286,6 +296,46 @@ void initUserListMenu()
 		Menu::multiPopMenuStack(1);
 	});
 	MI_END;
+}
+
+void initAuthorAddMenu()
+{
+}
+
+void initDocumentAddMenu()
+{
+}
+
+void initReaderAddMenu()
+{
+}
+
+void initPublisherAddMenu()
+{
+}
+
+void initUserAddMenu()
+{
+}
+
+void initAuthorEditMenu()
+{
+}
+
+void initDocumentEditMenu()
+{
+}
+
+void initReaderEditMenu()
+{
+}
+
+void initPublisherEditMenu()
+{
+}
+
+void initUserEditMenu()
+{
 }
 
 void initLogMenu()
