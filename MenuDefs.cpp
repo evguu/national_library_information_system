@@ -3,6 +3,12 @@
 #include "Menu.h"
 #include "MenuElements.h"
 #include "User.h"
+#include "Publisher.h"
+#include "Document.h"
+#include "Author.h"
+#include "Reader.h"
+#include "DocumentAuthorBind.h"
+#include "DocumentUseRecord.h"
 #include "Input.h"
 #include <Windows.h>
 #include <mutex>
@@ -223,7 +229,10 @@ void initAuthorListMenu()
 	MI_START(authorListMenu);
 	NME_TITLE("Список авторов");
 	NME_SUBTITLE("Список");
-	// TODO
+	for (auto it : Author::getBinder().getRecords())
+	{
+		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getFullName(), []() { initAuthorEditMenu(); authorEditMenu->addToStack(); });
+	}
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
@@ -239,7 +248,10 @@ void initDocumentListMenu()
 	MI_START(documentListMenu);
 	NME_TITLE("Список документов");
 	NME_SUBTITLE("Список");
-	// TODO
+	for (auto it : Document::getBinder().getRecords())
+	{
+		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getTitle() + " [" + it->getPublisher()->getName() + "]", []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
+	}
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
@@ -255,7 +267,10 @@ void initReaderListMenu()
 	MI_START(readerListMenu);
 	NME_TITLE("Список читателей");
 	NME_SUBTITLE("Список");
-	// TODO
+	for (auto it : Reader::getBinder().getRecords())
+	{
+		NME_FUNC_BUTTON(it->getId() + ". " + it->getFullName() + " ["+ it->getPassportId() +"]", []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
+	}
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
@@ -271,7 +286,10 @@ void initPublisherListMenu()
 	MI_START(publisherListMenu);
 	NME_TITLE("Список издателей");
 	NME_SUBTITLE("Список");
-	// TODO
+	for (auto it : Publisher::getBinder().getRecords())
+	{
+		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getName(), []() { initPublisherEditMenu(); publisherEditMenu->addToStack(); });
+	}
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
@@ -287,7 +305,10 @@ void initUserListMenu()
 	MI_START(userListMenu);
 	NME_TITLE("Список пользователей");
 	NME_SUBTITLE("Список");
-	// TODO
+	for (auto it : User::getBinder().getRecords())
+	{
+		NME_FUNC_BUTTON(it->getLogin() + ". " + it->getFullName(), []() { initUserEditMenu(); userEditMenu->addToStack(); });
+	}
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");

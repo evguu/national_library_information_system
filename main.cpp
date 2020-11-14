@@ -27,7 +27,7 @@ int main()
 	IDBI(Publisher);
 	IDBI(Document);
 	IDBI(Author);
-	Reader::getBinder().loadRecords();
+	IDBI(Reader);
 	DocumentAuthorBind::getBinder().loadRecords();
 	DocumentUseRecord::getBinder().loadRecords();
 
