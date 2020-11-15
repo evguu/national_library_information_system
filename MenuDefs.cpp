@@ -370,7 +370,31 @@ void initAuthorAddMenu()
 	MI_START(authorAddMenu);
 	NME_TITLE("Добавить автора");
 	NME_SUBTITLE("Данные");
+	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить", []() {
+		auto menuElements = Menu::getActive()->getElements();
+		string fullName;
+		auto it = menuElements.begin();
+		it += 2;
+		fullName = ((MenuElementEditField *)(*it))->getInput();
+		if (fullName.length() < Constraints::Person::FULL_NAME_MIN_LENGTH)
+		{
+			cout << "Длина имени не может быть меньше " << Constraints::Person::FULL_NAME_MIN_LENGTH << " символов." << endl;
+			system("pause");
+		}
+		else
+		{
+			Author::getBinder().getRecords().push_back(new Author(fullName));
+			Author::getBinder().saveRecords();
+			cout << "Добавление успешно." << endl;
+			system("pause");
+			authorAddMenu->reset();
+			Menu::multiPopMenuStack(2);
+			initAuthorListMenu();
+			authorListMenu->addToStack();
+		}
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		authorAddMenu->reset();
 		Menu::multiPopMenuStack(1);
