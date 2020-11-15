@@ -6,7 +6,7 @@
 
 // Используется для корректной загрузки объектов класса, использующего FileBindedVector.
 // Стоит учитывать, что макрос не сработает, если целевой FileBindedVector недоступен по функции getBinder().
-#define IDBI(x) x::getBinder().loadRecords(); if (x::getBinder().getRecords().size()) { x::getLastId() = x::getBinder().getRecords().rend().operator*()->getId(); } else { x::getLastId() = 0; }
+#define IDBI(x) x::getBinder().loadRecords(); if (x::getBinder().getRecords().size()) { x::getLastId() = x::getBinder().getRecords().back()->getId(); } else { x::getLastId() = 0; }
 
 using namespace std;
 
