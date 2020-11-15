@@ -224,6 +224,9 @@ void initRegisterConfirmationMenu()
 	MI_END;
 }
 
+string _authorListFilterFullName = "";
+string _authorListSortBy = "ID";
+
 void initAuthorListMenu()
 {
 	MI_START(authorListMenu);
@@ -247,6 +250,10 @@ void initAuthorListMenu()
 	});
 	MI_END;
 }
+
+string _documentListFilterTitle = "";
+string _documentListFilterPublisherName = "";
+string _documentListSortBy = "ID";
 
 void initDocumentListMenu()
 {
@@ -273,6 +280,10 @@ void initDocumentListMenu()
 	MI_END;
 }
 
+string _readerListFilterName = "";
+string _readerListFilterPassportId = "";
+string _readerListSortBy = "ID";
+
 void initReaderListMenu()
 {
 	MI_START(readerListMenu);
@@ -298,6 +309,9 @@ void initReaderListMenu()
 	MI_END;
 }
 
+string _publisherListFilterName = "";
+string _publisherListSortBy = "ID";
+
 void initPublisherListMenu()
 {
 	MI_START(publisherListMenu);
@@ -321,6 +335,10 @@ void initPublisherListMenu()
 	});
 	MI_END;
 }
+
+string _userListFilterLogin = "";
+string _userListFilterFullName = "";
+string _userListSortBy = "ID";
 
 void initUserListMenu()
 {
