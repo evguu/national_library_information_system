@@ -33,7 +33,7 @@ public:
 	static User* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
 
-	static bool registerUser(string fullName, string login, string password, string repeatPassword);
+	static bool registerUser(string fullName, string login, string password, string repeatPassword, bool useForce = false);
 	static void loginUser(string login, string password);
 };
 

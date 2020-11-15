@@ -40,7 +40,7 @@ void User::saveRecord(ofstream & fout)
 	fout << getFullName() << endl << login << endl << encryptedPassword << endl << isAdmin << endl;
 }
 
-bool User::registerUser(string fullName, string login, string password, string repeatPassword)
+bool User::registerUser(string fullName, string login, string password, string repeatPassword, bool useForce)
 {
 	bool res;
 	if (password != repeatPassword)
@@ -94,10 +94,20 @@ bool User::registerUser(string fullName, string login, string password, string r
 		}
 		if (!isLoginAlreadyTaken)
 		{
-			cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
-			binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
-			binderUnconfirmed.saveRecords();
-			res = true;
+			if(useForce)
+			{
+				cout << "Аккаунт успешно зарегистрирован." << endl;
+				binder.getRecords().push_back(new User(fullName, login, password, false));
+				binder.saveRecords();
+				res = true;
+			}
+			else
+			{
+				cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
+				binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
+				binderUnconfirmed.saveRecords();
+				res = true;
+			}
 		}
 	}
 	system("pause");

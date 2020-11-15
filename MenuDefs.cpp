@@ -236,6 +236,7 @@ void initAuthorListMenu()
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		authorListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -255,6 +256,7 @@ void initDocumentListMenu()
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить документ", []() { documentAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		documentListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -274,6 +276,7 @@ void initReaderListMenu()
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить читателя", []() { readerAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		readerListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -293,6 +296,7 @@ void initPublisherListMenu()
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить издателя", []() { publisherAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		publisherListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -312,6 +316,7 @@ void initUserListMenu()
 	NME_SUBTITLE("Параметры представления");
 	// TODO
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить пользователя", []() { userAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		userListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -321,42 +326,151 @@ void initUserListMenu()
 
 void initAuthorAddMenu()
 {
+	MI_START(authorAddMenu);
+	NME_TITLE("Добавить автора");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		authorAddMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initDocumentAddMenu()
 {
+	MI_START(documentAddMenu);
+	NME_TITLE("Добавить документ");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		documentAddMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initReaderAddMenu()
 {
+	MI_START(readerAddMenu);
+	NME_TITLE("Добавить читателя");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		readerAddMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initPublisherAddMenu()
 {
+	MI_START(publisherAddMenu);
+	NME_TITLE("Добавить издателя");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		publisherAddMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initUserAddMenu()
 {
+	MI_START(userAddMenu);
+	NME_TITLE("Добавить пользователя");
+	NME_SUBTITLE("Данные");
+	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
+	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
+	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	NME_EDIT_FIELD("Повторите пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Зарегистрировать", []() {
+		auto menuElements = Menu::getActive()->getElements();
+		string fullName, login, password, repeatPassword;
+		auto it = menuElements.begin();
+		it += 2;
+		fullName = ((MenuElementEditField *)(*it))->getInput();
+		it += 1;
+		login = ((MenuElementEditField *)(*it))->getInput();
+		it += 1;
+		password = ((MenuElementEditField *)(*it))->getInput();
+		it += 1;
+		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
+		if (User::registerUser(fullName, login, password, repeatPassword, true))
+		{
+			userAddMenu->reset();
+			Menu::multiPopMenuStack(2);
+			initUserListMenu();
+			userListMenu->addToStack();
+		}
+	});
+	NME_FUNC_BUTTON("Отмена", []() {
+		userAddMenu->reset();
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initAuthorEditMenu()
 {
+	MI_START(authorEditMenu);
+	NME_TITLE("Редактировать автора");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initDocumentEditMenu()
 {
+	MI_START(documentEditMenu);
+	NME_TITLE("Редактировать документ");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initReaderEditMenu()
 {
+	MI_START(readerEditMenu);
+	NME_TITLE("Редактировать читателя");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initPublisherEditMenu()
 {
+	MI_START(publisherEditMenu);
+	NME_TITLE("Редактировать издателя");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initUserEditMenu()
 {
+	MI_START(userEditMenu);
+	NME_TITLE("Редактировать пользователя");
+	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Отмена", []() {
+		Menu::multiPopMenuStack(1);
+	});
+	MI_END;
 }
 
 void initLogMenu()
@@ -367,7 +481,6 @@ void initLogMenu()
 	//TODO Здесь будет выводиться список сохраненных ротаций логов
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
-		logMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
 	MI_END;
@@ -537,6 +650,11 @@ void menuInitAll()
 	initUserMenu();
 	initStartMenu();
 	initDataTypeMenu();
+	initAuthorAddMenu();
+	initDocumentAddMenu();
+	initReaderAddMenu();
+	initPublisherAddMenu();
+	initUserAddMenu();
 	startMenu->addToStack();
 }
 
