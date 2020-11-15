@@ -234,7 +234,11 @@ void initAuthorListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getFullName(), []() { initAuthorEditMenu(); authorEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	// TODO
+	NME_EDIT_FIELD("Содержит в ФИО");
+	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
+	NME_FUNC_BUTTON("Применить параметры", []() {
+		// TODO
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
@@ -251,10 +255,15 @@ void initDocumentListMenu()
 	NME_SUBTITLE("Список");
 	for (auto it : Document::getBinder().getRecords())
 	{
-		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getTitle() + " [" + it->getPublisher()->getName() + "]", []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
+		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getTitle() + " [" + to_string(it->getPublisher()->getId()) + ". " + it->getPublisher()->getName() + "]", []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	// TODO
+	NME_EDIT_FIELD("Содержит в заголовке");
+	NME_EDIT_FIELD("Содержит в названии издателя");
+	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "ID издателя", "Издателю" });
+	NME_FUNC_BUTTON("Применить параметры", []() {
+		// TODO
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить документ", []() { documentAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
@@ -274,7 +283,12 @@ void initReaderListMenu()
 		NME_FUNC_BUTTON(it->getId() + ". " + it->getFullName() + " ["+ it->getPassportId() +"]", []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	// TODO
+	NME_EDIT_FIELD("Содержит в имени");
+	NME_EDIT_FIELD("Содержит в ИН паспорта");
+	NME_CHOICE("Сортировать по", { "ID", "Имени", "ИН паспорта" });
+	NME_FUNC_BUTTON("Применить параметры", []() {
+		// TODO
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить читателя", []() { readerAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
@@ -294,7 +308,11 @@ void initPublisherListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getName(), []() { initPublisherEditMenu(); publisherEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	// TODO
+	NME_EDIT_FIELD("Содержит в названии");
+	NME_CHOICE("Сортировать по", { "ID", "Названию" });
+	NME_FUNC_BUTTON("Применить параметры", []() {
+		// TODO
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить издателя", []() { publisherAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
@@ -314,7 +332,12 @@ void initUserListMenu()
 		NME_FUNC_BUTTON(it->getLogin() + ". " + it->getFullName(), []() { initUserEditMenu(); userEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	// TODO
+	NME_EDIT_FIELD("Содержит в логине");
+	NME_EDIT_FIELD("Содержит в ФИО");
+	NME_CHOICE("Сортировать по", { "ID", "Логину", "ФИО" });
+	NME_FUNC_BUTTON("Применить параметры", []() {
+		// TODO
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить пользователя", []() { userAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
