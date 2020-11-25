@@ -103,11 +103,16 @@ public:
 
 class MenuElementChoice : public MenuElement
 {
+public:
+	static const string noChoicesFoundMessage;
 private:
 	vector<string> options;
 	int activeOption = 0;
 public:
+	// Создает элемент выбора с заданными вектором строк элементами.
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
+
+	// Создает элемент выбора из чисел, заданных range параметрами.
 	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep) : MenuElement(text)
 	{
 		for (int i = rangeStart; i < rangeEnd; i += rangeStep)
@@ -115,6 +120,9 @@ public:
 			options.push_back(to_string(i));
 		}
 	};
+
+	// Создает элемент выбора путем конвертации вектора элементов в вектор строк.
+	// Поддерживает фильтрацию.
 	template <class T>
 	MenuElementChoice(string text, vector<T> srcVector, string(*stringify)(T) = [](T src) { to_string(src); }, bool(*filter)(T) = [](T) { return true; }) : MenuElement(text)
 	{
@@ -129,7 +137,20 @@ public:
 	~MenuElementChoice() {};
 
 	string str() const;
-	string getChoice() { return options[activeOption]; };
+
+	// Возвращает строку, выбранную в текущий момент.
+	// Если ничего не выбрано (вектор выбора пуст), возвращает MenuElementChoice::noChoicesFoundMessage.
+	string getChoice() 
+	{ 
+		if (options.size())
+		{
+			return options[activeOption];
+		}
+		else
+		{
+			return noChoicesFoundMessage;
+		}
+	};
 	auto& getOptions() { return options; };
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };

@@ -77,6 +77,8 @@ bool MenuElementEditField::recvCommand(int keyEvent)
 	return false;
 }
 
+const string MenuElementChoice::noChoicesFoundMessage = "asdqe021-24789102-12kutaas-flkaput-rand1024-EMPTY_VECTOR";
+
 string MenuElementChoice::str() const
 {
 	stringstream ss;
