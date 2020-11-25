@@ -108,6 +108,24 @@ private:
 	int activeOption = 0;
 public:
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
+	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep) : MenuElement(text)
+	{
+		for (int i = rangeStart; i < rangeEnd; i += rangeStep)
+		{
+			options.push_back(to_string(i));
+		}
+	};
+	template <class T>
+	MenuElementChoice(string text, vector<T> srcVector, string(*stringify)(T) = [](T src) { to_string(src); }, bool(*filter)(T) = [](T) { return true; }) : MenuElement(text)
+	{
+		for (auto it : srcVector)
+		{
+			if (filter(it))
+			{
+				options.push_back(stringify(it));
+			}
+		}
+	};
 	~MenuElementChoice() {};
 
 	string str() const;
