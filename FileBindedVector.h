@@ -27,7 +27,14 @@ namespace Utils
 		vector<T*> records;
 	public:
 		FileBindedVector(string filename) : filename(filename) {};
-		~FileBindedVector() {};
+		~FileBindedVector() 
+		{
+			for (auto it : records)
+			{
+				if (it) delete it;
+			}
+			records.clear();
+		};
 		auto& getRecords() { return records; };
 		void loadRecords() 
 		{
