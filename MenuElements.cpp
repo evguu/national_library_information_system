@@ -109,9 +109,10 @@ string MenuElementChoice::str() const
 
 clock_t _lastClock = 0;
 bool _wasPreviousDirectionRight = false;
-int _speedCounter = 0;
-const int _maxTrueSpeed = 50;
+int _timeCounter = 0;
 const int _maximalComboInterval = 200;
+const int _maxTrueSpeed = 64;
+const int _doublingTime = 3000;
 
 bool MenuElementChoice::recvCommand(int keyEvent)
 {
@@ -121,17 +122,17 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 		{
 			if (activeOption != 0)
 			{
-				if (((long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000) < _maximalComboInterval) && !_wasPreviousDirectionRight)
+				int timeElapsed = (long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000);
+				if ((timeElapsed < _maximalComboInterval) && !_wasPreviousDirectionRight)
 				{
-					_speedCounter++;
+					_timeCounter += timeElapsed;
 				}
 				else
 				{
-					_speedCounter = 0;
+					_timeCounter = 0;
 					_wasPreviousDirectionRight = false;
 				}
-				//int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
-				int trueSpeed = round(_maxTrueSpeed / (_maxTrueSpeed - ((_speedCounter < _maxTrueSpeed - 1 )?_speedCounter:( _maxTrueSpeed - 1))));
+				int trueSpeed = 1 << (2 * _timeCounter / _doublingTime);
 				if (trueSpeed > _maxTrueSpeed)
 				{
 					trueSpeed = _maxTrueSpeed;
@@ -149,17 +150,17 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 		{
 			if (activeOption + 1 < options.size())
 			{
-				if (((long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000) < _maximalComboInterval) && _wasPreviousDirectionRight)
+				int timeElapsed = (long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000);
+				if ((timeElapsed < _maximalComboInterval) && _wasPreviousDirectionRight)
 				{
-					_speedCounter++;
+					_timeCounter += timeElapsed;
 				}
 				else
 				{
-					_speedCounter = 0;
+					_timeCounter = 0;
 					_wasPreviousDirectionRight = true;
 				}
-				//int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
-				int trueSpeed = round(_maxTrueSpeed / (_maxTrueSpeed - ((_speedCounter < _maxTrueSpeed - 1) ? _speedCounter : (_maxTrueSpeed - 1))));
+				int trueSpeed = 1 << (2 * _timeCounter / _doublingTime);
 				if (trueSpeed > _maxTrueSpeed)
 				{
 					trueSpeed = _maxTrueSpeed;

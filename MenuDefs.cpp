@@ -587,25 +587,38 @@ void initDocumentGivingMenu()
 	NME_CHOICE("Выдать на какое время (в часах)", 1, 721);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Подтвердить выдачу", [](){
-		if (((MenuElementChoice *)(documentGivingMenu->getElements()[2]))->getOptions().size()&& ((MenuElementChoice *)(documentGivingMenu->getElements()[3]))->getOptions().size())
+		string choiceReader = ((MenuElementChoice *)(documentGivingMenu->getElements()[2]))->getChoice();
+		if (choiceReader == MenuElementChoice::noChoicesFoundMessage)
 		{
-			for (auto reader_it : Reader::getBinder().getRecords())
+			documentGivingMenu->reset();
+			Menu::multiPopMenuStack(1);
+			return;
+		}
+		string choiceDocument = ((MenuElementChoice *)(documentGivingMenu->getElements()[3]))->getChoice();
+		if (choiceDocument == MenuElementChoice::noChoicesFoundMessage)
+		{
+			documentGivingMenu->reset();
+			Menu::multiPopMenuStack(1);
+			return;
+		}
+		for (auto reader_it : Reader::getBinder().getRecords())
+		{
+			if (reader_it->getId() == stoi(choiceReader))
 			{
-				if (reader_it->getId() == stoi(((MenuElementChoice *)(documentGivingMenu->getElements()[2]))->getChoice()))
+				for (auto document_it : Document::getBinder().getRecords())
 				{
-					for (auto document_it : Document::getBinder().getRecords())
+					if (document_it->getId() == stoi(choiceDocument))
 					{
-						if (document_it->getId() == stoi(((MenuElementChoice *)(documentGivingMenu->getElements()[3]))->getChoice()))
-						{
-							DocumentUseRecord::getBinder().getRecords().push_back(new DocumentUseRecord(
-								document_it,
-								reader_it,
-								time(0),
-								stoi(((MenuElementChoice *)(documentGivingMenu->getElements()[4]))->getChoice())
-							));
-						}
+						DocumentUseRecord::getBinder().getRecords().push_back(new DocumentUseRecord(
+							document_it,
+							reader_it,
+							time(0),
+							stoi(((MenuElementChoice *)(documentGivingMenu->getElements()[4]))->getChoice())
+						));
+						break;
 					}
 				}
+				break;
 			}
 		}
 		DocumentUseRecord::getBinder().saveRecords();
