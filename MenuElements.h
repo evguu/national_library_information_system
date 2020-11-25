@@ -113,7 +113,7 @@ public:
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
 
 	// Создает элемент выбора из чисел, заданных range параметрами.
-	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep) : MenuElement(text)
+	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep = 1) : MenuElement(text)
 	{
 		for (int i = rangeStart; i < rangeEnd; i += rangeStep)
 		{
@@ -121,10 +121,11 @@ public:
 		}
 	};
 
+	/*
 	// Создает элемент выбора путем конвертации вектора элементов в вектор строк.
 	// Поддерживает фильтрацию.
-	template <class T>
-	MenuElementChoice(string text, vector<T> srcVector, string(*stringify)(T) = [](T src) { to_string(src); }, bool(*filter)(T) = [](T) { return true; }) : MenuElement(text)
+	template <class T, typename StringifierFunction, typename FiltererFunction>
+	MenuElementChoice(string text, vector<T*>& srcVector, StringifierFunction stringify = [](T* src) { return "STRINGIFIER UNDEFINED"; }, FiltererFunction filter = [](T* src) { return true; }) : MenuElement(text)
 	{
 		for (auto it : srcVector)
 		{
@@ -133,7 +134,8 @@ public:
 				options.push_back(stringify(it));
 			}
 		}
-	};
+	};*/
+
 	~MenuElementChoice() {};
 
 	string str() const;
