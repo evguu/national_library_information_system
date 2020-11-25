@@ -271,7 +271,7 @@ void initDocumentListMenu()
 		// TODO
 	});
 	NME_SUBTITLE("Навигация");
-	NME_FUNC_BUTTON("Добавить документ", []() { documentAddMenu->addToStack(); });
+	NME_FUNC_BUTTON("Добавить документ", []() { initDocumentAddMenu(); documentAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
 		documentListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -448,7 +448,9 @@ void initDocumentAddMenu()
 			cout << "Добавление успешно." << endl;
 			system("pause");
 			documentAddMenu->reset();
-			Menu::multiPopMenuStack(1);
+			Menu::multiPopMenuStack(2);
+			initDocumentListMenu();
+			documentListMenu->addToStack();
 		}
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
@@ -463,6 +465,7 @@ void initReaderAddMenu()
 	MI_START(readerAddMenu);
 	NME_TITLE("Добавить читателя");
 	NME_SUBTITLE("Данные");
+	// TODO
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Отмена", []() {
 		readerAddMenu->reset();
@@ -476,7 +479,26 @@ void initPublisherAddMenu()
 	MI_START(publisherAddMenu);
 	NME_TITLE("Добавить издателя");
 	NME_SUBTITLE("Данные");
+	NME_EDIT_FIELD("Название", false, Constraints::Publisher::NAME_ALLOWED_CHARS, Constraints::Publisher::NAME_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить", []() {
+		auto menuElements = Menu::getActive()->getElements();
+		string name = ((MenuElementEditField *)menuElements[2])->getInput();
+		if (name.length() < Constraints::Publisher::NAME_MIN_LENGTH)
+		{
+			cout << "Длина названия не может быть меньше " << Constraints::Publisher::NAME_MIN_LENGTH << " символов." << endl;
+			system("pause");
+		}
+		else
+		{
+			Publisher::getBinder().getRecords().push_back(new Publisher(name));
+			Publisher::getBinder().saveRecords();
+			publisherAddMenu->reset();
+			Menu::multiPopMenuStack(2);
+			initPublisherListMenu();
+			publisherListMenu->addToStack();
+		}
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		publisherAddMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -735,7 +757,6 @@ void menuInitAll()
 	initStartMenu();
 	initDataTypeMenu();
 	initAuthorAddMenu();
-	initDocumentAddMenu();
 	initReaderAddMenu();
 	initPublisherAddMenu();
 	initUserAddMenu();
