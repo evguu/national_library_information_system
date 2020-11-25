@@ -159,6 +159,9 @@ void initStartMenu()
 	NME_SUBTITLE("Авторизация");
 	NME_FUNC_BUTTON("Войти", []() {loginMenu->addToStack(); });
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
+	NME_CHOICE("Debug", 1, 10000, 1);
+	NME_CHOICE("Debug", 1, 10000, 1);
+	NME_CHOICE("Debug", 1, 10000, 1);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
 	MI_END;

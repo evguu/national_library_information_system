@@ -110,7 +110,6 @@ string MenuElementChoice::str() const
 clock_t _lastClock = 0;
 bool _wasPreviousDirectionRight = false;
 int _speedCounter = 0;
-const int _speedCutFactor = 5;
 const int _maxTrueSpeed = 50;
 const int _maximalComboInterval = 200;
 
@@ -131,7 +130,8 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 					_speedCounter = 0;
 					_wasPreviousDirectionRight = false;
 				}
-				int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				//int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				int trueSpeed = round(_maxTrueSpeed / (_maxTrueSpeed - ((_speedCounter < _maxTrueSpeed - 1 )?_speedCounter:( _maxTrueSpeed - 1))));
 				if (trueSpeed > _maxTrueSpeed)
 				{
 					trueSpeed = _maxTrueSpeed;
@@ -158,7 +158,8 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 					_speedCounter = 0;
 					_wasPreviousDirectionRight = true;
 				}
-				int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				//int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				int trueSpeed = round(_maxTrueSpeed / (_maxTrueSpeed - ((_speedCounter < _maxTrueSpeed - 1) ? _speedCounter : (_maxTrueSpeed - 1))));
 				if (trueSpeed > _maxTrueSpeed)
 				{
 					trueSpeed = _maxTrueSpeed;
