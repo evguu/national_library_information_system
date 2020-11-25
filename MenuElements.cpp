@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MenuElements.h"
 #include "Input.h"
+#include <ctime>
 #include <sstream>
 
 string MenuElementTitle::str() const
@@ -77,7 +78,7 @@ bool MenuElementEditField::recvCommand(int keyEvent)
 	return false;
 }
 
-const string MenuElementChoice::noChoicesFoundMessage = "asdqe021-24789102-12kutaas-flkaput-rand1024-EMPTY_VECTOR";
+const string MenuElementChoice::noChoicesFoundMessage = "RESERVED_TEXT::asdqe021-24789102-12kutaas-flkaput-rand1024-EMPTY_VECTOR";
 
 string MenuElementChoice::str() const
 {
@@ -106,22 +107,71 @@ string MenuElementChoice::str() const
 	return ss.str();
 }
 
+clock_t _lastClock = 0;
+bool _wasPreviousDirectionRight = false;
+int _speedCounter = 0;
+const int _speedCutFactor = 5;
+const int _maxTrueSpeed = 50;
+const int _maximalComboInterval = 200;
+
 bool MenuElementChoice::recvCommand(int keyEvent)
 {
 	switch (keyEvent)
 	{
-	case -KC_LEFT:
-		if (activeOption != 0)
+		case -KC_LEFT:
 		{
-			--activeOption;
+			if (activeOption != 0)
+			{
+				if (((long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000) < _maximalComboInterval) && !_wasPreviousDirectionRight)
+				{
+					_speedCounter++;
+				}
+				else
+				{
+					_speedCounter = 0;
+					_wasPreviousDirectionRight = false;
+				}
+				int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				if (trueSpeed > _maxTrueSpeed)
+				{
+					trueSpeed = _maxTrueSpeed;
+				}
+				if (trueSpeed > activeOption)
+				{
+					trueSpeed = activeOption;
+				}
+				activeOption -= trueSpeed;
+			}
+			_lastClock = clock();
+			return true;
 		}
-		return true;
-	case -KC_RIGHT:
-		if (activeOption + 1 < options.size())
+		case -KC_RIGHT:
 		{
-			++activeOption;
+			if (activeOption + 1 < options.size())
+			{
+				if (((long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000) < _maximalComboInterval) && _wasPreviousDirectionRight)
+				{
+					_speedCounter++;
+				}
+				else
+				{
+					_speedCounter = 0;
+					_wasPreviousDirectionRight = true;
+				}
+				int trueSpeed = 1 + (int)(_speedCounter / _speedCutFactor);
+				if (trueSpeed > _maxTrueSpeed)
+				{
+					trueSpeed = _maxTrueSpeed;
+				}
+				if (trueSpeed > options.size() - activeOption - 1)
+				{
+					trueSpeed = options.size() - activeOption - 1;
+				}
+				activeOption += trueSpeed;
+			}
+			_lastClock = clock();
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
