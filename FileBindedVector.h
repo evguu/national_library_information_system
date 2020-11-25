@@ -18,8 +18,8 @@ namespace Utils
 	class FileBindedVector
 	{
 		// Класс T должен иметь два метода:
-		// static T* loadRecord(ifstream& fin)
-		// void saveRecord(ofstream& fout)
+		// 1) static T* loadRecord(ifstream& fin)
+		// 2) void saveRecord(ofstream& fout)
 
 		// Класс FileBindedVector используется для упрощения связи классов, предусматривающих хранение объектов в централизированном векторе, с файлами.
 	private:
