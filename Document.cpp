@@ -3,6 +3,27 @@
 
 Utils::FileBindedVector<Document> Document::binder("documents.txt");
 int Document::lastId = -1;
+const vector<string> Document::types = {
+	"Книга",
+	"Автореферат диссертации", 
+	"Статья",
+	"Нотный документ",
+	"Диссертация",
+	"Другое" 
+};
+const vector<string> Document::languages = {
+	"Русский",
+	"Английский",
+	"Белорусский",
+	"Украинский",
+	"Польский",
+	"Немецкий",
+	"Французский",
+	"Чешский",
+	"Латинский",
+	"Болгарский",
+	"Другое"
+};
 
 namespace Constraints
 {

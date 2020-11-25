@@ -154,6 +154,7 @@ public:
 		}
 	};
 	auto& getOptions() { return options; };
+	auto& getActiveOption() { return activeOption; };
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { activeOption = 0; };

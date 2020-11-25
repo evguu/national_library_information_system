@@ -8,21 +8,35 @@ using namespace std;
 class Document
 {
 public:
+	// Убедительная просьба не трогать этот подкласс без попутного изменения соответствующего вектора строк!
 	enum class Type
 	{
 		BOOK,
-		MAGAZINE,
+		AUTOREFERAT_DISSERTATION,
+		ARTICLE,
+		NOTE_DOCUMENT,
+		DISSERTATION,
 		OTHER
 	};
+
+	// Убедительная просьба не трогать этот подкласс без попутного изменения соответствующего вектора строк!
 	enum class Language
 	{
 		RUSSIAN,
 		ENGLISH,
-		POLISH,
-		UKRAINIAN,
 		BELARUSIAN,
+		UKRAINIAN,
+		POLISH,
+		GERMAN,
+		FRENCH,
+		CHEZH,
+		LATIN,
+		BULGARIAN,
 		OTHER
 	};
+
+	static const vector<string> types;
+	static const vector<string> languages;
 private:
 	Type type;
 	Language language;

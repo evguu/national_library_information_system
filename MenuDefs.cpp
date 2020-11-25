@@ -406,8 +406,9 @@ void initDocumentAddMenu()
 	MI_START(documentAddMenu);
 	NME_TITLE("Добавить документ");
 	NME_SUBTITLE("Данные");
-	NME_CHOICE("Тип документа", {/*TODO*/});
-	NME_CHOICE("Язык", {/*TODO*/});
+	NME_EDIT_FIELD("Название", false, Constraints::Document::TITLE_ALLOWED_CHARS, Constraints::Document::TITLE_MAX_LENGTH);
+	NME_CHOICE("Тип документа", Document::types);
+	NME_CHOICE("Язык", Document::languages);
 	vector<string> publishers;
 	for (auto it : Publisher::getBinder().getRecords())
 	{
@@ -417,9 +418,38 @@ void initDocumentAddMenu()
 	NME_CHOICE("Число страниц", 1, 2001);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		// TODO
-		documentAddMenu->reset();
-		Menu::multiPopMenuStack(1);
+		auto menuElements = Menu::getActive()->getElements();
+		string title = ((MenuElementEditField *)menuElements[2])->getInput();
+		int type = ((MenuElementChoice *)menuElements[3])->getActiveOption();
+		int language = ((MenuElementChoice *)menuElements[4])->getActiveOption();
+		string publisherId = ((MenuElementChoice *)menuElements[5])->getChoice();
+		int pageCount = stoi(((MenuElementChoice *)menuElements[6])->getChoice());
+		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
+		{
+			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
+			system("pause");
+		}
+		else if (title.length() < Constraints::Document::TITLE_MIN_LENGTH)
+		{
+			cout << "Заголовок не может быть короче " << Constraints::Document::TITLE_MIN_LENGTH << " символов!" << endl;
+			system("pause");
+		}
+		else
+		{
+			for (auto it : Publisher::getBinder().getRecords())
+			{
+				if (it->getId() == stoi(publisherId))
+				{
+					Document::getBinder().getRecords().push_back(new Document((Document::Type)type, (Document::Language)language, it, title, pageCount));
+					break;
+				}
+			}
+			Document::getBinder().saveRecords();
+			cout << "Добавление успешно." << endl;
+			system("pause");
+			documentAddMenu->reset();
+			Menu::multiPopMenuStack(1);
+		}
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		documentAddMenu->reset();
