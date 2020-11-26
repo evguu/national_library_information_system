@@ -28,6 +28,6 @@ public:
 	static Reader* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
 
-	string str() { return id + ". " + getFullName() + " [ ИН паспорта:" + passportId + "]"; };
+	string str() { return id + ". " + getFullName(); };
 };
 

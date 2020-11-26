@@ -38,6 +38,19 @@ public:
 			}
 		}
 	}
+
+	static void searchByReaderId(int id, vector<DocumentUseRecord *>& results)
+	{
+		results.clear();
+		for (auto it : binder.getRecords())
+		{
+			if (it->getReader()->getId() == id)
+			{
+				results.push_back(it);
+			}
+		}
+	}
+
 	string strGivenAt()
 	{
 		tm ltm;

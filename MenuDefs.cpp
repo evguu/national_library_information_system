@@ -562,14 +562,19 @@ void initDocumentEditMenu()
 	MI_START(documentEditMenu);
 	NME_TITLE("Редактировать документ");
 	NME_SUBTITLE("История использования");
-	vector<DocumentUseRecord *> results;
-	DocumentUseRecord::searchByDocumentId(ctx->getId(), results);
-	for (auto it : results)
+	vector<DocumentUseRecord *> results1;
+	DocumentUseRecord::searchByDocumentId(ctx->getId(), results1);
+	for (auto it : results1)
 	{
 		NME_CHOICE(it->str(), {});
 	}
 	NME_SUBTITLE("Авторы");
-	// TODO: здесь также будет список авторов и добавление их
+	vector<DocumentAuthorBind *> results2;
+	DocumentAuthorBind::searchByDocumentId(ctx->getId(), results2);
+	for (auto it : results2)
+	{
+		NME_CHOICE(it->str(), {});
+	}
 	NME_SUBTITLE("Данные");
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Отмена", []() {

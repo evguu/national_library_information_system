@@ -20,5 +20,19 @@ public:
 	static auto& getBinder() { return binder; };
 	static DocumentAuthorBind* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
+
+	string str() { return "Документ " + document->str() + " имеет автора " + author->str(); };
+
+	static void searchByDocumentId(int id, vector<DocumentAuthorBind *>& results)
+	{
+		results.clear();
+		for (auto it : binder.getRecords())
+		{
+			if (it->getDocument()->getId() == id)
+			{
+				results.push_back(it);
+			}
+		}
+	}
 };
 
