@@ -586,8 +586,26 @@ void initDocumentEditMenu()
 		NME_CHOICE(it->str(), {});
 	}
 	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Опасная зона");
+	NME_FUNC_BUTTON("Удалить элемент ", []() {
+		// TODO
+		Document::getBinder().saveRecords();
+		documentEditMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initDocumentListMenu();
+		documentListMenu->addToStack();
+	});
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить изменения", []() {
+		// TODO
+		Document::getBinder().saveRecords();
+		documentEditMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initDocumentListMenu();
+		documentListMenu->addToStack();
+	});	
 	NME_FUNC_BUTTON("Отмена", []() {
+		documentEditMenu->reset();
 		Menu::multiPopMenuStack(1);
 	});
 	MI_END;
