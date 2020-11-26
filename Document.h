@@ -60,6 +60,8 @@ public:
 	static auto& getBinder() { return binder; };
 	static Document* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
+
+	string str() { return to_string(id) + ". " + title + " [ Издатель: " + publisher->str() + "]"; };
 };
 
 namespace Constraints

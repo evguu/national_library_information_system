@@ -261,11 +261,12 @@ void initDocumentListMenu()
 	NME_SUBTITLE("Список");
 	for (auto it : Document::getBinder().getRecords())
 	{
-		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getTitle() + " [" + to_string(it->getPublisher()->getId()) + ". " + it->getPublisher()->getName() + "]", []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
+		NME_FUNC_BUTTON(it->str(), []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
 	NME_EDIT_FIELD("Содержит в заголовке");
 	NME_EDIT_FIELD("Содержит в названии издателя");
+	NME_EDIT_FIELD("Содержит в имени автора");
 	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "ID издателя", "Издателю" });
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -290,7 +291,7 @@ void initReaderListMenu()
 	NME_SUBTITLE("Список");
 	for (auto it : Reader::getBinder().getRecords())
 	{
-		NME_FUNC_BUTTON(it->getId() + ". " + it->getFullName() + " ["+ it->getPassportId() +"]", []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
+		NME_FUNC_BUTTON(it->str(), []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
 	NME_EDIT_FIELD("Содержит в имени");
@@ -557,8 +558,18 @@ void initAuthorEditMenu()
 
 void initDocumentEditMenu()
 {
+	GET_CTX(Document, document, 2);
 	MI_START(documentEditMenu);
 	NME_TITLE("Редактировать документ");
+	NME_SUBTITLE("История использования");
+	vector<DocumentUseRecord *> results;
+	DocumentUseRecord::searchByDocumentId(ctx->getId(), results);
+	for (auto it : results)
+	{
+		NME_CHOICE(it->str(), {});
+	}
+	NME_SUBTITLE("Авторы");
+	// TODO: здесь также будет список авторов и добавление их
 	NME_SUBTITLE("Данные");
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Отмена", []() {

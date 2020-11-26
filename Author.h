@@ -21,5 +21,7 @@ public:
 	static auto& getBinder() { return binder; };
 	static Author* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
+
+	string str() { return getFullName(); };
 };
 

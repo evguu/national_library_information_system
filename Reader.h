@@ -27,5 +27,7 @@ public:
 	static auto& getBinder() { return binder; };
 	static Reader* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
+
+	string str() { return id + ". " + getFullName() + " [ ИН паспорта:" + passportId + "]"; };
 };
 

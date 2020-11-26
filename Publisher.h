@@ -21,6 +21,8 @@ public:
 	static auto& getBinder() { return binder; };
 	static Publisher* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
+
+	string str() { return to_string(id) + ". " + name; };
 };
 
 namespace Constraints
