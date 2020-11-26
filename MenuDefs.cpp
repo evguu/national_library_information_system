@@ -466,8 +466,18 @@ void initReaderAddMenu()
 	MI_START(readerAddMenu);
 	NME_TITLE("Добавить читателя");
 	NME_SUBTITLE("Данные");
-	// TODO
+	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
+	NME_EDIT_FIELD("Номер телефона", false, Constraints::Reader::PHONE_NUMBER_ALLOWED_CHARS, Constraints::Reader::PHONE_NUMBER_MAX_LENGTH);
+	NME_EDIT_FIELD("Адрес", false, Constraints::Reader::ADDRESS_ALLOWED_CHARS, Constraints::Reader::ADDRESS_MAX_LENGTH);
+	NME_EDIT_FIELD("ИН паспорта", false, Constraints::Reader::PASSPORT_ID_ALLOWED_CHARS, Constraints::Reader::PASSPORT_ID_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Добавить", []() {
+		// TODO
+		readerAddMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initReaderListMenu();
+		readerListMenu->addToStack();
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		readerAddMenu->reset();
 		Menu::multiPopMenuStack(1);

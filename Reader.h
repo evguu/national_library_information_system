@@ -31,3 +31,18 @@ public:
 	string str() { return id + ". " + getFullName(); };
 };
 
+namespace Constraints
+{
+	namespace Reader
+	{
+		extern const int PHONE_NUMBER_MIN_LENGTH;
+		extern const int PHONE_NUMBER_MAX_LENGTH;
+		extern const string PHONE_NUMBER_ALLOWED_CHARS;
+		extern const int ADDRESS_MIN_LENGTH;
+		extern const int ADDRESS_MAX_LENGTH;
+		extern const string ADDRESS_ALLOWED_CHARS;
+		extern const int PASSPORT_ID_MIN_LENGTH;
+		extern const int PASSPORT_ID_MAX_LENGTH;
+		extern const string PASSPORT_ID_ALLOWED_CHARS;
+	}
+}
