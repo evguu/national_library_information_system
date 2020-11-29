@@ -472,7 +472,15 @@ void initReaderAddMenu()
 	NME_EDIT_FIELD("ИН паспорта", false, Constraints::Reader::PASSPORT_ID_ALLOWED_CHARS, Constraints::Reader::PASSPORT_ID_MAX_LENGTH);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		// TODO
+		auto menuElements = Menu::getActive()->getElements();
+		string fullName;
+		string phoneNumber;
+		string address;
+		string passportId;
+		if (((MenuElementEditField *)menuElements[2])->getInput().length() < Constraints::Person::FULL_NAME_MIN_LENGTH)
+		{
+			cout << "Длина не может быть меньше " << endl; // TODO
+		}
 		readerAddMenu->reset();
 		Menu::multiPopMenuStack(2);
 		initReaderListMenu();

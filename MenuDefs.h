@@ -1,5 +1,6 @@
 #pragma once
 
+// ???
 void initLoginMenu();
 void initRegisterMenu();
 void initUserMenu();
@@ -7,24 +8,36 @@ void initAdminMenu();
 void initStartMenu();
 void initDataTypeMenu();
 void initRegisterConfirmationMenu();
+
+// Списочные меню
 void initAuthorListMenu();
 void initDocumentListMenu();
 void initReaderListMenu();
 void initPublisherListMenu();
 void initUserListMenu();
+
+// Добавляющие меню
 void initAuthorAddMenu();
 void initDocumentAddMenu();
 void initReaderAddMenu();
 void initPublisherAddMenu();
 void initUserAddMenu();
+
+// Редактирующие меню
 void initAuthorEditMenu();
 void initDocumentEditMenu();
 void initReaderEditMenu();
 void initPublisherEditMenu();
 void initUserEditMenu();
+
+// ???
 void initLogMenu();
 void initDocumentGivingMenu();
 void initReaderDebtListMenu();
+
+// Инициализировать все меню с разовой инициализацией
 void menuInitAll();
+
+// Циклы
 void menuControlLoop();
 void menuPrintLoop();
