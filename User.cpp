@@ -12,7 +12,7 @@ namespace Constraints
 {
 	namespace User
 	{
-		const int LOGIN_MIN_LENGTH = 5;
+		const int LOGIN_MIN_LENGTH = 4;
 		const int LOGIN_MAX_LENGTH = 16;
 		const string LOGIN_ALLOWED_CHARS = Constraints::CharacterSets::ENGLISH + Constraints::CharacterSets::NUMBERS + "_";
 		const int PASSWORD_MIN_LENGTH = 6;

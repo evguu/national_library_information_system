@@ -12,6 +12,7 @@
 #include "Input.h"
 #include <Windows.h>
 #include <mutex>
+#include "ConstraintHelper.h"
 using namespace std;
 
 Menu* loginMenu = nullptr;
@@ -49,17 +50,15 @@ void initLoginMenu()
 	MI_START(loginMenu);
 	NME_TITLE("Вход в систему");
 	NME_SUBTITLE("Ввод данных");
-	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
-	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("Логин", User, LOGIN);
+	CH_NME_EDIT_FIELD_H("Пароль", User, PASSWORD);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Войти", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string login, password;
-		auto it = menuElements.begin();
-		it += 2;
-		login = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		password = ((MenuElementEditField *)(*it))->getInput();
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(User, LOGIN, login);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, PASSWORD, password);
 		User::loginUser(login, password);
 		if (User::getActiveUser())
 		{
@@ -87,23 +86,21 @@ void initRegisterMenu()
 	MI_START(registerMenu);
 	NME_TITLE("Регистрация");
 	NME_SUBTITLE("Ввод данных");
-	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
-	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
-	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
-	NME_EDIT_FIELD("Повторите пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+	CH_NME_EDIT_FIELD("Логин", User, LOGIN);
+	CH_NME_EDIT_FIELD_H("Пароль", User, PASSWORD);
+	CH_NME_EDIT_FIELD_H("Повторите пароль", User, PASSWORD);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string fullName, login, password, repeatPassword;
-		auto it = menuElements.begin();
-		it += 2;
-		fullName = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		login = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		password = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, LOGIN, login);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, PASSWORD, password);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword))
 		{
 			registerMenu->reset();
@@ -236,7 +233,7 @@ void initAuthorListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getFullName(), []() { initAuthorEditMenu(); authorEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	NME_EDIT_FIELD("Содержит в ФИО");
+	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -264,9 +261,9 @@ void initDocumentListMenu()
 		NME_FUNC_BUTTON(it->str(), []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	NME_EDIT_FIELD("Содержит в заголовке");
-	NME_EDIT_FIELD("Содержит в названии издателя");
-	NME_EDIT_FIELD("Содержит в имени автора");
+	CH_NME_EDIT_FIELD("Содержит в заголовке", Document, TITLE);
+	CH_NME_EDIT_FIELD("Содержит в названии издателя", Publisher, NAME);
+	CH_NME_EDIT_FIELD("Содержит в имени автора", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "ID издателя", "Издателю" });
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -294,8 +291,8 @@ void initReaderListMenu()
 		NME_FUNC_BUTTON(it->str(), []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	NME_EDIT_FIELD("Содержит в имени");
-	NME_EDIT_FIELD("Содержит в ИН паспорта");
+	CH_NME_EDIT_FIELD("Содержит в имени", Person, FULL_NAME);
+	CH_NME_EDIT_FIELD("Содержит в ИН паспорта", Reader, PASSPORT_ID);
 	NME_CHOICE("Сортировать по", { "ID", "Имени", "ИН паспорта" });
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -322,7 +319,7 @@ void initPublisherListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getName(), []() { initPublisherEditMenu(); publisherEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	NME_EDIT_FIELD("Содержит в названии");
+	CH_NME_EDIT_FIELD("Содержит в названии", Publisher, NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Названию" });
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -350,8 +347,8 @@ void initUserListMenu()
 		NME_FUNC_BUTTON(it->getLogin() + ". " + it->getFullName(), []() { initUserEditMenu(); userEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	NME_EDIT_FIELD("Содержит в логине");
-	NME_EDIT_FIELD("Содержит в ФИО");
+	CH_NME_EDIT_FIELD("Содержит в логине", User, LOGIN);
+	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Логину", "ФИО" });
 	NME_FUNC_BUTTON("Применить параметры", []() {
 		// TODO
@@ -370,30 +367,20 @@ void initAuthorAddMenu()
 	MI_START(authorAddMenu);
 	NME_TITLE("Добавить автора");
 	NME_SUBTITLE("Данные");
-	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string fullName;
-		auto it = menuElements.begin();
-		it += 2;
-		fullName = ((MenuElementEditField *)(*it))->getInput();
-		if (fullName.length() < Constraints::Person::FULL_NAME_MIN_LENGTH)
-		{
-			cout << "Длина имени не может быть меньше " << Constraints::Person::FULL_NAME_MIN_LENGTH << " символов." << endl;
-			system("pause");
-		}
-		else
-		{
-			Author::getBinder().getRecords().push_back(new Author(fullName));
-			Author::getBinder().saveRecords();
-			cout << "Добавление успешно." << endl;
-			system("pause");
-			authorAddMenu->reset();
-			Menu::multiPopMenuStack(2);
-			initAuthorListMenu();
-			authorListMenu->addToStack();
-		}
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		Author::getBinder().getRecords().push_back(new Author(fullName));
+		Author::getBinder().saveRecords();
+		cout << "Добавление успешно." << endl;
+		system("pause");
+		authorAddMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initAuthorListMenu();
+		authorListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		authorAddMenu->reset();
@@ -407,7 +394,7 @@ void initDocumentAddMenu()
 	MI_START(documentAddMenu);
 	NME_TITLE("Добавить документ");
 	NME_SUBTITLE("Данные");
-	NME_EDIT_FIELD("Название", false, Constraints::Document::TITLE_ALLOWED_CHARS, Constraints::Document::TITLE_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("Название", Document, TITLE);
 	NME_CHOICE("Тип документа", Document::types);
 	NME_CHOICE("Язык", Document::languages);
 	vector<string> publishers;
@@ -419,40 +406,38 @@ void initDocumentAddMenu()
 	NME_CHOICE("Число страниц", 1, 2001);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string title = ((MenuElementEditField *)menuElements[2])->getInput();
-		int type = ((MenuElementChoice *)menuElements[3])->getActiveOption();
-		int language = ((MenuElementChoice *)menuElements[4])->getActiveOption();
-		string publisherId = ((MenuElementChoice *)menuElements[5])->getChoice();
-		int pageCount = stoi(((MenuElementChoice *)menuElements[6])->getChoice());
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Document, TITLE, title);
+		CH_MOVE(1);
+		int type = ((MenuElementChoice *)(*it))->getActiveOption();
+		CH_MOVE(1);
+		int language = ((MenuElementChoice *)(*it))->getActiveOption();
+		CH_MOVE(1);
+		string publisherId = ((MenuElementChoice *)(*it))->getChoice();
+		CH_MOVE(1);
+		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
 		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
 		{
 			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
 			system("pause");
+			return;
 		}
-		else if (title.length() < Constraints::Document::TITLE_MIN_LENGTH)
+		for (auto it : Publisher::getBinder().getRecords())
 		{
-			cout << "Заголовок не может быть короче " << Constraints::Document::TITLE_MIN_LENGTH << " символов!" << endl;
-			system("pause");
-		}
-		else
-		{
-			for (auto it : Publisher::getBinder().getRecords())
+			if (it->getId() == stoi(publisherId))
 			{
-				if (it->getId() == stoi(publisherId))
-				{
-					Document::getBinder().getRecords().push_back(new Document((Document::Type)type, (Document::Language)language, it, title, pageCount));
-					break;
-				}
+				Document::getBinder().getRecords().push_back(new Document((Document::Type)type, (Document::Language)language, it, title, pageCount));
+				break;
 			}
-			Document::getBinder().saveRecords();
-			cout << "Добавление успешно." << endl;
-			system("pause");
-			documentAddMenu->reset();
-			Menu::multiPopMenuStack(2);
-			initDocumentListMenu();
-			documentListMenu->addToStack();
 		}
+		Document::getBinder().saveRecords();
+		cout << "Добавление успешно." << endl;
+		system("pause");
+		documentAddMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initDocumentListMenu();
+		documentListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		documentAddMenu->reset();
@@ -466,21 +451,23 @@ void initReaderAddMenu()
 	MI_START(readerAddMenu);
 	NME_TITLE("Добавить читателя");
 	NME_SUBTITLE("Данные");
-	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
-	NME_EDIT_FIELD("Номер телефона", false, Constraints::Reader::PHONE_NUMBER_ALLOWED_CHARS, Constraints::Reader::PHONE_NUMBER_MAX_LENGTH);
-	NME_EDIT_FIELD("Адрес", false, Constraints::Reader::ADDRESS_ALLOWED_CHARS, Constraints::Reader::ADDRESS_MAX_LENGTH);
-	NME_EDIT_FIELD("ИН паспорта", false, Constraints::Reader::PASSPORT_ID_ALLOWED_CHARS, Constraints::Reader::PASSPORT_ID_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+	CH_NME_EDIT_FIELD("Номер телефона", Reader, PHONE_NUMBER);
+	CH_NME_EDIT_FIELD("Адрес", Reader, ADDRESS);
+	CH_NME_EDIT_FIELD("ИН паспорта", Reader, PASSPORT_ID);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string fullName;
-		string phoneNumber;
-		string address;
-		string passportId;
-		if (((MenuElementEditField *)menuElements[2])->getInput().length() < Constraints::Person::FULL_NAME_MIN_LENGTH)
-		{
-			cout << "Длина не может быть меньше " << endl; // TODO
-		}
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_MOVE(1);
+		CH_CHECKED_GET(Reader, PHONE_NUMBER, phoneNumber);
+		CH_MOVE(1);
+		CH_CHECKED_GET(Reader, ADDRESS, address);
+		CH_MOVE(1);
+		CH_CHECKED_GET(Reader, PASSPORT_ID, passportId); 
+		Reader::getBinder().getRecords().push_back(new Reader(fullName, phoneNumber, address, passportId));
+		Reader::getBinder().saveRecords();
 		readerAddMenu->reset();
 		Menu::multiPopMenuStack(2);
 		initReaderListMenu();
@@ -498,25 +485,18 @@ void initPublisherAddMenu()
 	MI_START(publisherAddMenu);
 	NME_TITLE("Добавить издателя");
 	NME_SUBTITLE("Данные");
-	NME_EDIT_FIELD("Название", false, Constraints::Publisher::NAME_ALLOWED_CHARS, Constraints::Publisher::NAME_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("Название", Publisher, NAME);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string name = ((MenuElementEditField *)menuElements[2])->getInput();
-		if (name.length() < Constraints::Publisher::NAME_MIN_LENGTH)
-		{
-			cout << "Длина названия не может быть меньше " << Constraints::Publisher::NAME_MIN_LENGTH << " символов." << endl;
-			system("pause");
-		}
-		else
-		{
-			Publisher::getBinder().getRecords().push_back(new Publisher(name));
-			Publisher::getBinder().saveRecords();
-			publisherAddMenu->reset();
-			Menu::multiPopMenuStack(2);
-			initPublisherListMenu();
-			publisherListMenu->addToStack();
-		}
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Publisher, NAME, name);
+		Publisher::getBinder().getRecords().push_back(new Publisher(name));
+		Publisher::getBinder().saveRecords();
+		publisherAddMenu->reset();
+		Menu::multiPopMenuStack(2);
+		initPublisherListMenu();
+		publisherListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		publisherAddMenu->reset();
@@ -530,23 +510,21 @@ void initUserAddMenu()
 	MI_START(userAddMenu);
 	NME_TITLE("Добавить пользователя");
 	NME_SUBTITLE("Данные");
-	NME_EDIT_FIELD("ФИО", false, Constraints::Person::FULL_NAME_ALLOWED_CHARS, Constraints::Person::FULL_NAME_MAX_LENGTH);
-	NME_EDIT_FIELD("Логин", false, Constraints::User::LOGIN_ALLOWED_CHARS, Constraints::User::LOGIN_MAX_LENGTH);
-	NME_EDIT_FIELD("Пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
-	NME_EDIT_FIELD("Повторите пароль", true, Constraints::User::PASSWORD_ALLOWED_CHARS, Constraints::User::PASSWORD_MAX_LENGTH);
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+	CH_NME_EDIT_FIELD("Логин", User, LOGIN);
+	CH_NME_EDIT_FIELD_H("Пароль", User, PASSWORD);
+	CH_NME_EDIT_FIELD_H("Повторите пароль", User, PASSWORD);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Зарегистрировать", []() {
-		auto menuElements = Menu::getActive()->getElements();
-		string fullName, login, password, repeatPassword;
-		auto it = menuElements.begin();
-		it += 2;
-		fullName = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		login = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		password = ((MenuElementEditField *)(*it))->getInput();
-		it += 1;
-		repeatPassword = ((MenuElementEditField *)(*it))->getInput();
+		CH_INIT;
+		CH_MOVE(2);
+		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, LOGIN, login);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, PASSWORD, password);
+		CH_MOVE(1);
+		CH_CHECKED_GET(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword, true))
 		{
 			userAddMenu->reset();
@@ -584,14 +562,14 @@ void initDocumentEditMenu()
 	DocumentUseRecord::searchByDocumentId(ctx->getId(), results1);
 	for (auto it : results1)
 	{
-		NME_CHOICE(it->str(), {});
+		NME_CHOICE(it->str(), {"Оставить", "Удалить"});
 	}
 	NME_SUBTITLE("Авторы");
 	vector<DocumentAuthorBind *> results2;
 	DocumentAuthorBind::searchByDocumentId(ctx->getId(), results2);
 	for (auto it : results2)
 	{
-		NME_CHOICE(it->str(), {});
+		NME_CHOICE(it->str(), {"Оставить", "Удалить"});
 	}
 	NME_SUBTITLE("Данные");
 	NME_SUBTITLE("Опасная зона");

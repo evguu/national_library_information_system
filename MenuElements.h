@@ -35,6 +35,7 @@ public:
 	virtual bool recvCommand(int keyEvent) = 0;
 	virtual bool isChoosable() = 0;
 	virtual void reset() = 0;
+	auto& getText() { return text; };
 };
 
 class MenuElementTitle : public MenuElement

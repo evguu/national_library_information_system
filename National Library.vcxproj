@@ -154,6 +154,7 @@
     <ClInclude Include="Author.h" />
     <ClInclude Include="CharacterSets.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="ConstraintHelper.h" />
     <ClInclude Include="Document.h" />
     <ClInclude Include="DocumentAuthorBind.h" />
     <ClInclude Include="DocumentUseRecord.h" />
