@@ -6,18 +6,28 @@
 
 stack<Menu *> Menu::menuStack = stack<Menu *>();
 
+const int _viewField = 10;
+
 string Menu::str() const
 {
-	assert(elements.size()); // Меню пустое
-	assert((chosenElementIndex != -1)); // Активный элемент не установлен
+	assert(elements.size()); // Меню не должно быть пустым
+	assert((chosenElementIndex != -1)); // Активный элемент должен быть установлен
 
 	stringstream ss;
 
-	int index = 0;
 	bool tmp;
-	for (const auto& it : elements)
+	int index = -1;
+	for (int metaIndex = 0; metaIndex < ((elements.size() <= (1 + 2 * _viewField))?(elements.size()):(1 + 2 * _viewField)); ++metaIndex)
 	{
-		tmp = it->isChoosable();
+		int offset = chosenElementIndex - _viewField;
+		if ((offset + 2 * _viewField + 1) > elements.size()) offset = elements.size() - 1 - 2 * _viewField;
+		if (offset < 0) offset = 0;
+		index = metaIndex + offset;
+		if (metaIndex == 0 && index != 0)
+		{
+			ss << "/\\/\\/\\/\\/\\ /\\/\\/\\/\\/\\ /\\/\\/\\/\\/\\ /\\/\\/\\/\\/\\ /\\/\\/\\/\\/\\" << endl;
+		}
+		tmp = elements[index]->isChoosable();
 		if (tmp)
 		{
 			if (chosenElementIndex == index)
@@ -29,8 +39,11 @@ string Menu::str() const
 				ss << " +";
 			}
 		}
-		ss << it->str();//FIXME
-		++index;
+		ss << elements[index]->str();
+	}
+	if (index < elements.size() - 1)
+	{
+		ss << "\\/\\/\\/\\/\\/ \\/\\/\\/\\/\\/ \\/\\/\\/\\/\\/ \\/\\/\\/\\/\\/ \\/\\/\\/\\/\\/" << endl;
 	}
 	return ss.str();
 }
