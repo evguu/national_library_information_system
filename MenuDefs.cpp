@@ -754,12 +754,19 @@ void initReaderDebtListMenu()
 		initReaderDebtListMenu();
 		readerDebtListMenu->addToStack();
 	});
-	NME_SUBTITLE("Задолженности читателя");
-	for (auto it : DocumentUseRecord::getBinder().getRecords())
+	if (_chosenReaderIdForDebtListing == -1)
 	{
-		if (_chosenReaderIdForDebtListing == it->getReader()->getId())
+		NME_SUBTITLE("Читатель не выбран. Выберите читателя и подтвердите выбор.");
+	}
+	else
+	{
+		NME_SUBTITLE("Задолженности читателя");
+		for (auto it : DocumentUseRecord::getBinder().getRecords())
 		{
-			NME_CHOICE(it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
+			if (_chosenReaderIdForDebtListing == it->getReader()->getId())
+			{
+				NME_CHOICE(it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
+			}
 		}
 	}
 	NME_SUBTITLE("Навигация");

@@ -78,7 +78,7 @@ bool MenuElementEditField::recvCommand(int keyEvent)
 	return false;
 }
 
-const string MenuElementChoice::noChoicesFoundMessage = "RESERVED_TEXT::asdqe021-24789102-12kutaas-flkaput-rand1024-EMPTY_VECTOR";
+const string MenuElementChoice::noChoicesFoundMessage = "RESERVED_TEXT::asdqe021-24789102-12kutaas-flkaput-rand1024-NO_CHOICES_FOUND";
 
 string MenuElementChoice::str() const
 {
@@ -91,14 +91,6 @@ string MenuElementChoice::str() const
 	else if (len == 1)
 	{
 		ss << "  " << text << ": --" << options[activeOption] << "--" << endl;
-	}
-	else if (activeOption == 0)
-	{
-		ss << "  " << text << ": --" << options[activeOption] << "->" << endl;
-	}
-	else if (len == activeOption + 1)
-	{
-		ss << "  " << text << ": <-" << options[activeOption] << "--" << endl;
 	}
 	else
 	{
@@ -120,7 +112,7 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 	{
 		case -KC_LEFT:
 		{
-			if (activeOption != 0)
+			if (options.size() > 1)
 			{
 				int timeElapsed = (long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000);
 				if ((timeElapsed < _maximalComboInterval) && !_wasPreviousDirectionRight)
@@ -137,18 +129,14 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 				{
 					trueSpeed = _maxTrueSpeed;
 				}
-				if (trueSpeed > activeOption)
-				{
-					trueSpeed = activeOption;
-				}
-				activeOption -= trueSpeed;
+				activeOption = (options.size() - trueSpeed + activeOption) % options.size();
 			}
 			_lastClock = clock();
 			return true;
 		}
 		case -KC_RIGHT:
 		{
-			if (activeOption + 1 < options.size())
+			if (options.size() > 1)
 			{
 				int timeElapsed = (long)(((double)clock() - _lastClock) / CLOCKS_PER_SEC * 1000);
 				if ((timeElapsed < _maximalComboInterval) && _wasPreviousDirectionRight)
@@ -165,11 +153,7 @@ bool MenuElementChoice::recvCommand(int keyEvent)
 				{
 					trueSpeed = _maxTrueSpeed;
 				}
-				if (trueSpeed > options.size() - activeOption - 1)
-				{
-					trueSpeed = options.size() - activeOption - 1;
-				}
-				activeOption += trueSpeed;
+				activeOption = (options.size() + trueSpeed + activeOption) % options.size();
 			}
 			_lastClock = clock();
 			return true;
