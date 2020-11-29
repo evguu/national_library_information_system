@@ -14,14 +14,13 @@ namespace Utils
 {
 	extern const void* FBV_CORRUPTED_DATA;
 
+	// Класс T должен иметь два метода:
+	// 1) static T* loadRecord(ifstream& fin)
+	// 2) void saveRecord(ofstream& fout)
+	// Класс FileBindedVector используется для упрощения связи классов, предусматривающих хранение объектов в централизированном векторе, с файлами.
 	template <class T>
 	class FileBindedVector
 	{
-		// Класс T должен иметь два метода:
-		// 1) static T* loadRecord(ifstream& fin)
-		// 2) void saveRecord(ofstream& fout)
-
-		// Класс FileBindedVector используется для упрощения связи классов, предусматривающих хранение объектов в централизированном векторе, с файлами.
 	private:
 		string filename;
 		vector<T*> records;
