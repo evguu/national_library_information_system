@@ -12,6 +12,6 @@ namespace Constraints
 		const string RUSSIAN_UPPER = "ижсйемцьыгузтшбюопнкдфщъвялхрэач"s;
 		const string RUSSIAN = RUSSIAN_LOWER + RUSSIAN_UPPER;
 		const string NUMBERS = "0123456789"s;
-		const string EXTENDED = ENGLISH + RUSSIAN + NUMBERS + " -_"s;
+		const string EXTENDED = ENGLISH + RUSSIAN + NUMBERS + " -_&+."s;
 	}
 }

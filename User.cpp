@@ -12,7 +12,7 @@ namespace Constraints
 {
 	namespace User
 	{
-		const int LOGIN_MIN_LENGTH = 5;
+		const int LOGIN_MIN_LENGTH = 4;
 		const int LOGIN_MAX_LENGTH = 16;
 		const string LOGIN_ALLOWED_CHARS = Constraints::CharacterSets::ENGLISH + Constraints::CharacterSets::NUMBERS + "_";
 		const int PASSWORD_MIN_LENGTH = 6;
@@ -21,7 +21,7 @@ namespace Constraints
 	}
 };
 
-User * User::loadRecord(ifstream & fin)
+User* User::loadRecord(ifstream & fin)
 {
 	string fullName;
 	string login;
@@ -40,7 +40,7 @@ void User::saveRecord(ofstream & fout)
 	fout << getFullName() << endl << login << endl << encryptedPassword << endl << isAdmin << endl;
 }
 
-bool User::registerUser(string fullName, string login, string password, string repeatPassword)
+bool User::registerUser(string fullName, string login, string password, string repeatPassword, bool useForce)
 {
 	bool res;
 	if (password != repeatPassword)
@@ -94,10 +94,20 @@ bool User::registerUser(string fullName, string login, string password, string r
 		}
 		if (!isLoginAlreadyTaken)
 		{
-			cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
-			binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
-			binderUnconfirmed.saveRecords();
-			res = true;
+			if(useForce)
+			{
+				cout << "Аккаунт успешно зарегистрирован." << endl;
+				binder.getRecords().push_back(new User(fullName, login, password, false));
+				binder.saveRecords();
+				res = true;
+			}
+			else
+			{
+				cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
+				binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
+				binderUnconfirmed.saveRecords();
+				res = true;
+			}
 		}
 	}
 	system("pause");

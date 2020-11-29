@@ -8,6 +8,9 @@
 #define NME_FUNC_BUTTON(...) menu->addElement(new MenuElementFunctionButton(__VA_ARGS__))
 #define NME_EDIT_FIELD(...) menu->addElement(new MenuElementEditField(__VA_ARGS__))
 #define NME_CHOICE(...) menu->addElement(new MenuElementChoice(__VA_ARGS__))
+#define MI_START(x) auto& menu = x; if (menu) { delete menu; }; menu = new Menu();
+#define MI_END menu->initChosenElementIndex();
+#define GET_CTX(Name, name, offset) Name* ctx = Name::getBinder().getRecords()[##name##ListMenu->getChosenElementIndex() - offset];
 
 using namespace std;
 
@@ -32,6 +35,7 @@ public:
 	virtual bool recvCommand(int keyEvent) = 0;
 	virtual bool isChoosable() = 0;
 	virtual void reset() = 0;
+	auto& getText() { return text; };
 };
 
 class MenuElementTitle : public MenuElement
@@ -101,15 +105,58 @@ public:
 
 class MenuElementChoice : public MenuElement
 {
+public:
+	static const string noChoicesFoundMessage;
 private:
 	vector<string> options;
 	int activeOption = 0;
 public:
+	// Создает элемент выбора с заданными вектором строк элементами.
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
+
+	// Создает элемент выбора из чисел, заданных range параметрами.
+	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep = 1) : MenuElement(text)
+	{
+		for (int i = rangeStart; i < rangeEnd; i += rangeStep)
+		{
+			options.push_back(to_string(i));
+		}
+	};
+
+	/*
+	// Создает элемент выбора путем конвертации вектора элементов в вектор строк.
+	// Поддерживает фильтрацию.
+	template <class T, typename StringifierFunction, typename FiltererFunction>
+	MenuElementChoice(string text, vector<T*>& srcVector, StringifierFunction stringify = [](T* src) { return "STRINGIFIER UNDEFINED"; }, FiltererFunction filter = [](T* src) { return true; }) : MenuElement(text)
+	{
+		for (auto it : srcVector)
+		{
+			if (filter(it))
+			{
+				options.push_back(stringify(it));
+			}
+		}
+	};*/
+
 	~MenuElementChoice() {};
 
 	string str() const;
-	string getChoice() { return options[activeOption]; };
+
+	// Возвращает строку, выбранную в текущий момент.
+	// Если ничего не выбрано (вектор выбора пуст), возвращает MenuElementChoice::noChoicesFoundMessage.
+	string getChoice() 
+	{ 
+		if (options.size())
+		{
+			return options[activeOption];
+		}
+		else
+		{
+			return noChoicesFoundMessage;
+		}
+	};
+	auto& getOptions() { return options; };
+	auto& getActiveOption() { return activeOption; };
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { activeOption = 0; };
