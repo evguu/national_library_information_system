@@ -35,6 +35,7 @@ public:
 	virtual bool recvCommand(int keyEvent) = 0;
 	virtual bool isChoosable() = 0;
 	virtual void reset() = 0;
+	virtual string getAdditionalText() { return ""; };
 	auto& getText() { return text; };
 };
 
@@ -89,10 +90,11 @@ private:
 	bool isTextHidden;
 	string allowedSymbols;
 	int maxLength;
+	int minLength;
 public:
 	// Создание и разрушение
-	MenuElementEditField(string text, bool isTextHidden = false, string allowedSymbols = "", int maxLength = 0):
-		MenuElement(text), input(""), isTextHidden(isTextHidden), allowedSymbols(allowedSymbols), maxLength(maxLength) {};
+	MenuElementEditField(string text, bool isTextHidden = false, string allowedSymbols = "", int minLength = 0, int maxLength = 0):
+		MenuElement(text), input(""), isTextHidden(isTextHidden), allowedSymbols(allowedSymbols), minLength(minLength), maxLength(maxLength) {};
 	~MenuElementEditField() {};
 
 	// Интерфейс
@@ -101,6 +103,10 @@ public:
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { input = ""; };
+	string getAdditionalText() override
+	{
+		return "        Не менее " + to_string(minLength) + " символов.\n        Доступные символы: " + allowedSymbols;
+	}
 };
 
 class MenuElementChoice : public MenuElement
@@ -122,21 +128,6 @@ public:
 			options.push_back(to_string(i));
 		}
 	};
-
-	/*
-	// Создает элемент выбора путем конвертации вектора элементов в вектор строк.
-	// Поддерживает фильтрацию.
-	template <class T, typename StringifierFunction, typename FiltererFunction>
-	MenuElementChoice(string text, vector<T*>& srcVector, StringifierFunction stringify = [](T* src) { return "STRINGIFIER UNDEFINED"; }, FiltererFunction filter = [](T* src) { return true; }) : MenuElement(text)
-	{
-		for (auto it : srcVector)
-		{
-			if (filter(it))
-			{
-				options.push_back(stringify(it));
-			}
-		}
-	};*/
 
 	~MenuElementChoice() {};
 

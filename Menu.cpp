@@ -40,6 +40,11 @@ string Menu::str() const
 			}
 		}
 		ss << elements[index]->str();
+		string additionalText = elements[index]->getAdditionalText();
+		if ((additionalText != "") && (index == chosenElementIndex))
+		{
+			ss << additionalText << endl;
+		}
 	}
 	if (index < elements.size() - 1)
 	{
