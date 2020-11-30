@@ -105,7 +105,8 @@ public:
 	void reset() { input = ""; };
 	string getAdditionalText() override
 	{
-		return "        Не менее " + to_string(minLength) + " символов.\n        Доступные символы: " + allowedSymbols;
+		return "        Не менее " + to_string(minLength) + " символов.\n"
+			   "        Доступные символы: " + allowedSymbols;
 	}
 };
 
