@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include <iostream>
+#include "Menu.h"
 #include "MenuDefs.h"
 #include "Console.h"
-#include <thread>
 #include "User.h"
 #include "Publisher.h"
 #include "Document.h"
@@ -17,11 +17,7 @@ int main()
 	// Подготавливаем консоль
 	//Utils::setupResolution();
 	Utils::setupEncoding();
-
-	// Инициализиуем меню и их взаимосвязи
 	menuInitAll();
-
-	// Загружаем данные
 	User::getBinder().loadRecords();
 	User::getBinderUnconfirmed().loadRecords();
 	IDBI(Publisher);
@@ -30,11 +26,6 @@ int main()
 	IDBI(Reader);
 	DocumentAuthorBind::getBinder().loadRecords();
 	DocumentUseRecord::getBinder().loadRecords();
-
-	// Запускаем циклы работы с меню в отдельных потоках
-	thread t1(menuControlLoop);
-	thread t2(menuPrintLoop);
-	t1.join();
-	t2.join();
+	Menu::run();
 	cout << "Выход из программы..." << endl;
 }

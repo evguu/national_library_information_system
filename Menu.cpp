@@ -2,11 +2,47 @@
 #include <cassert>
 #include "Input.h"
 #include <sstream>
+#include <Windows.h>
+#include <mutex>
 #include "Menu.h"
 
 stack<Menu *> Menu::menuStack = stack<Menu *>();
+bool Menu::isLoopRunning = true;
+bool Menu::hasMenuChanged = true;
+mutex Menu::g_lock;
+const int Menu::viewField = 10;
 
-const int _viewField = 10;
+void Menu::controlLoop()
+{
+	int keyEvent;
+	while (isLoopRunning)
+	{
+		keyEvent = Utils::inputKeyEvent();
+		bool hasReacted = getActive()->recvCommand(keyEvent);
+		if (hasReacted)
+		{
+			g_lock.lock();
+			hasMenuChanged = true;
+			g_lock.unlock();
+		}
+	}
+}
+
+void Menu::printLoop()
+{
+	while (isLoopRunning)
+	{
+		g_lock.lock();
+		if (hasMenuChanged)
+		{
+			hasMenuChanged = false;
+			system("cls");
+			cout << getActive()->str();
+		}
+		g_lock.unlock();
+		Sleep(100);
+	}
+}
 
 string Menu::str() const
 {
@@ -17,10 +53,10 @@ string Menu::str() const
 
 	bool tmp;
 	int index = -1;
-	for (int metaIndex = 0; metaIndex < ((elements.size() <= (1 + 2 * _viewField))?(elements.size()):(1 + 2 * _viewField)); ++metaIndex)
+	for (int metaIndex = 0; metaIndex < ((elements.size() <= (1 + 2 * viewField))?(elements.size()):(1 + 2 * viewField)); ++metaIndex)
 	{
-		int offset = chosenElementIndex - _viewField;
-		if ((offset + 2 * _viewField + 1) > elements.size()) offset = elements.size() - 1 - 2 * _viewField;
+		int offset = chosenElementIndex - viewField;
+		if ((offset + 2 * viewField + 1) > elements.size()) offset = elements.size() - 1 - 2 * viewField;
 		if (offset < 0) offset = 0;
 		index = metaIndex + offset;
 		if (metaIndex == 0 && index != 0)

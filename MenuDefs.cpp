@@ -11,7 +11,6 @@
 #include "DocumentUseRecord.h"
 #include "Input.h"
 #include <Windows.h>
-#include <mutex>
 #include "ConstraintHelper.h"
 using namespace std;
 
@@ -40,10 +39,6 @@ Menu* userEditMenu = nullptr;
 Menu* logMenu = nullptr;
 Menu* documentGivingMenu = nullptr;
 Menu* readerDebtListMenu = nullptr;
-
-bool isLoopRunning = true;
-bool hasMenuChanged = true;
-mutex g_lock;
 
 void initLoginMenu()
 {
@@ -154,10 +149,10 @@ void initStartMenu()
 	MI_START(startMenu);
 	NME_TITLE("Информационная система национальной библиотеки");
 	NME_SUBTITLE("Авторизация");
-	NME_FUNC_BUTTON("Войти", []() {loginMenu->addToStack(); });
-	NME_FUNC_BUTTON("Зарегистрироваться", []() {registerMenu->addToStack(); });
+	NME_FUNC_BUTTON("Войти", []() { loginMenu->addToStack(); });
+	NME_FUNC_BUTTON("Зарегистрироваться", []() { registerMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
-	NME_FUNC_BUTTON("Выйти из программы", []() {isLoopRunning = false; });
+	NME_FUNC_BUTTON("Выйти из программы", []() { Menu::finish(); });
 	MI_END;
 }
 
@@ -798,36 +793,4 @@ void menuInitAll()
 	initPublisherAddMenu();
 	initUserAddMenu();
 	startMenu->addToStack();
-}
-
-void menuControlLoop()
-{
-	int keyEvent;
-	while (isLoopRunning)
-	{
-		keyEvent = Utils::inputKeyEvent();
-		bool hasReacted = Menu::getActive()->recvCommand(keyEvent);
-		if (hasReacted)
-		{
-			g_lock.lock();
-			hasMenuChanged = true;
-			g_lock.unlock();
-		}
-	}
-}
-
-void menuPrintLoop()
-{
-	while (isLoopRunning)
-	{
-		g_lock.lock();
-		if (hasMenuChanged)
-		{
-			hasMenuChanged = false;
-			system("cls");
-			cout << Menu::getActive()->str();
-		}
-		g_lock.unlock();
-		Sleep(100);
-	}
 }

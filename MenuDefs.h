@@ -37,7 +37,3 @@ void initReaderDebtListMenu();
 
 // Инициализировать все меню с разовой инициализацией
 void menuInitAll();
-
-// Циклы
-void menuControlLoop();
-void menuPrintLoop();
