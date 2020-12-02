@@ -40,6 +40,7 @@ Menu* logMenu = nullptr;
 Menu* documentGivingMenu = nullptr;
 Menu* readerDebtListMenu = nullptr;
 
+// FINISHED
 void initLoginMenu()
 {
 	MI_START(loginMenu);
@@ -51,9 +52,9 @@ void initLoginMenu()
 	NME_FUNC_BUTTON("Войти", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(User, LOGIN, login);
+		CH_GET_AS_EF_AND_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, PASSWORD, password);
+		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
 		User::loginUser(login, password);
 		if (User::getActiveUser())
 		{
@@ -76,6 +77,7 @@ void initLoginMenu()
 	MI_END;
 }
 
+// FINISHED
 void initRegisterMenu()
 {
 	MI_START(registerMenu);
@@ -89,13 +91,13 @@ void initRegisterMenu()
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, LOGIN, login);
+		CH_GET_AS_EF_AND_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, PASSWORD, password);
+		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, PASSWORD, repeatPassword);
+		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword))
 		{
 			registerMenu->reset();
@@ -109,6 +111,7 @@ void initRegisterMenu()
 	MI_END;
 }
 
+// FINISHED
 void initUserMenu()
 {
 	MI_START(userMenu);
@@ -126,6 +129,7 @@ void initUserMenu()
 	MI_END;
 }
 
+// FINISHED
 void initAdminMenu()
 {
 	MI_START(adminMenu);
@@ -144,6 +148,7 @@ void initAdminMenu()
 	MI_END;
 }
 
+// FINISHED
 void initStartMenu()
 {
 	MI_START(startMenu);
@@ -156,6 +161,7 @@ void initStartMenu()
 	MI_END;
 }
 
+// FINISHED
 void initDataTypeMenu()
 {
 	MI_START(dataTypeMenu);
@@ -173,6 +179,7 @@ void initDataTypeMenu()
 	MI_END;
 }
 
+// FINISHED
 void initRegisterConfirmationMenu()
 {
 	MI_START(registerConfirmationMenu);
@@ -218,6 +225,7 @@ void initRegisterConfirmationMenu()
 string _authorListFilterFullName = "";
 string _authorListSortBy = "ID";
 
+// TODO
 void initAuthorListMenu()
 {
 	MI_START(authorListMenu);
@@ -246,6 +254,7 @@ string _documentListFilterTitle = "";
 string _documentListFilterPublisherName = "";
 string _documentListSortBy = "ID";
 
+// TODO
 void initDocumentListMenu()
 {
 	MI_START(documentListMenu);
@@ -276,6 +285,7 @@ string _readerListFilterName = "";
 string _readerListFilterPassportId = "";
 string _readerListSortBy = "ID";
 
+// TODO
 void initReaderListMenu()
 {
 	MI_START(readerListMenu);
@@ -304,6 +314,7 @@ void initReaderListMenu()
 string _publisherListFilterName = "";
 string _publisherListSortBy = "ID";
 
+// TODO
 void initPublisherListMenu()
 {
 	MI_START(publisherListMenu);
@@ -332,6 +343,7 @@ string _userListFilterLogin = "";
 string _userListFilterFullName = "";
 string _userListSortBy = "ID";
 
+// TODO
 void initUserListMenu()
 {
 	MI_START(userListMenu);
@@ -357,6 +369,7 @@ void initUserListMenu()
 	MI_END;
 }
 
+// FINISHED
 void initAuthorAddMenu()
 {
 	MI_START(authorAddMenu);
@@ -367,7 +380,7 @@ void initAuthorAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
 		Author::getBinder().getRecords().push_back(new Author(fullName));
 		Author::getBinder().saveRecords();
 		cout << "Добавление успешно." << endl;
@@ -384,6 +397,7 @@ void initAuthorAddMenu()
 	MI_END;
 }
 
+// FINISHED
 void initDocumentAddMenu()
 {
 	MI_START(documentAddMenu);
@@ -403,7 +417,7 @@ void initDocumentAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Document, TITLE, title);
+		CH_GET_AS_EF_AND_CHECK(Document, TITLE, title);
 		CH_MOVE(1);
 		int type = ((MenuElementChoice *)(*it))->getActiveOption();
 		CH_MOVE(1);
@@ -441,6 +455,7 @@ void initDocumentAddMenu()
 	MI_END;
 }
 
+// FINISHED
 void initReaderAddMenu()
 {
 	MI_START(readerAddMenu);
@@ -454,13 +469,13 @@ void initReaderAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(Reader, PHONE_NUMBER, phoneNumber);
+		CH_GET_AS_EF_AND_CHECK(Reader, PHONE_NUMBER, phoneNumber);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(Reader, ADDRESS, address);
+		CH_GET_AS_EF_AND_CHECK(Reader, ADDRESS, address);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(Reader, PASSPORT_ID, passportId); 
+		CH_GET_AS_EF_AND_CHECK(Reader, PASSPORT_ID, passportId); 
 		Reader::getBinder().getRecords().push_back(new Reader(fullName, phoneNumber, address, passportId));
 		Reader::getBinder().saveRecords();
 		readerAddMenu->reset();
@@ -475,6 +490,7 @@ void initReaderAddMenu()
 	MI_END;
 }
 
+// FINISHED
 void initPublisherAddMenu()
 {
 	MI_START(publisherAddMenu);
@@ -485,7 +501,7 @@ void initPublisherAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Publisher, NAME, name);
+		CH_GET_AS_EF_AND_CHECK(Publisher, NAME, name);
 		Publisher::getBinder().getRecords().push_back(new Publisher(name));
 		Publisher::getBinder().saveRecords();
 		publisherAddMenu->reset();
@@ -500,6 +516,7 @@ void initPublisherAddMenu()
 	MI_END;
 }
 
+// FINISHED
 void initUserAddMenu()
 {
 	MI_START(userAddMenu);
@@ -513,13 +530,13 @@ void initUserAddMenu()
 	NME_FUNC_BUTTON("Зарегистрировать", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, LOGIN, login);
+		CH_GET_AS_EF_AND_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, PASSWORD, password);
+		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
-		CH_EF_GET_CHECK(User, PASSWORD, repeatPassword);
+		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword, true))
 		{
 			userAddMenu->reset();
@@ -535,18 +552,24 @@ void initUserAddMenu()
 	MI_END;
 }
 
+// TODO
 void initAuthorEditMenu()
 {
 	MI_START(authorEditMenu);
 	NME_TITLE("Редактировать автора");
 	NME_SUBTITLE("Данные");
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить", []() {
+		// TODO
+		Menu::multiPopMenuStack(1);
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
 	MI_END;
 }
 
+// TODO
 void initDocumentEditMenu()
 {
 	GET_CTX(Document, document, 2);
@@ -592,6 +615,7 @@ void initDocumentEditMenu()
 	MI_END;
 }
 
+// TODO
 void initReaderEditMenu()
 {
 	MI_START(readerEditMenu);
@@ -604,6 +628,7 @@ void initReaderEditMenu()
 	MI_END;
 }
 
+// TODO
 void initPublisherEditMenu()
 {
 	MI_START(publisherEditMenu);
@@ -616,6 +641,7 @@ void initPublisherEditMenu()
 	MI_END;
 }
 
+// TODO
 void initUserEditMenu()
 {
 	MI_START(userEditMenu);
@@ -628,6 +654,7 @@ void initUserEditMenu()
 	MI_END;
 }
 
+// TODO
 void initLogMenu()
 {
 	MI_START(logMenu);
@@ -641,6 +668,7 @@ void initLogMenu()
 	MI_END;
 }
 
+// FINISHED
 void initDocumentGivingMenu()
 {
 	MI_START(documentGivingMenu);
@@ -706,9 +734,10 @@ void initDocumentGivingMenu()
 	MI_END;
 }
 
-int _chosenReaderIdForDebtListing = -1;
-int _chosenReaderPosForDebtListing = -1;
+int _readerDebtListMenu_chosenReaderId = -1;
+int _readerDebtListMenu_chosenReaderVectorIndex = -1;
 
+// FINISHED
 void initReaderDebtListMenu()
 {
 	MI_START(readerDebtListMenu);
@@ -720,20 +749,20 @@ void initReaderDebtListMenu()
 		readers.push_back(to_string(it->getId()));
 	}
 	NME_CHOICE("ID читателя", readers);
-	if (_chosenReaderPosForDebtListing != -1)
+	if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 	{
-		((MenuElementChoice *)(ME_PREV))->getActiveOption() = _chosenReaderPosForDebtListing;
+		((MenuElementChoice *)(ME_PREV))->getActiveOption() = _readerDebtListMenu_chosenReaderVectorIndex;
 	}
 	NME_FUNC_BUTTON("Выбрать читателя без сохранения данных", []() {
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
-			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
-			_chosenReaderPosForDebtListing = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
+			_readerDebtListMenu_chosenReaderId = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_readerDebtListMenu_chosenReaderVectorIndex = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
 		{
-			_chosenReaderIdForDebtListing = -1;
-			_chosenReaderPosForDebtListing = -1;
+			_readerDebtListMenu_chosenReaderId = -1;
+			_readerDebtListMenu_chosenReaderVectorIndex = -1;
 		}
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -741,7 +770,7 @@ void initReaderDebtListMenu()
 		readerDebtListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {
-		if (_chosenReaderPosForDebtListing != 1)
+		if (_readerDebtListMenu_chosenReaderVectorIndex != 1)
 		{
 			CH_INIT;
 			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
@@ -757,20 +786,20 @@ void initReaderDebtListMenu()
 		DocumentUseRecord::getBinder().saveRecords();
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
-			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
-			_chosenReaderPosForDebtListing = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
+			_readerDebtListMenu_chosenReaderId = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_readerDebtListMenu_chosenReaderVectorIndex = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
 		{
-			_chosenReaderIdForDebtListing = -1;
-			_chosenReaderPosForDebtListing = -1;
+			_readerDebtListMenu_chosenReaderId = -1;
+			_readerDebtListMenu_chosenReaderVectorIndex = -1;
 		}
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
 		initReaderDebtListMenu();
 		readerDebtListMenu->addToStack();
 	});
-	if (_chosenReaderIdForDebtListing == -1)
+	if (_readerDebtListMenu_chosenReaderId == -1)
 	{
 		NME_SUBTITLE("Читатель не выбран. Выберите читателя и подтвердите выбор.");
 	}
@@ -779,7 +808,7 @@ void initReaderDebtListMenu()
 		NME_SUBTITLE("Задолженности читателя");
 		for (auto it : DocumentUseRecord::getBinder().getRecords())
 		{
-			if (_chosenReaderIdForDebtListing == it->getReader()->getId())
+			if (_readerDebtListMenu_chosenReaderId == it->getReader()->getId())
 			{
 				NME_CHOICE(it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
 			}
@@ -787,7 +816,7 @@ void initReaderDebtListMenu()
 	}
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить и выйти", []() {
-		if (_chosenReaderPosForDebtListing != 1)
+		if (_readerDebtListMenu_chosenReaderVectorIndex != 1)
 		{
 			CH_INIT;
 			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
@@ -803,18 +832,19 @@ void initReaderDebtListMenu()
 		DocumentUseRecord::getBinder().saveRecords();
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
-		_chosenReaderIdForDebtListing = -1;
-		_chosenReaderPosForDebtListing = -1;
+		_readerDebtListMenu_chosenReaderId = -1;
+		_readerDebtListMenu_chosenReaderVectorIndex = -1;
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
-		_chosenReaderIdForDebtListing = -1;
-		_chosenReaderPosForDebtListing = -1;
+		_readerDebtListMenu_chosenReaderId = -1;
+		_readerDebtListMenu_chosenReaderVectorIndex = -1;
 	});
 	MI_END;
 }
 
+// FINISHED
 void menuInitAll()
 {
 	initLoginMenu();
