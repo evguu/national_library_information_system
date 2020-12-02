@@ -707,6 +707,7 @@ void initDocumentGivingMenu()
 }
 
 int _chosenReaderIdForDebtListing = -1;
+int _chosenReaderPosForDebtListing = -1;
 
 void initReaderDebtListMenu()
 {
@@ -719,14 +720,20 @@ void initReaderDebtListMenu()
 		readers.push_back(to_string(it->getId()));
 	}
 	NME_CHOICE("ID читателя", readers);
+	if (_chosenReaderPosForDebtListing != -1)
+	{
+		((MenuElementChoice *)(ME_PREV))->getActiveOption() = _chosenReaderPosForDebtListing;
+	}
 	NME_FUNC_BUTTON("Выбрать читателя без сохранения данных", []() {
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
 			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_chosenReaderPosForDebtListing = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
 		{
 			_chosenReaderIdForDebtListing = -1;
+			_chosenReaderPosForDebtListing = -1;
 		}
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -739,10 +746,12 @@ void initReaderDebtListMenu()
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
 			_chosenReaderIdForDebtListing = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_chosenReaderPosForDebtListing = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
 		{
 			_chosenReaderIdForDebtListing = -1;
+			_chosenReaderPosForDebtListing = -1;
 		}
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
@@ -771,11 +780,13 @@ void initReaderDebtListMenu()
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
 		_chosenReaderIdForDebtListing = -1;
+		_chosenReaderPosForDebtListing = -1;
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
 		_chosenReaderIdForDebtListing = -1;
+		_chosenReaderPosForDebtListing = -1;
 	});
 	MI_END;
 }
