@@ -552,7 +552,7 @@ void initUserAddMenu()
 	MI_END;
 }
 
-// FINISHED
+// TODO : Allow delete
 void initAuthorEditMenu()
 {
 	MI_START(authorEditMenu);
@@ -581,27 +581,59 @@ void initAuthorEditMenu()
 	MI_END;
 }
 
-// TODO
+vector<DocumentUseRecord *> results1;
+vector<DocumentAuthorBind *> results2;
+
+// TODO : Allow delete
+// TODO : Allow author add
 void initDocumentEditMenu()
 {
 	GET_CTX(Document, document, 2);
 	MI_START(documentEditMenu);
-	NME_TITLE("Редактировать документ");
-	NME_SUBTITLE("История использования");
-	vector<DocumentUseRecord *> results1;
+	NME_TITLE("Редактировать документ"); // 0
 	DocumentUseRecord::searchByDocumentId(ctx->getId(), results1);
-	for (auto it : results1)
+	if (results1.size())
 	{
-		NME_CHOICE(it->str(), {"Оставить", "Удалить"});
+		NME_SUBTITLE("Последняя запись о выдаче: " + results1.back()->str(true)); // 1
 	}
-	NME_SUBTITLE("Авторы");
-	vector<DocumentAuthorBind *> results2;
+	else
+	{
+		NME_SUBTITLE("Нет записей о выдаче"); // 1
+	}
+	NME_SUBTITLE("Авторы"); // 2
 	DocumentAuthorBind::searchByDocumentId(ctx->getId(), results2);
 	for (auto it : results2)
 	{
-		NME_CHOICE(it->str(), {"Оставить", "Удалить"});
+		NME_CHOICE(it->str(), {"Оставить", "Удалить"}); // 2 + [1..results2.size()]
 	}
-	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Данные"); // 3 + results2.size()
+	CH_NME_EDIT_FIELD("Название", Document, TITLE); // 4 + results2.size()
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getTitle();
+	NME_CHOICE("Тип документа", Document::types);	// 5 + results2.size()
+	((MenuElementChoice *)ME_PREV)->getActiveOption() = (int)ctx->getType();
+	NME_CHOICE("Язык", Document::languages); // 6 + results2.size()
+	((MenuElementChoice *)ME_PREV)->getActiveOption() = (int)ctx->getLanguage();
+	vector<string> publishers;
+	for (auto it : Publisher::getBinder().getRecords())
+	{
+		publishers.push_back(to_string(it->getId()));
+	}
+	NME_CHOICE("ID издателя", publishers); // 7 + results2.size()
+	{
+		int localTmp = 0;
+		int searchFor = ctx->getPublisher()->getId();
+		for (auto it : Publisher::getBinder().getRecords())
+		{
+			if (it->getId() == searchFor)
+			{
+				((MenuElementChoice *)ME_PREV)->getActiveOption() = localTmp;
+				break;
+			}
+			++localTmp;
+		}
+	}
+	NME_CHOICE("Число страниц", 1, 2001); // 8 + results2.size()
+	((MenuElementChoice *)ME_PREV)->getActiveOption() = ctx->getPageCount() - 1;
 	NME_SUBTITLE("Опасная зона");
 	NME_FUNC_BUTTON("Удалить элемент ", []() {
 		// TODO
@@ -613,9 +645,49 @@ void initDocumentEditMenu()
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить изменения", []() {
-		// TODO
+		GET_CTX(Document, document, 2);
+		CH_INIT;
+		CH_MOVE(results2.size() + 4);
+		CH_GET_AS_EF_AND_CHECK(Document, TITLE, title);
+		CH_MOVE(1);
+		int type = ((MenuElementChoice *)(*it))->getActiveOption();
+		CH_MOVE(1);
+		int language = ((MenuElementChoice *)(*it))->getActiveOption();
+		CH_MOVE(1);
+		string publisherId = ((MenuElementChoice *)(*it))->getChoice();
+		CH_MOVE(1);
+		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
+		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
+		{
+			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
+			system("pause");
+			return;
+		}
+		for (auto it : Publisher::getBinder().getRecords())
+		{
+			if (it->getId() == stoi(publisherId))
+			{
+				GET_CTX(Document, document, 2);
+				ctx->getType() = (Document::Type)type;
+				ctx->getLanguage() = (Document::Language)language;
+				ctx->getPublisher() = it;
+				ctx->getTitle() = title;
+				ctx->getPageCount() = pageCount;
+				break;
+			}
+		}
 		Document::getBinder().saveRecords();
-		documentEditMenu->reset();
+		it = menuElements.begin();
+		CH_MOVE(2 + results2.size());
+		for (int i = results2.size() - 1; i >= 0; --i)
+		{
+			if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
+			{
+				DocumentAuthorBind::getBinder().getRecords().erase(DocumentAuthorBind::getBinder().getRecords().begin() + i);
+			}
+			CH_MOVE(-1);
+		}
+		DocumentAuthorBind::getBinder().saveRecords();
 		Menu::multiPopMenuStack(2);
 		initDocumentListMenu();
 		documentListMenu->addToStack();
