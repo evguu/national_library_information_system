@@ -51,9 +51,9 @@ void initLoginMenu()
 	NME_FUNC_BUTTON("Войти", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(User, LOGIN, login);
+		CH_EF_GET_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, PASSWORD, password);
+		CH_EF_GET_CHECK(User, PASSWORD, password);
 		User::loginUser(login, password);
 		if (User::getActiveUser())
 		{
@@ -89,13 +89,13 @@ void initRegisterMenu()
 	NME_FUNC_BUTTON("Зарегистрироваться", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, LOGIN, login);
+		CH_EF_GET_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, PASSWORD, password);
+		CH_EF_GET_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, PASSWORD, repeatPassword);
+		CH_EF_GET_CHECK(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword))
 		{
 			registerMenu->reset();
@@ -367,7 +367,7 @@ void initAuthorAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
 		Author::getBinder().getRecords().push_back(new Author(fullName));
 		Author::getBinder().saveRecords();
 		cout << "Добавление успешно." << endl;
@@ -403,7 +403,7 @@ void initDocumentAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Document, TITLE, title);
+		CH_EF_GET_CHECK(Document, TITLE, title);
 		CH_MOVE(1);
 		int type = ((MenuElementChoice *)(*it))->getActiveOption();
 		CH_MOVE(1);
@@ -454,13 +454,13 @@ void initReaderAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_CHECKED_GET(Reader, PHONE_NUMBER, phoneNumber);
+		CH_EF_GET_CHECK(Reader, PHONE_NUMBER, phoneNumber);
 		CH_MOVE(1);
-		CH_CHECKED_GET(Reader, ADDRESS, address);
+		CH_EF_GET_CHECK(Reader, ADDRESS, address);
 		CH_MOVE(1);
-		CH_CHECKED_GET(Reader, PASSPORT_ID, passportId); 
+		CH_EF_GET_CHECK(Reader, PASSPORT_ID, passportId); 
 		Reader::getBinder().getRecords().push_back(new Reader(fullName, phoneNumber, address, passportId));
 		Reader::getBinder().saveRecords();
 		readerAddMenu->reset();
@@ -485,7 +485,7 @@ void initPublisherAddMenu()
 	NME_FUNC_BUTTON("Добавить", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Publisher, NAME, name);
+		CH_EF_GET_CHECK(Publisher, NAME, name);
 		Publisher::getBinder().getRecords().push_back(new Publisher(name));
 		Publisher::getBinder().saveRecords();
 		publisherAddMenu->reset();
@@ -513,13 +513,13 @@ void initUserAddMenu()
 	NME_FUNC_BUTTON("Зарегистрировать", []() {
 		CH_INIT;
 		CH_MOVE(2);
-		CH_CHECKED_GET(Person, FULL_NAME, fullName);
+		CH_EF_GET_CHECK(Person, FULL_NAME, fullName);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, LOGIN, login);
+		CH_EF_GET_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, PASSWORD, password);
+		CH_EF_GET_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
-		CH_CHECKED_GET(User, PASSWORD, repeatPassword);
+		CH_EF_GET_CHECK(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword, true))
 		{
 			userAddMenu->reset();
@@ -741,7 +741,19 @@ void initReaderDebtListMenu()
 		readerDebtListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {
-		// TODO data save
+		if (_chosenReaderPosForDebtListing != 1)
+		{
+			CH_INIT;
+			CH_MOVE(6 + DocumentUseRecord::getBinder().getRecords().size() - 1);
+			for (int i = DocumentUseRecord::getBinder().getRecords().size() - 1; i >= 0; --i)
+			{
+				if(CH_GET_AS(MenuElementChoice)->getActiveOption() == 1);
+				{
+					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
+				}
+				CH_MOVE(-1);
+			}
+		}
 		DocumentUseRecord::getBinder().saveRecords();
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{

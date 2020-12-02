@@ -12,5 +12,7 @@
 // Макрос для смещения итератора (создан для соблюдения стиля)
 #define CH_MOVE(x) it += x;
 
+#define CH_GET_AS(x) ((x*)(*it))
+
 // Макрос для получения и проверки строки из текущего элемента, доступного по итератору
-#define CH_CHECKED_GET(y, z, x) string x; x = ((MenuElementEditField *)(*it))->getInput(); if (x.length() < Constraints::y::##z##_MIN_LENGTH) { cout << "Длина поля " << (*it)->getText() << " не может быть меньше " << Constraints::y::##z##_MIN_LENGTH << " символов." << endl; system("pause"); return; }
+#define CH_EF_GET_CHECK(y, z, x) string x; x = CH_GET_AS(MenuElementEditField)->getInput(); if (x.length() < Constraints::y::##z##_MIN_LENGTH) { cout << "Длина поля " << (*it)->getText() << " не может быть меньше " << Constraints::y::##z##_MIN_LENGTH << " символов." << endl; system("pause"); return; }
