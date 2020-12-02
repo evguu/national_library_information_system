@@ -56,10 +56,10 @@ public:
 		tm ltm;
 		localtime_s(&ltm, &givenAt);
 		std::stringstream date;
-		date << ltm.tm_mday << "/" << 1 + ltm.tm_mon<< "/"
-			<< 1900 + ltm.tm_year << " " << 1 + ltm.tm_hour
-			<< ":" << 1 + ltm.tm_min
-			<< ":" << 1 + ltm.tm_sec;
+		date << ltm.tm_mday << "/" << ((1 + ltm.tm_mon >= 10)?(""):("0")) << 1 + ltm.tm_mon<< "/"
+			<< 1900 + ltm.tm_year << " " << ((1 + ltm.tm_hour >= 10) ? ("") : ("0")) << 1 + ltm.tm_hour
+			<< ":" << ((1 + ltm.tm_min >= 10) ? ("") : ("0")) << 1 + ltm.tm_min
+			<< ":" << ((1 + ltm.tm_sec >= 10) ? ("") : ("0")) << 1 + ltm.tm_sec;
 		return date.str();
 	}
 	string str(bool skipDocument = false) {
@@ -68,7 +68,7 @@ public:
 		{
 			result += "Документ" + document->str() + " ";
 		}
-		result += "Читателю " + reader->str() + " выдан" + strGivenAt() + " на " + to_string(givenFor) + "часов.";
+		result += "читателю " + reader->str() + " выдан " + strGivenAt() + " на " + to_string(givenFor) + " часов.";
 		return result;
 	};
 };
