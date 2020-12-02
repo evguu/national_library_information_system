@@ -744,10 +744,10 @@ void initReaderDebtListMenu()
 		if (_chosenReaderPosForDebtListing != 1)
 		{
 			CH_INIT;
-			CH_MOVE(6 + DocumentUseRecord::getBinder().getRecords().size() - 1);
+			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
 			for (int i = DocumentUseRecord::getBinder().getRecords().size() - 1; i >= 0; --i)
 			{
-				if(CH_GET_AS(MenuElementChoice)->getActiveOption() == 1);
+				if(CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 				{
 					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
 				}
@@ -787,7 +787,19 @@ void initReaderDebtListMenu()
 	}
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить и выйти", []() {
-		// TODO data save
+		if (_chosenReaderPosForDebtListing != 1)
+		{
+			CH_INIT;
+			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
+			for (int i = DocumentUseRecord::getBinder().getRecords().size() - 1; i >= 0; --i)
+			{
+				if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
+				{
+					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
+				}
+				CH_MOVE(-1);
+			}
+		}
 		DocumentUseRecord::getBinder().saveRecords();
 		readerDebtListMenu->reset();
 		Menu::multiPopMenuStack(1);
