@@ -100,7 +100,7 @@ public:
 
 	// Èםעונפויס
 	string str() const;
-	string getInput();
+	string& getInput();
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() { input = ""; };

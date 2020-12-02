@@ -552,16 +552,28 @@ void initUserAddMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initAuthorEditMenu()
 {
 	MI_START(authorEditMenu);
 	NME_TITLE("Редактировать автора");
 	NME_SUBTITLE("Данные");
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+	GET_CTX(Author, author, 2);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getFullName();
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
-		// TODO
-		Menu::multiPopMenuStack(1);
+		CH_INIT;
+		CH_MOVE(2);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
+		GET_CTX(Author, author, 2);
+		ctx->getFullName() = CH_GET_AS(MenuElementEditField)->getInput();
+		Author::getBinder().saveRecords();
+		cout << "Изменение успешно." << endl;
+		system("pause");
+		Menu::multiPopMenuStack(2);
+		initAuthorListMenu();
+		authorListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);

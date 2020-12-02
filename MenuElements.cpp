@@ -55,7 +55,7 @@ string MenuElementEditField::str() const
 	return ss.str();
 }
 
-string MenuElementEditField::getInput()
+string& MenuElementEditField::getInput()
 {
 	return input;
 }
