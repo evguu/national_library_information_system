@@ -237,7 +237,7 @@ void initAuthorListMenu()
 	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
 	NME_FUNC_BUTTON("Вывести результат", []() {
-
+		// TODO
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
@@ -247,10 +247,6 @@ void initAuthorListMenu()
 	});
 	MI_END;
 }
-
-string _documentListFilterTitle = "";
-string _documentListFilterPublisherName = "";
-string _documentListSortBy = "ID";
 
 // TODO
 void initDocumentListMenu()
@@ -267,7 +263,7 @@ void initDocumentListMenu()
 	CH_NME_EDIT_FIELD("Содержит в названии издателя", Publisher, NAME);
 	CH_NME_EDIT_FIELD("Содержит в имени автора", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "ID издателя", "Издателю" });
-	NME_FUNC_BUTTON("Применить параметры", []() {
+	NME_FUNC_BUTTON("Вывести результат", []() {
 		// TODO
 	});
 	NME_SUBTITLE("Навигация");
@@ -278,10 +274,6 @@ void initDocumentListMenu()
 	});
 	MI_END;
 }
-
-string _readerListFilterName = "";
-string _readerListFilterPassportId = "";
-string _readerListSortBy = "ID";
 
 // TODO
 void initReaderListMenu()
@@ -297,7 +289,7 @@ void initReaderListMenu()
 	CH_NME_EDIT_FIELD("Содержит в имени", Person, FULL_NAME);
 	CH_NME_EDIT_FIELD("Содержит в ИН паспорта", Reader, PASSPORT_ID);
 	NME_CHOICE("Сортировать по", { "ID", "Имени", "ИН паспорта" });
-	NME_FUNC_BUTTON("Применить параметры", []() {
+	NME_FUNC_BUTTON("Вывести результат", []() {
 		// TODO
 	});
 	NME_SUBTITLE("Навигация");
@@ -308,9 +300,6 @@ void initReaderListMenu()
 	});
 	MI_END;
 }
-
-string _publisherListFilterName = "";
-string _publisherListSortBy = "ID";
 
 // TODO
 void initPublisherListMenu()
@@ -325,7 +314,7 @@ void initPublisherListMenu()
 	NME_SUBTITLE("Параметры представления");
 	CH_NME_EDIT_FIELD("Содержит в названии", Publisher, NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Названию" });
-	NME_FUNC_BUTTON("Применить параметры", []() {
+	NME_FUNC_BUTTON("Вывести результат", []() {
 		// TODO
 	});
 	NME_SUBTITLE("Навигация");
@@ -336,10 +325,6 @@ void initPublisherListMenu()
 	});
 	MI_END;
 }
-
-string _userListFilterLogin = "";
-string _userListFilterFullName = "";
-string _userListSortBy = "ID";
 
 // TODO
 void initUserListMenu()
@@ -355,7 +340,7 @@ void initUserListMenu()
 	CH_NME_EDIT_FIELD("Содержит в логине", User, LOGIN);
 	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Логину", "ФИО" });
-	NME_FUNC_BUTTON("Применить параметры", []() {
+	NME_FUNC_BUTTON("Вывести результат", []() {
 		// TODO
 	});
 	NME_SUBTITLE("Навигация");
