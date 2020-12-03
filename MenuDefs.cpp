@@ -13,6 +13,7 @@
 #include <Windows.h>
 #include "ConstraintHelper.h"
 #include "BindAwareDeleters.h"
+#include <algorithm>
 using namespace std;
 
 Menu* loginMenu = nullptr;
@@ -223,7 +224,7 @@ void initRegisterConfirmationMenu()
 	MI_END;
 }
 
-// TODO
+// TEST REQUIRED
 void initAuthorListMenu()
 {
 	MI_START(authorListMenu);
@@ -237,7 +238,32 @@ void initAuthorListMenu()
 	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
 	NME_FUNC_BUTTON("Вывести результат", []() {
-		// TODO
+		vector<Author*>sorted(Author::getBinder().getRecords());
+		CH_INIT;
+		CH_MOVE(3 + Author::getBinder().getRecords().size());
+		string t1 = CH_GET_AS(MenuElementEditField)->getInput();
+		CH_MOVE(1);
+		int t2 = CH_GET_AS(MenuElementChoice)->getActiveOption();
+		if (t2 == 0)
+		{
+			sort(sorted.begin(), sorted.end(), [](Author *e1, Author* e2) {
+				return e1->getId() < e2->getId();
+			});
+		}
+		else if (t2 == 1)
+		{
+			sort(sorted.begin(), sorted.end(), [](Author *e1, Author* e2) {
+				return e1->getFullName() < e2->getFullName();
+			});
+		}
+		for (auto it : sorted)
+		{
+			if (it->getFullName().find(t1) != string::npos)
+			{
+				cout << it->str() << endl;
+			}
+		}
+		system("pause");
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
