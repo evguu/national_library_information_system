@@ -804,13 +804,44 @@ void initDocumentEditMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initReaderEditMenu()
 {
+	GET_CTX(Reader, reader, 2);
 	MI_START(readerEditMenu);
 	NME_TITLE("Редактировать читателя");
 	NME_SUBTITLE("Данные");
+	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getFullName();
+	CH_NME_EDIT_FIELD("Номер телефона", Reader, PHONE_NUMBER);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getPhoneNumber();
+	CH_NME_EDIT_FIELD("Адрес", Reader, ADDRESS);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getAddress();
+	CH_NME_EDIT_FIELD("ИН паспорта", Reader, PASSPORT_ID);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getPassportId();
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить", []() {
+		CH_INIT;
+		CH_MOVE(2);
+		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
+		CH_MOVE(1);
+		CH_GET_AS_EF_AND_CHECK(Reader, PHONE_NUMBER, phoneNumber);
+		CH_MOVE(1);
+		CH_GET_AS_EF_AND_CHECK(Reader, ADDRESS, address);
+		CH_MOVE(1);
+		CH_GET_AS_EF_AND_CHECK(Reader, PASSPORT_ID, passportId);
+		GET_CTX(Reader, reader, 2);
+		ctx->getFullName() = fullName;
+		ctx->getPhoneNumber() = phoneNumber;
+		ctx->getAddress() = address;
+		ctx->getPassportId() = passportId;
+		Reader::getBinder().saveRecords();
+		cout << "Изменение успешно." << endl;
+		system("pause");
+		Menu::multiPopMenuStack(2);
+		initReaderListMenu();
+		readerListMenu->addToStack();
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
@@ -849,7 +880,8 @@ void initLogMenu()
 	MI_START(logMenu);
 	NME_TITLE("Просмотр логов");
 	NME_SUBTITLE("Список");
-	//TODO Здесь будет выводиться список сохраненных ротаций логов
+	NME_FUNC_BUTTON("Просмотреть логи", []() {});
+	NME_FUNC_BUTTON("Очистить логи", []() {});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		Menu::multiPopMenuStack(1);
