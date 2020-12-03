@@ -883,7 +883,7 @@ void initPublisherEditMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initUserEditMenu()
 {
 	GET_CTX(User, user, 2);
@@ -916,6 +916,7 @@ void initUserEditMenu()
 			else
 			{
 				cout << "Пароли не совпадают." << endl;
+				system("pause");
 				return;
 			}
 			User::getBinder().saveRecords();
