@@ -908,21 +908,22 @@ void initUserEditMenu()
 			CH_MOVE(1);
 			CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
 			GET_CTX(User, user, 2);
-			ctx->getFullName() = fullName;
 			if (password == repeatPassword)
 			{
 				ctx->getEncryptedPassword() = Utils::encrypt(password);
+				ctx->getFullName() = fullName;
 			}
 			else
 			{
-				cout << "Пароли не совпадают. Пароль не будет изменен. Ниже информация по остальным потенциальным изменениям." << endl;
+				cout << "Пароли не совпадают." << endl;
+				return;
 			}
 			User::getBinder().saveRecords();
 			cout << "Изменение успешно." << endl;
 			system("pause");
 			Menu::multiPopMenuStack(2);
-			initPublisherListMenu();
-			publisherListMenu->addToStack();
+			initUserListMenu();
+			userListMenu->addToStack();
 		});
 	}
 	else
