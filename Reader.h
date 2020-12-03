@@ -28,7 +28,7 @@ public:
 	static Reader* loadRecord(ifstream& fin);
 	void saveRecord(ofstream& fout);
 
-	string str() { return id + ". " + getFullName(); };
+	string str() { return to_string(id) + ". " + getFullName(); };
 };
 
 namespace Constraints
