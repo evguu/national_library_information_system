@@ -656,6 +656,8 @@ void initAuthorEditMenu()
 	CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
 	GET_CTX(Author, author, 2);
 	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getFullName();
+	NME_SUBTITLE("Опасная зона");
+	DOOM_BUTTON(Author, author);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
 		CH_INIT;
@@ -819,6 +821,8 @@ void initReaderEditMenu()
 	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getAddress();
 	CH_NME_EDIT_FIELD("ИН паспорта", Reader, PASSPORT_ID);
 	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getPassportId();
+	NME_SUBTITLE("Опасная зона");
+	DOOM_BUTTON(Reader, reader);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
 		CH_INIT;
@@ -848,7 +852,7 @@ void initReaderEditMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initPublisherEditMenu()
 {
 	GET_CTX(Publisher, publisher, 2);
@@ -857,6 +861,8 @@ void initPublisherEditMenu()
 	NME_SUBTITLE("Данные");
 	CH_NME_EDIT_FIELD("Название", Publisher, NAME);
 	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getName();
+	NME_SUBTITLE("Опасная зона");
+	DOOM_BUTTON(Publisher, publisher);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
 		CH_INIT;
@@ -883,6 +889,8 @@ void initUserEditMenu()
 	MI_START(userEditMenu);
 	NME_TITLE("Редактировать пользователя");
 	NME_SUBTITLE("Данные");
+	NME_SUBTITLE("Опасная зона");
+	DOOM_BUTTON(User, user);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
