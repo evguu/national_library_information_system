@@ -223,9 +223,6 @@ void initRegisterConfirmationMenu()
 	MI_END;
 }
 
-string _authorListFilterFullName = "";
-int _authorListSortBy = 0;
-
 // TODO
 void initAuthorListMenu()
 {
@@ -236,20 +233,11 @@ void initAuthorListMenu()
 	{
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getFullName(), []() { initAuthorEditMenu(); authorEditMenu->addToStack(); });
 	}
-	NME_SUBTITLE("Параметры представления");
+	NME_SUBTITLE("Фильтрация и поиск");
 	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
-	((MenuElementEditField *)ME_PREV)->getInput() = _authorListFilterFullName;
 	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
-	((MenuElementChoice *)ME_PREV)->getActiveOption() = _authorListSortBy;
-	NME_FUNC_BUTTON("Применить параметры", []() {
-		CH_INIT;
-		CH_MOVE(3 + Author::getBinder().getRecords().size());
-		_authorListFilterFullName = CH_GET_AS(MenuElementEditField)->getInput();
-		CH_MOVE(1);
-		_authorListSortBy = CH_GET_AS(MenuElementChoice)->getActiveOption();
-		Menu::multiPopMenuStack(1);
-		initAuthorListMenu();
-		authorListMenu->addToStack();
+	NME_FUNC_BUTTON("Вывести результат", []() {
+
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
