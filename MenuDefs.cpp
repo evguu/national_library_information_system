@@ -235,7 +235,7 @@ void initAuthorListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getFullName(), []() { initAuthorEditMenu(); authorEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Фильтрация и поиск");
-	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
+	CH_NME_EDIT_FIELD_S("Содержит в ФИО", Person, FULL_NAME);
 	NME_CHOICE("Сортировать по", {"ID", "ФИО"});
 	NME_FUNC_BUTTON("Вывести результат", []() {
 		vector<Author*>sorted(Author::getBinder().getRecords());
@@ -288,8 +288,8 @@ void initDocumentListMenu()
 		NME_FUNC_BUTTON(it->str(), []() { initDocumentEditMenu(); documentEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	CH_NME_EDIT_FIELD("Содержит в заголовке", Document, TITLE);
-	CH_NME_EDIT_FIELD("Содержит в названии издателя", Publisher, NAME);
+	CH_NME_EDIT_FIELD_S("Содержит в заголовке", Document, TITLE);
+	CH_NME_EDIT_FIELD_S("Содержит в названии издателя", Publisher, NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "Издателю" });
 	NME_FUNC_BUTTON("Вывести результат", []() {
 		vector<Document*>sorted(Document::getBinder().getRecords());
@@ -339,7 +339,7 @@ void initDocumentListMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initReaderListMenu()
 {
 	MI_START(readerListMenu);
@@ -350,11 +350,38 @@ void initReaderListMenu()
 		NME_FUNC_BUTTON(it->str(), []() { initReaderEditMenu(); readerEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	CH_NME_EDIT_FIELD("Содержит в имени", Person, FULL_NAME);
-	CH_NME_EDIT_FIELD("Содержит в ИН паспорта", Reader, PASSPORT_ID);
-	NME_CHOICE("Сортировать по", { "ID", "Имени", "ИН паспорта" });
+	CH_NME_EDIT_FIELD_S("Содержит в имени", Person, FULL_NAME);
+	NME_CHOICE("Сортировать по", { "ID", "Имени"});
 	NME_FUNC_BUTTON("Вывести результат", []() {
-		// TODO
+		vector<Reader*>sorted(Reader::getBinder().getRecords());
+		CH_INIT;
+		CH_MOVE(3 + Reader::getBinder().getRecords().size());
+		string t1 = CH_GET_AS(MenuElementEditField)->getInput();
+		CH_MOVE(1);
+		int t2 = CH_GET_AS(MenuElementChoice)->getActiveOption();
+		if (t2 == 0)
+		{
+			sort(sorted.begin(), sorted.end(), [](Reader *e1, Reader* e2) {
+				return e1->getId() < e2->getId();
+			});
+		}
+		else if (t2 == 1)
+		{
+			sort(sorted.begin(), sorted.end(), [](Reader *e1, Reader* e2) {
+				return e1->getFullName() < e2->getFullName();
+			});
+		}
+		Menu::getMutex().lock();
+		system("cls");
+		for (auto it : sorted)
+		{
+			if (it->getFullName().find(t1) != string::npos)
+			{
+				cout << it->str() << endl;
+			}
+		}
+		system("pause");
+		Menu::getMutex().unlock();
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить читателя", []() { readerAddMenu->addToStack(); });
@@ -622,8 +649,8 @@ void initAuthorEditMenu()
 	MI_END;
 }
 
-vector<DocumentUseRecord *> results1;
-vector<DocumentAuthorBind *> results2;
+vector<DocumentUseRecord *> _documentEditMenu_r1;
+vector<DocumentAuthorBind *> _documentEditMenu_r2;
 
 // TODO : Allow author add
 void initDocumentEditMenu()
@@ -631,18 +658,18 @@ void initDocumentEditMenu()
 	GET_CTX(Document, document, 2);
 	MI_START(documentEditMenu);
 	NME_TITLE("Редактировать документ"); // 0
-	DocumentUseRecord::searchByDocumentId(ctx->getId(), results1);
-	if (results1.size())
+	DocumentUseRecord::searchByDocumentId(ctx->getId(), _documentEditMenu_r1);
+	if (_documentEditMenu_r1.size())
 	{
-		NME_SUBTITLE("Последняя запись о выдаче: " + results1.back()->str(true)); // 1
+		NME_SUBTITLE("Последняя запись о выдаче: " + _documentEditMenu_r1.back()->str(true)); // 1
 	}
 	else
 	{
 		NME_SUBTITLE("Нет записей о выдаче"); // 1
 	}
 	NME_SUBTITLE("Авторы"); // 2
-	DocumentAuthorBind::searchByDocumentId(ctx->getId(), results2);
-	for (auto it : results2)
+	DocumentAuthorBind::searchByDocumentId(ctx->getId(), _documentEditMenu_r2);
+	for (auto it : _documentEditMenu_r2)
 	{
 		NME_CHOICE(it->str(), {"Оставить", "Удалить"}); // 2 + [1..results2.size()]
 	}
@@ -680,7 +707,7 @@ void initDocumentEditMenu()
 	NME_FUNC_BUTTON("Сохранить изменения", []() {
 		GET_CTX(Document, document, 2);
 		CH_INIT;
-		CH_MOVE(results2.size() + 4);
+		CH_MOVE(_documentEditMenu_r2.size() + 4);
 		CH_GET_AS_EF_AND_CHECK(Document, TITLE, title);
 		CH_MOVE(1);
 		int type = ((MenuElementChoice *)(*it))->getActiveOption();
@@ -711,8 +738,8 @@ void initDocumentEditMenu()
 		}
 		Document::getBinder().saveRecords();
 		it = menuElements.begin();
-		CH_MOVE(2 + results2.size());
-		for (int i = results2.size() - 1; i >= 0; --i)
+		CH_MOVE(2 + _documentEditMenu_r2.size());
+		for (int i = _documentEditMenu_r2.size() - 1; i >= 0; --i)
 		{
 			if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 			{

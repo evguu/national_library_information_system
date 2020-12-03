@@ -44,16 +44,16 @@ namespace BindAwareDeleter
 
 	void del(User* ctx, int ctxIndex)
 	{
-
+		// TODO
 	}
 	
 	void del(Publisher* ctx, int ctxIndex)
 	{
-
+		// TODO
 	}
 
 	void del(Reader* ctx, int ctxIndex)
 	{
-
+		// TODO
 	}
 };
