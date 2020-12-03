@@ -679,8 +679,9 @@ void initAuthorEditMenu()
 
 vector<DocumentUseRecord *> _documentEditMenu_r1;
 vector<DocumentAuthorBind *> _documentEditMenu_r2;
+vector<Author *> _documentEditMenu_r3;
 
-// TODO : Allow author add
+// FINISHED
 void initDocumentEditMenu()
 {
 	GET_CTX(Document, document, 2);
@@ -699,7 +700,7 @@ void initDocumentEditMenu()
 	DocumentAuthorBind::searchByDocumentId(ctx->getId(), _documentEditMenu_r2);
 	for (auto it : _documentEditMenu_r2)
 	{
-		NME_CHOICE(it->str(), {"Оставить", "Удалить"}); // 2 + [1..results2.size()]
+		NME_CHOICE(it->getAuthor()->str(), {"Оставить", "Удалить"}); // 2 + [1..results2.size()]
 	}
 	NME_SUBTITLE("Данные"); // 3 + results2.size()
 	CH_NME_EDIT_FIELD("Название", Document, TITLE); // 4 + results2.size()
@@ -729,6 +730,12 @@ void initDocumentEditMenu()
 	}
 	NME_CHOICE("Число страниц", 1, 2001); // 8 + results2.size()
 	((MenuElementChoice *)ME_PREV)->getActiveOption() = ctx->getPageCount() - 1;
+	NME_SUBTITLE("Добавление авторов"); // 9 + results2.size()
+	DocumentAuthorBind::unsearchByRelatedBinds(_documentEditMenu_r3, _documentEditMenu_r2);
+	for (auto it : _documentEditMenu_r3)
+	{
+		NME_CHOICE(it->str(), { "Не является автором", "Добавить в список авторов" }); // 9 + results2.size() + [1..results3.size()]
+	}
 	NME_SUBTITLE("Опасная зона");
 	DOOM_BUTTON(Document, document);
 	NME_SUBTITLE("Навигация");
@@ -774,6 +781,16 @@ void initDocumentEditMenu()
 				DocumentAuthorBind::getBinder().getRecords().erase(DocumentAuthorBind::getBinder().getRecords().begin() + i);
 			}
 			CH_MOVE(-1);
+		}
+		it = menuElements.begin();
+		CH_MOVE(9 + _documentEditMenu_r2.size());
+		for (auto it2 : _documentEditMenu_r3)
+		{
+			CH_MOVE(1);
+			if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
+			{
+				DocumentAuthorBind::getBinder().getRecords().push_back(new DocumentAuthorBind(ctx, it2));
+			}
 		}
 		DocumentAuthorBind::getBinder().saveRecords();
 		Menu::multiPopMenuStack(2);

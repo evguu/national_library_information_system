@@ -3,6 +3,7 @@
 #include "Author.h"
 #include "FileBindedVector.h"
 #include "CharacterSets.h"
+#include <algorithm>
 using namespace std;
 
 class DocumentAuthorBind
@@ -29,6 +30,23 @@ public:
 		for (auto it : binder.getRecords())
 		{
 			if (it->getDocument()->getId() == id)
+			{
+				results.push_back(it);
+			}
+		}
+	}
+
+	static void unsearchByRelatedBinds(vector<Author *>& results, const vector<DocumentAuthorBind *>& relatedBinds)
+	{
+		results.clear();
+		vector<Author *>takenVector;
+		for (auto it : relatedBinds)
+		{
+			takenVector.push_back(it->getAuthor());
+		}
+		for (auto it : Author::getBinder().getRecords())
+		{
+			if (find(takenVector.begin(), takenVector.end(), it) == takenVector.end())
 			{
 				results.push_back(it);
 			}
