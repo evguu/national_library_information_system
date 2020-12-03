@@ -10,7 +10,7 @@
 #define NME_CHOICE(...) menu->addElement(new MenuElementChoice(__VA_ARGS__))
 #define MI_START(x) auto& menu = x; if (menu) { delete menu; }; menu = new Menu();
 #define MI_END menu->initChosenElementIndex();
-#define GET_CTX(Name, name, offset) Name* ctx = Name::getBinder().getRecords()[##name##ListMenu->getChosenElementIndex() - offset];
+#define GET_CTX(Name, name, offset) int ctxIndex = ##name##ListMenu->getChosenElementIndex() - offset; Name* ctx = Name::getBinder().getRecords()[ctxIndex];
 #define ME_PREV menu->getElements().back()
 
 using namespace std;

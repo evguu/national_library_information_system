@@ -87,6 +87,9 @@
     <ClInclude Include="ConstraintHelper.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="BindAwareDeleters.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="FileBindedVector.cpp">
       <Filter>Исходные файлы\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BindAwareDeleters.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@
 #include "Input.h"
 #include <Windows.h>
 #include "ConstraintHelper.h"
+#include "BindAwareDeleters.h"
 using namespace std;
 
 Menu* loginMenu = nullptr;
@@ -552,7 +553,7 @@ void initUserAddMenu()
 	MI_END;
 }
 
-// TODO : Allow delete
+// FINISHED
 void initAuthorEditMenu()
 {
 	MI_START(authorEditMenu);
@@ -575,6 +576,7 @@ void initAuthorEditMenu()
 		initAuthorListMenu();
 		authorListMenu->addToStack();
 	});
+	DOOM_BUTTON(Author, author);
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
@@ -635,14 +637,7 @@ void initDocumentEditMenu()
 	NME_CHOICE("Число страниц", 1, 2001); // 8 + results2.size()
 	((MenuElementChoice *)ME_PREV)->getActiveOption() = ctx->getPageCount() - 1;
 	NME_SUBTITLE("Опасная зона");
-	NME_FUNC_BUTTON("Удалить элемент ", []() {
-		// TODO
-		Document::getBinder().saveRecords();
-		documentEditMenu->reset();
-		Menu::multiPopMenuStack(2);
-		initDocumentListMenu();
-		documentListMenu->addToStack();
-	});
+	DOOM_BUTTON(Document, document);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить изменения", []() {
 		GET_CTX(Document, document, 2);
@@ -862,6 +857,7 @@ void initReaderDebtListMenu()
 			{
 				if(CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 				{
+					delete DocumentUseRecord::getBinder().getRecords()[i];
 					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
 				}
 				CH_MOVE(-1);
@@ -908,6 +904,7 @@ void initReaderDebtListMenu()
 			{
 				if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 				{
+					delete DocumentUseRecord::getBinder().getRecords()[i];
 					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
 				}
 				CH_MOVE(-1);

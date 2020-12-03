@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Author.h" />
+    <ClInclude Include="BindAwareDeleters.h" />
     <ClInclude Include="CharacterSets.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="ConstraintHelper.h" />
@@ -172,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Author.cpp" />
+    <ClCompile Include="BindAwareDeleters.cpp" />
     <ClCompile Include="CharacterSets.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Document.cpp" />
