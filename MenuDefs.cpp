@@ -886,12 +886,49 @@ void initPublisherEditMenu()
 // TODO
 void initUserEditMenu()
 {
+	GET_CTX(User, user, 2);
 	MI_START(userEditMenu);
-	NME_TITLE("Редактировать пользователя");
-	NME_SUBTITLE("Данные");
-	NME_SUBTITLE("Опасная зона");
-	DOOM_BUTTON(User, user);
-	NME_SUBTITLE("Навигация");
+	NME_TITLE("Редактировать пользователя " + ctx->getLogin());
+	if (!ctx->getIsAdmin())
+	{
+		NME_SUBTITLE("Данные");
+		CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);;
+		CH_NME_EDIT_FIELD_H("Пароль", User, PASSWORD);
+		CH_NME_EDIT_FIELD_H("Повторите пароль", User, PASSWORD);
+		NME_SUBTITLE("Опасная зона");
+		DOOM_BUTTON(User, user);
+		NME_SUBTITLE("Навигация");
+		NME_FUNC_BUTTON("Сохранить", []() {
+			CH_INIT;
+			CH_MOVE(2);
+			CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
+			CH_MOVE(1);
+			CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
+			CH_MOVE(1);
+			CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
+			GET_CTX(User, user, 2);
+			ctx->getFullName() = fullName;
+			if (password == repeatPassword)
+			{
+				ctx->getEncryptedPassword() = Utils::encrypt(password);
+			}
+			else
+			{
+				cout << "Пароли не совпадают. Пароль не будет изменен. Ниже информация по остальным потенциальным изменениям." << endl;
+			}
+			User::getBinder().saveRecords();
+			cout << "Изменение успешно." << endl;
+			system("pause");
+			Menu::multiPopMenuStack(2);
+			initPublisherListMenu();
+			publisherListMenu->addToStack();
+		});
+	}
+	else
+	{
+		NME_SUBTITLE("Взаимодействие с аккаунтом администратора запрещено!");
+		NME_SUBTITLE("Навигация");
+	}
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
