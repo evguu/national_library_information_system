@@ -851,10 +851,26 @@ void initReaderEditMenu()
 // TODO
 void initPublisherEditMenu()
 {
+	GET_CTX(Publisher, publisher, 2);
 	MI_START(publisherEditMenu);
 	NME_TITLE("Редактировать издателя");
 	NME_SUBTITLE("Данные");
+	CH_NME_EDIT_FIELD("Название", Publisher, NAME);
+	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getName();
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Сохранить", []() {
+		CH_INIT;
+		CH_MOVE(2);
+		CH_GET_AS_EF_AND_CHECK(Publisher, NAME, name);
+		GET_CTX(Publisher, publisher, 2);
+		ctx->getName() = name;
+		Publisher::getBinder().saveRecords();
+		cout << "Изменение успешно." << endl;
+		system("pause");
+		Menu::multiPopMenuStack(2);
+		initPublisherListMenu();
+		publisherListMenu->addToStack();
+	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
