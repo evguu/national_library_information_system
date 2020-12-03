@@ -224,7 +224,7 @@ void initRegisterConfirmationMenu()
 	MI_END;
 }
 
-// TEST REQUIRED
+// FINISHED
 void initAuthorListMenu()
 {
 	MI_START(authorListMenu);
@@ -256,6 +256,8 @@ void initAuthorListMenu()
 				return e1->getFullName() < e2->getFullName();
 			});
 		}
+		Menu::getMutex().lock();
+		system("cls");
 		for (auto it : sorted)
 		{
 			if (it->getFullName().find(t1) != string::npos)
@@ -264,6 +266,7 @@ void initAuthorListMenu()
 			}
 		}
 		system("pause");
+		Menu::getMutex().unlock();
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });

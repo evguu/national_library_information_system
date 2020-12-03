@@ -46,4 +46,5 @@ public:
 		t2.join();
 	}
 	static void finish() { isLoopRunning = false; };
+	static auto& getMutex() { return g_lock; };
 };
