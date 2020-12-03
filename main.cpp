@@ -20,6 +20,10 @@ int main()
 	menuInitAll();
 	User::getBinder().loadRecords();
 	User::getBinderUnconfirmed().loadRecords();
+	if (User::getBinder().getRecords().size() == 0)
+	{
+		User::getBinder().getRecords().push_back(new User("Администратор системы", "admin", "admin0", true));
+	}
 	IDBI(Publisher);
 	IDBI(Document);
 	IDBI(Author);
