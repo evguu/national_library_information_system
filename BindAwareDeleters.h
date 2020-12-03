@@ -13,6 +13,10 @@
 namespace BindAwareDeleter
 {
 	void del(Author* ctx, int ctxIndex);
-
 	void del(Document* ctx, int ctxIndex);
+	void del(User* ctx, int ctxIndex);
+	void del(Publisher* ctx, int ctxIndex);
+	void del(Reader* ctx, int ctxIndex);
+	void del(DocumentAuthorBind* ctx, int ctxIndex);
+	void del(DocumentUseRecord* ctx, int ctxIndex);
 };

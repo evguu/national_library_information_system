@@ -5,7 +5,17 @@ namespace BindAwareDeleter
 {
 	void del(Author* ctx, int ctxIndex)
 	{
-
+		for (int i = DocumentAuthorBind::getBinder().getRecords().size() - 1; i >= 0; --i)
+		{
+			if (DocumentAuthorBind::getBinder().getRecords()[i]->getAuthor() == ctx)
+			{
+				delete DocumentAuthorBind::getBinder().getRecords()[i];
+				DocumentAuthorBind::getBinder().getRecords().erase(DocumentAuthorBind::getBinder().getRecords().begin() + i);
+			}
+		}
+		DocumentAuthorBind::getBinder().saveRecords();
+		delete Author::getBinder().getRecords()[ctxIndex];
+		Author::getBinder().getRecords().erase(Author::getBinder().getRecords().begin() + ctxIndex);
 	}
 
 	void del(Document* ctx, int ctxIndex)
@@ -30,5 +40,30 @@ namespace BindAwareDeleter
 		DocumentUseRecord::getBinder().saveRecords();
 		delete Document::getBinder().getRecords()[ctxIndex];
 		Document::getBinder().getRecords().erase(Document::getBinder().getRecords().begin() + ctxIndex);
+	}
+
+	void del(User* ctx, int ctxIndex)
+	{
+
+	}
+	
+	void del(Publisher* ctx, int ctxIndex)
+	{
+
+	}
+
+	void del(Reader* ctx, int ctxIndex)
+	{
+
+	}
+
+	void del(DocumentAuthorBind* ctx, int ctxIndex)
+	{
+
+	}
+
+	void del(DocumentUseRecord* ctx, int ctxIndex)
+	{
+
 	}
 };
