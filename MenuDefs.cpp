@@ -14,6 +14,7 @@
 #include "ConstraintHelper.h"
 #include "BindAwareDeleters.h"
 #include <algorithm>
+#include "Log.h"
 using namespace std;
 
 Menu* loginMenu = nullptr;
@@ -65,10 +66,12 @@ void initLoginMenu()
 			if (User::getActiveUser()->getIsAdmin())
 			{
 				adminMenu->addToStack();
+				addLog("Вошел администратор " + User::getActiveUser()->getLogin());
 			}
 			else
 			{
 				userMenu->addToStack();
+				addLog("Вошел пользователь " + User::getActiveUser()->getLogin());
 			}
 		}
 	});
@@ -478,6 +481,7 @@ void initAuthorAddMenu()
 		CH_GET_AS_EF_AND_CHECK(Person, FULL_NAME, fullName);
 		Author::getBinder().getRecords().push_back(new Author(fullName));
 		Author::getBinder().saveRecords();
+		addLog("Добавлен автор " + Author::getBinder().getRecords().back()->str());
 		cout << "Добавление успешно." << endl;
 		system("pause");
 		authorAddMenu->reset();
@@ -536,6 +540,7 @@ void initDocumentAddMenu()
 			}
 		}
 		Document::getBinder().saveRecords();
+		addLog("Добавлен документ " + Document::getBinder().getRecords().back()->str());
 		cout << "Добавление успешно." << endl;
 		system("pause");
 		documentAddMenu->reset();
@@ -572,6 +577,7 @@ void initReaderAddMenu()
 		CH_MOVE(1);
 		CH_GET_AS_EF_AND_CHECK(Reader, PASSPORT_ID, passportId); 
 		Reader::getBinder().getRecords().push_back(new Reader(fullName, phoneNumber, address, passportId));
+		addLog("Добавлен читатель " + Reader::getBinder().getRecords().back()->str());
 		Reader::getBinder().saveRecords();
 		readerAddMenu->reset();
 		Menu::multiPopMenuStack(2);
@@ -597,6 +603,7 @@ void initPublisherAddMenu()
 		CH_INIT;
 		CH_MOVE(2);
 		CH_GET_AS_EF_AND_CHECK(Publisher, NAME, name);
+		addLog("Добавлен издатель " + Publisher::getBinder().getRecords().back()->str());
 		Publisher::getBinder().getRecords().push_back(new Publisher(name));
 		Publisher::getBinder().saveRecords();
 		publisherAddMenu->reset();
@@ -634,6 +641,7 @@ void initUserAddMenu()
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
 		if (User::registerUser(fullName, login, password, repeatPassword, true))
 		{
+			addLog("Добавлен пользователь " + User::getBinder().getRecords().back()->getLogin());
 			userAddMenu->reset();
 			Menu::multiPopMenuStack(2);
 			initUserListMenu();
@@ -938,14 +946,26 @@ void initUserEditMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initLogMenu()
 {
 	MI_START(logMenu);
 	NME_TITLE("Просмотр логов");
 	NME_SUBTITLE("Список");
-	NME_FUNC_BUTTON("Просмотреть логи", []() {});
-	NME_FUNC_BUTTON("Очистить логи", []() {});
+	NME_FUNC_BUTTON("Просмотреть логи", []() {
+		Menu::getMutex().lock();
+		system("cls");
+		printLogs(); 
+		system("pause");
+		Menu::getMutex().unlock();
+	});
+	NME_FUNC_BUTTON("Очистить логи", []() {
+		Menu::getMutex().lock();
+		system("cls");
+		clearLogs();
+		system("pause");
+		Menu::getMutex().unlock();
+	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
 		Menu::multiPopMenuStack(1);
