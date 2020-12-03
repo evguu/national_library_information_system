@@ -392,7 +392,7 @@ void initReaderListMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initPublisherListMenu()
 {
 	MI_START(publisherListMenu);
@@ -403,10 +403,38 @@ void initPublisherListMenu()
 		NME_FUNC_BUTTON(to_string(it->getId()) + ". " + it->getName(), []() { initPublisherEditMenu(); publisherEditMenu->addToStack(); });
 	}
 	NME_SUBTITLE("Параметры представления");
-	CH_NME_EDIT_FIELD("Содержит в названии", Publisher, NAME);
+	CH_NME_EDIT_FIELD_S("Содержит в названии", Publisher, NAME);
 	NME_CHOICE("Сортировать по", { "ID", "Названию" });
 	NME_FUNC_BUTTON("Вывести результат", []() {
-		// TODO
+		vector<Publisher*>sorted(Publisher::getBinder().getRecords());
+		CH_INIT;
+		CH_MOVE(3 + Publisher::getBinder().getRecords().size());
+		string t1 = CH_GET_AS(MenuElementEditField)->getInput();
+		CH_MOVE(1);
+		int t2 = CH_GET_AS(MenuElementChoice)->getActiveOption();
+		if (t2 == 0)
+		{
+			sort(sorted.begin(), sorted.end(), [](Publisher *e1, Publisher* e2) {
+				return e1->getId() < e2->getId();
+			});
+		}
+		else if (t2 == 1)
+		{
+			sort(sorted.begin(), sorted.end(), [](Publisher *e1, Publisher* e2) {
+				return e1->getName() < e2->getName();
+			});
+		}
+		Menu::getMutex().lock();
+		system("cls");
+		for (auto it : sorted)
+		{
+			if (it->getName().find(t1) != string::npos)
+			{
+				cout << it->str() << endl;
+			}
+		}
+		system("pause");
+		Menu::getMutex().unlock();
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить издателя", []() { publisherAddMenu->addToStack(); });
