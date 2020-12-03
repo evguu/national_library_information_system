@@ -892,7 +892,8 @@ void initUserEditMenu()
 	if (!ctx->getIsAdmin())
 	{
 		NME_SUBTITLE("Данные");
-		CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);;
+		CH_NME_EDIT_FIELD("ФИО", Person, FULL_NAME);
+		((MenuElementEditField *)ME_PREV)->getInput() = ctx->getFullName();
 		CH_NME_EDIT_FIELD_H("Пароль", User, PASSWORD);
 		CH_NME_EDIT_FIELD_H("Повторите пароль", User, PASSWORD);
 		NME_SUBTITLE("Опасная зона");
