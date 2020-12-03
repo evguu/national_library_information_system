@@ -586,7 +586,6 @@ void initAuthorEditMenu()
 vector<DocumentUseRecord *> results1;
 vector<DocumentAuthorBind *> results2;
 
-// TODO : Allow delete
 // TODO : Allow author add
 void initDocumentEditMenu()
 {

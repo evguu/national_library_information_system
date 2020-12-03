@@ -56,14 +56,4 @@ namespace BindAwareDeleter
 	{
 
 	}
-
-	void del(DocumentAuthorBind* ctx, int ctxIndex)
-	{
-
-	}
-
-	void del(DocumentUseRecord* ctx, int ctxIndex)
-	{
-
-	}
 };
