@@ -674,6 +674,7 @@ void initAuthorEditMenu()
 		GET_CTX(Author, author, 2);
 		ctx->getFullName() = CH_GET_AS(MenuElementEditField)->getInput();
 		Author::getBinder().saveRecords();
+		addLog("Изменен автор " + ctx->str());
 		cout << "Изменение успешно." << endl;
 		system("pause");
 		Menu::multiPopMenuStack(2);
@@ -803,6 +804,7 @@ void initDocumentEditMenu()
 			}
 		}
 		DocumentAuthorBind::getBinder().saveRecords();
+		addLog("Изменен документ " + ctx->str());
 		Menu::multiPopMenuStack(2);
 		initDocumentListMenu();
 		documentListMenu->addToStack();
@@ -848,6 +850,7 @@ void initReaderEditMenu()
 		ctx->getAddress() = address;
 		ctx->getPassportId() = passportId;
 		Reader::getBinder().saveRecords();
+		addLog("Изменен читатель " + ctx->str());
 		cout << "Изменение успешно." << endl;
 		system("pause");
 		Menu::multiPopMenuStack(2);
@@ -879,6 +882,7 @@ void initPublisherEditMenu()
 		GET_CTX(Publisher, publisher, 2);
 		ctx->getName() = name;
 		Publisher::getBinder().saveRecords();
+		addLog("Изменен издатель " + ctx->str());
 		cout << "Изменение успешно." << endl;
 		system("pause");
 		Menu::multiPopMenuStack(2);
@@ -928,6 +932,7 @@ void initUserEditMenu()
 				return;
 			}
 			User::getBinder().saveRecords();
+			addLog("Изменен пользователь " + ctx->getLogin());
 			cout << "Изменение успешно." << endl;
 			system("pause");
 			Menu::multiPopMenuStack(2);
@@ -1028,6 +1033,7 @@ void initDocumentGivingMenu()
 				break;
 			}
 		}
+		addLog("Выдан документ " + DocumentUseRecord::getBinder().getRecords().back()->getDocument()->str() + " читателю " + DocumentUseRecord::getBinder().getRecords().back()->getReader()->str());
 		DocumentUseRecord::getBinder().saveRecords();
 		documentGivingMenu->reset();
 		Menu::multiPopMenuStack(1);
