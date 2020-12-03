@@ -277,7 +277,7 @@ void initAuthorListMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initDocumentListMenu()
 {
 	MI_START(documentListMenu);
@@ -290,10 +290,45 @@ void initDocumentListMenu()
 	NME_SUBTITLE("Параметры представления");
 	CH_NME_EDIT_FIELD("Содержит в заголовке", Document, TITLE);
 	CH_NME_EDIT_FIELD("Содержит в названии издателя", Publisher, NAME);
-	CH_NME_EDIT_FIELD("Содержит в имени автора", Person, FULL_NAME);
-	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "ID издателя", "Издателю" });
+	NME_CHOICE("Сортировать по", { "ID", "Заголовку", "Издателю" });
 	NME_FUNC_BUTTON("Вывести результат", []() {
-		// TODO
+		vector<Document*>sorted(Document::getBinder().getRecords());
+		CH_INIT;
+		CH_MOVE(3 + Document::getBinder().getRecords().size());
+		string t1 = CH_GET_AS(MenuElementEditField)->getInput();
+		CH_MOVE(1);
+		string t2 = CH_GET_AS(MenuElementEditField)->getInput();
+		CH_MOVE(1);
+		int t3 = CH_GET_AS(MenuElementChoice)->getActiveOption();
+		if (t3 == 0)
+		{
+			sort(sorted.begin(), sorted.end(), [](Document *e1, Document* e2) {
+				return e1->getId() < e2->getId();
+			});
+		}
+		else if (t3 == 1)
+		{
+			sort(sorted.begin(), sorted.end(), [](Document *e1, Document* e2) {
+				return e1->getTitle() < e2->getTitle();
+			});
+		}
+		else if (t3 == 2)
+		{
+			sort(sorted.begin(), sorted.end(), [](Document *e1, Document* e2) {
+				return e1->getPublisher()->getName() < e2->getPublisher()->getName();
+			});
+		}
+		Menu::getMutex().lock();
+		system("cls");
+		for (auto it : sorted)
+		{
+			if ((it->getTitle().find(t1) != string::npos)&& (it->getPublisher()->getName().find(t2) != string::npos))
+			{
+				cout << it->str() << endl;
+			}
+		}
+		system("pause");
+		Menu::getMutex().unlock();
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить документ", []() { initDocumentAddMenu(); documentAddMenu->addToStack(); });
@@ -355,7 +390,7 @@ void initPublisherListMenu()
 	MI_END;
 }
 
-// TODO
+// FINISHED
 void initUserListMenu()
 {
 	MI_START(userListMenu);
@@ -365,13 +400,6 @@ void initUserListMenu()
 	{
 		NME_FUNC_BUTTON(it->getLogin() + ". " + it->getFullName(), []() { initUserEditMenu(); userEditMenu->addToStack(); });
 	}
-	NME_SUBTITLE("Параметры представления");
-	CH_NME_EDIT_FIELD("Содержит в логине", User, LOGIN);
-	CH_NME_EDIT_FIELD("Содержит в ФИО", Person, FULL_NAME);
-	NME_CHOICE("Сортировать по", { "ID", "Логину", "ФИО" });
-	NME_FUNC_BUTTON("Вывести результат", []() {
-		// TODO
-	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить пользователя", []() { userAddMenu->addToStack(); });
 	NME_FUNC_BUTTON("Назад", []() {
