@@ -43,7 +43,7 @@ void Menu::printLoop()
 			coord.Y = 0;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 			//cout << *getActive();
-			noBlinkOutput(getActive()->str());
+			noBlinkOutput(*getActive());
 		}
 		g_lock.unlock();
 		Sleep(100);
@@ -182,4 +182,9 @@ ostream & operator<<(ostream &out, Menu &menu)
 {
 	out << menu.str();
 	return out;
+}
+
+void noBlinkOutput(Menu &menu)
+{
+	noBlinkOutput(menu.str());
 }
