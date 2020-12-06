@@ -4,13 +4,14 @@
 #include <sstream>
 #include <Windows.h>
 #include <mutex>
+#include "BufferedOutput.h"
 #include "Menu.h"
 
 stack<Menu *> Menu::menuStack = stack<Menu *>();
 bool Menu::isLoopRunning = true;
 bool Menu::hasMenuChanged = true;
 mutex Menu::g_lock;
-const int Menu::viewField = 10;
+const int Menu::viewField = 12;
 
 void Menu::controlLoop()
 {
@@ -36,8 +37,13 @@ void Menu::printLoop()
 		if (hasMenuChanged)
 		{
 			hasMenuChanged = false;
-			system("cls");
-			cout << *getActive();
+			/*system("cls");*/
+			COORD coord;
+			coord.X = 0;
+			coord.Y = 0;
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+			//cout << *getActive();
+			noBlinkOutput(getActive()->str());
 		}
 		g_lock.unlock();
 		Sleep(100);
