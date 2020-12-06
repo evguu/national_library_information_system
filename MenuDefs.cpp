@@ -1100,13 +1100,27 @@ void initReaderDebtListMenu()
 		if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 		{
 			CH_INIT;
-			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
-			for (int i = DocumentUseRecord::getBinder().getRecords().size() - 1; i >= 0; --i)
+
+			vector<DocumentUseRecord *> tmp;
+			vector<int> tmpI;
+			int tmpIndex = 0;
+			for (auto it : DocumentUseRecord::getBinder().getRecords())
+			{
+				if (_readerDebtListMenu_chosenReaderId == it->getReader()->getId())
+				{
+					tmp.push_back(it);
+					tmpI.push_back(tmpIndex);
+				}
+				++tmpIndex;
+			}
+
+			CH_MOVE(5 + tmp.size());
+			for (int i = tmp.size() - 1; i >= 0; --i)
 			{
 				if(CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 				{
-					delete DocumentUseRecord::getBinder().getRecords()[i];
-					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
+					delete tmp[i];
+					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + tmpI[i]);
 				}
 				CH_MOVE(-1);
 			}
@@ -1155,13 +1169,27 @@ void initReaderDebtListMenu()
 		if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 		{
 			CH_INIT;
-			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
-			for (int i = DocumentUseRecord::getBinder().getRecords().size() - 1; i >= 0; --i)
+
+			vector<DocumentUseRecord *> tmp;
+			vector<int> tmpI;
+			int tmpIndex = 0;
+			for (auto it : DocumentUseRecord::getBinder().getRecords())
+			{
+				if (_readerDebtListMenu_chosenReaderId == it->getReader()->getId())
+				{
+					tmp.push_back(it);
+					tmpI.push_back(tmpIndex);
+				}
+				++tmpIndex;
+			}
+
+			CH_MOVE(5 + tmp.size());
+			for (int i = tmp.size() - 1; i >= 0; --i)
 			{
 				if (CH_GET_AS(MenuElementChoice)->getActiveOption() == 1)
 				{
-					delete DocumentUseRecord::getBinder().getRecords()[i];
-					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + i);
+					delete tmp[i];
+					DocumentUseRecord::getBinder().getRecords().erase(DocumentUseRecord::getBinder().getRecords().begin() + tmpI[i]);
 				}
 				CH_MOVE(-1);
 			}
