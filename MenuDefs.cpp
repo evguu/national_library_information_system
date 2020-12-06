@@ -1086,7 +1086,7 @@ void initReaderDebtListMenu()
 		readerDebtListMenu->addToStack();
 	});
 	NME_FUNC_BUTTON("Сохранить данные и выбрать читателя", []() {
-		if (_readerDebtListMenu_chosenReaderVectorIndex != 1)
+		if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 		{
 			CH_INIT;
 			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
@@ -1133,7 +1133,7 @@ void initReaderDebtListMenu()
 	}
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить и выйти", []() {
-		if (_readerDebtListMenu_chosenReaderVectorIndex != 1)
+		if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 		{
 			CH_INIT;
 			CH_MOVE(5 + DocumentUseRecord::getBinder().getRecords().size());
