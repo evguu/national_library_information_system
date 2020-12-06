@@ -1138,7 +1138,15 @@ void initReaderDebtListMenu()
 		{
 			if (_readerDebtListMenu_chosenReaderId == it->getReader()->getId())
 			{
-				NME_CHOICE(it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
+				tm ltm;
+				time_t tt = it->getGivenAt();
+				localtime_s(&ltm, &tt);
+				std::stringstream date;
+				date << ltm.tm_mday << "/" << ((1 + ltm.tm_mon >= 10) ? ("") : ("0")) << 1 + ltm.tm_mon << "/"
+					<< 1900 + ltm.tm_year << " " << ((ltm.tm_hour >= 10) ? ("") : ("0")) << ltm.tm_hour
+					<< ":" << ((ltm.tm_min >= 10) ? ("") : ("0")) << ltm.tm_min
+					<< ":" << ((ltm.tm_sec >= 10) ? ("") : ("0")) << ltm.tm_sec;
+				NME_CHOICE("{" + date.str() + " на " + to_string(it->getGivenFor()) + " часов } " + it->getDocument()->getTitle() + " [" + it->getDocument()->getPublisher()->getName() + "]", { "Без изменений", "Закрыть задолженность" });
 			}
 		}
 	}

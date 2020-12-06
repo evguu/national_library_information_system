@@ -4,7 +4,7 @@
 #include "Console.h"
 #include <iostream>
 
-const int col = 128;
+const int col = 192;
 const int lines = 40;
 
 namespace Utils

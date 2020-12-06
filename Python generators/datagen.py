@@ -111,10 +111,10 @@ with open("document_author_binds.txt", "w") as f:
         print(random.randint(1, 50), file=f)
 
 with open("document_use_records.txt", "w") as f:
-    for i in range(1, 801):
+    for i in range(1, 201):
         print(random.randint(1, 100), file=f)
         print(random.randint(1, 100), file=f)
-        print(random.randint(1_262_278_080, 1_607_255_000), file=f)
+        print(1_607_100_000 + i*482, file=f)
         print(random.randint(1, 720), file=f)
 
 print("Генерация завершена.")
