@@ -11,7 +11,6 @@ namespace Utils
 {
 	void setupResolution()
 	{
-		//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, nullptr);
 		system(("MODE CON: COLS=" + to_string(col) + " LINES=" + to_string(lines+1)).c_str());
 		void* handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_CURSOR_INFO structCursorInfo;
@@ -19,6 +18,7 @@ namespace Utils
 		structCursorInfo.bVisible = FALSE;
 		SetConsoleCursorInfo(handle, &structCursorInfo);
 		ShowCursor(FALSE);
+		system("color F0");
 	}
 
 	void setupEncoding()
