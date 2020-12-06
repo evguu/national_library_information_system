@@ -10,6 +10,8 @@
 // Узкоприменяемый спагетти-макрос.
 #define DOOM_BUTTON(Name, name) NME_FUNC_BUTTON("Удалить элемент ", []() {GET_CTX(Name, name, 2);BindAwareDeleter::del(ctx, ctxIndex);Name::getBinder().saveRecords();Menu::multiPopMenuStack(2);init##Name##ListMenu();##name##ListMenu->addToStack();});
 
+#define DOOM_BUTTON_L(Name, name) NME_FUNC_BUTTON("Удалить элемент ", []() {GET_CTX(Name, name, 2);ELK;BindAwareDeleter::del(ctx, ctxIndex);EULK;Name::getBinder().saveRecords();Menu::multiPopMenuStack(2);init##Name##ListMenu();##name##ListMenu->addToStack();});
+
 namespace BindAwareDeleter
 {
 	void del(Author* ctx, int ctxIndex);

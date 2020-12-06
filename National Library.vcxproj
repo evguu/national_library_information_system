@@ -163,6 +163,7 @@
     <ClInclude Include="Encrypt.h" />
     <ClInclude Include="FileBindedVector.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LockCoutHelper.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MenuDefs.h" />

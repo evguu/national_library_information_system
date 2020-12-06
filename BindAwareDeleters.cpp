@@ -49,7 +49,6 @@ namespace BindAwareDeleter
 			if (Document::getBinder().getRecords()[i]->getPublisher() == ctx)
 			{
 				cout << "Удаление невозможно -- объект используется в документах." << endl;
-				system("pause");
 				return;
 			}
 		}

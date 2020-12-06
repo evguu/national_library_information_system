@@ -13,6 +13,7 @@
 #include <Windows.h>
 #include "ConstraintHelper.h"
 #include "BindAwareDeleters.h"
+#include "LockCoutHelper.h"
 #include <algorithm>
 #include "Log.h"
 using namespace std;
@@ -58,7 +59,9 @@ void initLoginMenu()
 		CH_GET_AS_EF_AND_CHECK(User, LOGIN, login);
 		CH_MOVE(1);
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
+		ELK;
 		User::loginUser(login, password);
+		EULK;
 		if (User::getActiveUser())
 		{
 			loginMenu->reset();
@@ -103,11 +106,13 @@ void initRegisterMenu()
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
+		ELK;
 		if (User::registerUser(fullName, login, password, repeatPassword))
 		{
 			registerMenu->reset();
 			Menu::multiPopMenuStack(1);
 		}
+		EULK;
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		registerMenu->reset();
@@ -259,8 +264,7 @@ void initAuthorListMenu()
 				return e1->getFullName() < e2->getFullName();
 			});
 		}
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		for (auto it : sorted)
 		{
 			if (it->getFullName().find(t1) != string::npos)
@@ -268,8 +272,7 @@ void initAuthorListMenu()
 				cout << it->str() << endl;
 			}
 		}
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить автора", []() { authorAddMenu->addToStack(); });
@@ -321,8 +324,7 @@ void initDocumentListMenu()
 				return e1->getPublisher()->getName() < e2->getPublisher()->getName();
 			});
 		}
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		for (auto it : sorted)
 		{
 			if ((it->getTitle().find(t1) != string::npos)&& (it->getPublisher()->getName().find(t2) != string::npos))
@@ -330,8 +332,7 @@ void initDocumentListMenu()
 				cout << it->str() << endl;
 			}
 		}
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить документ", []() { initDocumentAddMenu(); documentAddMenu->addToStack(); });
@@ -374,8 +375,7 @@ void initReaderListMenu()
 				return e1->getFullName() < e2->getFullName();
 			});
 		}
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		for (auto it : sorted)
 		{
 			if (it->getFullName().find(t1) != string::npos)
@@ -383,8 +383,7 @@ void initReaderListMenu()
 				cout << it->str() << endl;
 			}
 		}
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить читателя", []() { readerAddMenu->addToStack(); });
@@ -427,8 +426,7 @@ void initPublisherListMenu()
 				return e1->getName() < e2->getName();
 			});
 		}
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		for (auto it : sorted)
 		{
 			if (it->getName().find(t1) != string::npos)
@@ -436,8 +434,7 @@ void initPublisherListMenu()
 				cout << it->str() << endl;
 			}
 		}
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить издателя", []() { publisherAddMenu->addToStack(); });
@@ -482,8 +479,9 @@ void initAuthorAddMenu()
 		Author::getBinder().getRecords().push_back(new Author(fullName));
 		Author::getBinder().saveRecords();
 		addLog("Добавлен автор " + Author::getBinder().getRecords().back()->str());
+		ELK;
 		cout << "Добавление успешно." << endl;
-		system("pause");
+		EULK;
 		authorAddMenu->reset();
 		Menu::multiPopMenuStack(2);
 		initAuthorListMenu();
@@ -527,8 +525,9 @@ void initDocumentAddMenu()
 		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
 		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
 		{
+			ELK;
 			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
-			system("pause");
+			EULK;
 			return;
 		}
 		for (auto it : Publisher::getBinder().getRecords())
@@ -675,8 +674,9 @@ void initAuthorEditMenu()
 		ctx->getFullName() = CH_GET_AS(MenuElementEditField)->getInput();
 		Author::getBinder().saveRecords();
 		addLog("Изменен автор " + ctx->str());
+		ELK;
 		cout << "Изменение успешно." << endl;
-		system("pause");
+		EULK;
 		Menu::multiPopMenuStack(2);
 		initAuthorListMenu();
 		authorListMenu->addToStack();
@@ -765,8 +765,9 @@ void initDocumentEditMenu()
 		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
 		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
 		{
+			ELK;
 			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
-			system("pause");
+			EULK;
 			return;
 		}
 		for (auto it : Publisher::getBinder().getRecords())
@@ -851,8 +852,9 @@ void initReaderEditMenu()
 		ctx->getPassportId() = passportId;
 		Reader::getBinder().saveRecords();
 		addLog("Изменен читатель " + ctx->str());
+		ELK;
 		cout << "Изменение успешно." << endl;
-		system("pause");
+		EULK;
 		Menu::multiPopMenuStack(2);
 		initReaderListMenu();
 		readerListMenu->addToStack();
@@ -873,7 +875,7 @@ void initPublisherEditMenu()
 	CH_NME_EDIT_FIELD("Название", Publisher, NAME);
 	((MenuElementEditField *)ME_PREV)->getInput() = ctx->getName();
 	NME_SUBTITLE("Опасная зона");
-	DOOM_BUTTON(Publisher, publisher);
+	DOOM_BUTTON_L(Publisher, publisher);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Сохранить", []() {
 		CH_INIT;
@@ -883,8 +885,9 @@ void initPublisherEditMenu()
 		ctx->getName() = name;
 		Publisher::getBinder().saveRecords();
 		addLog("Изменен издатель " + ctx->str());
+		ELK;
 		cout << "Изменение успешно." << endl;
-		system("pause");
+		EULK;
 		Menu::multiPopMenuStack(2);
 		initPublisherListMenu();
 		publisherListMenu->addToStack();
@@ -927,14 +930,16 @@ void initUserEditMenu()
 			}
 			else
 			{
+				ELK;
 				cout << "Пароли не совпадают." << endl;
-				system("pause");
+				EULK;
 				return;
 			}
 			User::getBinder().saveRecords();
 			addLog("Изменен пользователь " + ctx->getLogin());
+			ELK;
 			cout << "Изменение успешно." << endl;
-			system("pause");
+			EULK;
 			Menu::multiPopMenuStack(2);
 			initUserListMenu();
 			userListMenu->addToStack();

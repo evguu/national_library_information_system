@@ -110,7 +110,6 @@ bool User::registerUser(string fullName, string login, string password, string r
 			}
 		}
 	}
-	system("pause");
 	return res;
 }
 
@@ -129,7 +128,6 @@ void User::loginUser(string login, string password)
 			{
 				cout << "Пароль неверный." << endl;
 			}
-			system("pause");
 			return;
 		}
 	}
@@ -145,10 +143,8 @@ void User::loginUser(string login, string password)
 			{
 				cout << "Пароль неверный." << endl;
 			}
-			system("pause");
 			return;
 		}
 	}
 	cout << "Аккаунт не найден." << endl;
-	system("pause");
 }
