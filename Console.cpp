@@ -7,15 +7,14 @@ namespace Utils
 {
 	void setupResolution()
 	{
-		SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, nullptr);
-		system("MODE CON: COLS=138 LINES=60");
+		//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, nullptr);
+		system("MODE CON: COLS=129 LINES=51");
 		void* handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_CURSOR_INFO structCursorInfo;
 		GetConsoleCursorInfo(handle, &structCursorInfo);
 		structCursorInfo.bVisible = FALSE;
 		SetConsoleCursorInfo(handle, &structCursorInfo);
-
-
+		ShowCursor(FALSE);
 	}
 
 	void setupEncoding()

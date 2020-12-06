@@ -14,8 +14,7 @@ using namespace std;
 
 int main()
 {
-	// Подготавливаем консоль
-	//Utils::setupResolution();
+	Utils::setupResolution();
 	Utils::setupEncoding();
 	menuInitAll();
 	User::getBinder().loadRecords();
@@ -31,5 +30,6 @@ int main()
 	DocumentAuthorBind::getBinder().loadRecords();
 	DocumentUseRecord::getBinder().loadRecords();
 	Menu::run();
+	system("cls");
 	cout << "Выход из программы..." << endl;
 }
