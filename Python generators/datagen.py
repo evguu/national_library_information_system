@@ -45,7 +45,7 @@ def generate_full_name():
     return random.choice(name_base[1]) + " " + random.choice(name_base[0]) + " " + random.choice(name_base[2])
 
 def generate_phone_number():
-    return "+375" + random.choice(("29", "44", "33", "25")) + str(random.randint(0, 10_000_000)).zfill(7)
+    return "+375" + random.choice(("29", "44", "33", "25")) + str(random.randint(0, 9_999_999)).zfill(7)
 
 towns = "Минск Гомель Могилёв Витебск "\
 "Гродно Брест Бобруйск Барановичи "\
@@ -67,6 +67,20 @@ def generate_address():
 def generate_passport_id():
     return "".join([random.choice("0123456789QWERTYUIOPASDFGHJKLZXCVBNM") for _ in range(14)])
 
+document_types = ["Книга", "Автореферат диссертации", 
+                  "Статья", "Нотный документ",
+                  "Диссертация"]
+
+document_topics = "о мышах.о законах РБ.о квантовых технологиях.об импортозамещении."\
+                  "об обязанностях служащих.о церквях.о контактах с разумными системами."\
+                  "о поляризационных свойствах многомодовых градиентных световодов со слабой анизотропией."\
+                  "о птицах. о рыбах. о животных. о грибах. о физике. об оформлении курсовых работ."\
+                  "о лекарственных препаратах.об анализе рынка.о стихах Пушкина.о советской государственности."\
+                  "о военной топографии.о многомерных бубликах.о заболеваниях.о теории игр.о логике.о генерации случайных документов".split('.')
+
+def generate_document_name(t):
+    return document_types[t] + " " + random.choice(document_topics)
+
 with open("readers.txt", "w") as f:
     for i in range(1, 101):
         print(generate_full_name(), file=f)
@@ -74,6 +88,34 @@ with open("readers.txt", "w") as f:
         print(generate_address(), file=f)
         print(generate_passport_id(), file=f)
         print(i, file=f)
+
+with open("authors.txt", "w") as f:
+    for i in range(1, 51):
+        print(generate_full_name(), file=f)
+        print(i, file=f)
+
+with open("documents.txt", "w") as f:
+    for i in range(1, 101):
+        t = random.randint(0, 4)
+        print(t, file=f)
+        l = random.randint(0, 10)
+        print(l, file=f)
+        print(random.randint(1, 13), file=f)
+        print(generate_document_name(t), file=f)
+        print(random.randint(1, 2000), file=f)
+        print(i, file=f)
+
+with open("document_author_binds.txt", "w") as f:
+    for i in range(1, 201):
+        print(random.randint(1, 100), file=f)
+        print(random.randint(1, 50), file=f)
+
+with open("document_use_records.txt", "w") as f:
+    for i in range(1, 801):
+        print(random.randint(1, 100), file=f)
+        print(random.randint(1, 100), file=f)
+        print(random.randint(1_262_278_080, 1_607_255_000), file=f)
+        print(random.randint(1, 720), file=f)
 
 print("Генерация завершена.")
         
