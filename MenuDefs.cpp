@@ -551,7 +551,9 @@ void initDocumentAddMenu()
 		}
 		Document::getBinder().saveRecords();
 		addLog("Добавлен документ " + Document::getBinder().getRecords().back()->str());
+		ELK;
 		cout << "Добавление успешно." << endl;
+		EULK;
 		system("pause");
 		documentAddMenu->reset();
 		Menu::multiPopMenuStack(2);
@@ -649,6 +651,7 @@ void initUserAddMenu()
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, password);
 		CH_MOVE(1);
 		CH_GET_AS_EF_AND_CHECK(User, PASSWORD, repeatPassword);
+		ELK;
 		if (User::registerUser(fullName, login, password, repeatPassword, true))
 		{
 			addLog("Добавлен пользователь " + User::getBinder().getRecords().back()->getLogin());
@@ -657,6 +660,7 @@ void initUserAddMenu()
 			initUserListMenu();
 			userListMenu->addToStack();
 		}
+		EULK;
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		userAddMenu->reset();
@@ -974,18 +978,14 @@ void initLogMenu()
 	NME_TITLE("Просмотр логов");
 	NME_SUBTITLE("Список");
 	NME_FUNC_BUTTON("Просмотреть логи", []() {
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		printLogs(); 
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_FUNC_BUTTON("Очистить логи", []() {
-		Menu::getMutex().lock();
-		system("cls");
+		ELK;
 		clearLogs();
-		system("pause");
-		Menu::getMutex().unlock();
+		EULK;
 	});
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Назад", []() {
