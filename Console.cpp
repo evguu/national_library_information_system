@@ -12,7 +12,7 @@ namespace Utils
 	void setupResolution()
 	{
 		//SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE, nullptr);
-		system(("MODE CON: COLS=" + to_string(col+1) + " LINES=" + to_string(lines+1)).c_str());
+		system(("MODE CON: COLS=" + to_string(col-1) + " LINES=" + to_string(lines+1)).c_str());
 		void* handle = GetStdHandle(STD_OUTPUT_HANDLE);
 		CONSOLE_CURSOR_INFO structCursorInfo;
 		GetConsoleCursorInfo(handle, &structCursorInfo);
@@ -47,16 +47,9 @@ namespace Utils
 			}
 			else
 			{
-				if (pos < col - 1)
+				res[line][pos++] = i;
+				if (pos == col)
 				{
-					res[line][pos++] = i;
-				}
-				else
-				{
-					res[line][col - 4] = '.';
-					res[line][col - 3] = '.';
-					res[line][col - 2] = '.';
-					res[line][col - 1] = '\n';
 					++line;
 					pos = 0;
 				}
