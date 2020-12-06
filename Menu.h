@@ -49,5 +49,4 @@ public:
 	static void finish() { isLoopRunning = false; };
 	static auto& getMutex() { return g_lock; };
 	friend ostream &operator << (ostream &, Menu &);
-	friend void noBlinkOutput(Menu &);
 };

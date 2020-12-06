@@ -4,7 +4,7 @@
 #include <sstream>
 #include <Windows.h>
 #include <mutex>
-#include "BufferedOutput.h"
+#include "Console.h"
 #include "Menu.h"
 
 stack<Menu *> Menu::menuStack = stack<Menu *>();
@@ -37,13 +37,11 @@ void Menu::printLoop()
 		if (hasMenuChanged)
 		{
 			hasMenuChanged = false;
-			/*system("cls");*/
 			COORD coord;
 			coord.X = 0;
 			coord.Y = 0;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-			//cout << *getActive();
-			noBlinkOutput(*getActive());
+			Utils::noBlinkOutput(getActive()->str());
 		}
 		g_lock.unlock();
 		Sleep(100);
@@ -182,9 +180,4 @@ ostream & operator<<(ostream &out, Menu &menu)
 {
 	out << menu.str();
 	return out;
-}
-
-void noBlinkOutput(Menu &menu)
-{
-	noBlinkOutput(menu.str());
 }
