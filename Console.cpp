@@ -18,7 +18,6 @@ namespace Utils
 		structCursorInfo.bVisible = FALSE;
 		SetConsoleCursorInfo(handle, &structCursorInfo);
 		ShowCursor(FALSE);
-		system("color F0");
 	}
 
 	void setupEncoding()

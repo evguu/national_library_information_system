@@ -158,15 +158,24 @@ void initAdminMenu()
 	MI_END;
 }
 
+vector<string> colorThemes = {"0F", "07", "87", "78", "70", "F0"};
+int chosenTheme = 4;
+
 // FINISHED
 void initStartMenu()
 {
+	system(("color " + colorThemes[chosenTheme]).c_str());
 	MI_START(startMenu);
 	NME_TITLE("Информационная система национальной библиотеки");
 	NME_SUBTITLE("Авторизация");
 	NME_FUNC_BUTTON("Войти", []() { loginMenu->addToStack(); });
 	NME_FUNC_BUTTON("Зарегистрироваться", []() { registerMenu->addToStack(); });
 	NME_SUBTITLE("Навигация");
+	NME_FUNC_BUTTON("Переключить тему", []() { 
+		chosenTheme++; 
+		chosenTheme %= colorThemes.size();
+		system(("color " + colorThemes[chosenTheme]).c_str());
+	});
 	NME_FUNC_BUTTON("Выйти из программы", []() { Menu::finish(); });
 	MI_END;
 }
