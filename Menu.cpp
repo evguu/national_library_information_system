@@ -37,7 +37,7 @@ void Menu::printLoop()
 		{
 			hasMenuChanged = false;
 			system("cls");
-			cout << getActive()->str();
+			cout << *getActive();
 		}
 		g_lock.unlock();
 		Sleep(100);
@@ -170,4 +170,10 @@ void Menu::multiPopMenuStack(int popCount)
 	{
 		menuStack.pop();
 	}
+}
+
+ostream & operator<<(ostream &out, Menu &menu)
+{
+	out << menu.str();
+	return out;
 }
