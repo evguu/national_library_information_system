@@ -212,11 +212,13 @@ void initRegisterConfirmationMenu()
 				User::getBinder().getRecords().push_back(User::getBinderUnconfirmed().getRecords()[i-offset]);
 				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin()+i-offset);
 				++offset;
+				addLog("Одобрена регистрация пользователя " + User::getBinder().getRecords().back()->getLogin());
 			}
 			else if (((MenuElementChoice*)(*elemIt))->getChoice() == "Отклонить регистрацию")
 			{
 				User::getBinderUnconfirmed().getRecords().erase(User::getBinderUnconfirmed().getRecords().begin() + i - offset);
 				++offset;
+				addLog("Отклонена регистрация пользователя " + User::getBinder().getRecords().back()->getLogin());
 			}
 			++elemIt;
 		}
