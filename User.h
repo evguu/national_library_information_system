@@ -20,7 +20,7 @@ private:
 	static Utils::FileBindedVector<User> binder;
 	static Utils::FileBindedVector<User> binderUnconfirmed;
 public:
-	User(string fullName, string login, string password, bool isAdmin) : Person(fullName), login(login), encryptedPassword(Utils::encrypt(password)), isAdmin(isAdmin) {};
+	User(string fullName, string login, string password, bool isAdmin) : Person(fullName), login(login), encryptedPassword(password), isAdmin(isAdmin) {};
 	~User() {};
 
 	const auto& getLogin() { return login; };

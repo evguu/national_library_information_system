@@ -104,7 +104,7 @@ bool User::registerUser(string fullName, string login, string password, string r
 			else
 			{
 				cout << "Аккаунт успешно зарегистрирован. \nВы сможете войти после подтверждения аккаунта администратором." << endl;
-				binderUnconfirmed.getRecords().push_back(new User(fullName, login, password, false));
+				binderUnconfirmed.getRecords().push_back(new User(fullName, login, Utils::encrypt(password), false));
 				binderUnconfirmed.saveRecords();
 				res = true;
 			}

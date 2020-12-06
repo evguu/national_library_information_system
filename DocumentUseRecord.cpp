@@ -20,7 +20,7 @@ DocumentUseRecord * DocumentUseRecord::loadRecord(ifstream & fin)
 		{
 			for (auto reader_it : Reader::getBinder().getRecords())
 			{
-				if (reader_it->getPassportId() == reader)
+				if (reader_it->getId() == stoi(reader))
 				{
 					return new DocumentUseRecord(document_it, reader_it, stoi(givenAt), stoi(givenFor));
 				}
@@ -32,5 +32,5 @@ DocumentUseRecord * DocumentUseRecord::loadRecord(ifstream & fin)
 
 void DocumentUseRecord::saveRecord(ofstream & fout)
 {
-	fout << document->getId() << endl << reader->getPassportId() << endl << givenAt << endl << givenFor << endl;
+	fout << document->getId() << endl << reader->getId() << endl << givenAt << endl << givenFor << endl;
 }
