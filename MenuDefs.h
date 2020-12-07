@@ -1,6 +1,6 @@
 #pragma once
 
-// ???
+// Основные статичнские меню
 void initLoginMenu();
 void initRegisterMenu();
 void initUserMenu();
@@ -30,10 +30,10 @@ void initReaderEditMenu();
 void initPublisherEditMenu();
 void initUserEditMenu();
 
-// ???
+// Прочие меню
 void initLogMenu();
 void initDocumentGivingMenu();
 void initReaderDebtListMenu();
 
-// Инициализировать все меню с разовой инициализацией
+// Инициализировать все статические меню
 void menuInitAll();
