@@ -1,6 +1,6 @@
 #pragma once
 
-// Основные статичнские меню
+// Основные статические меню
 void initLoginMenu();
 void initRegisterMenu();
 void initUserMenu();

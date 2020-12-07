@@ -260,4 +260,6 @@ paket-files/
 __pycache__/
 *.pyc
 /Билд тестовый 2
+/Python generators
 *.7z
+*.txt
