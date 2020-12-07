@@ -259,7 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/Билд тестовый 2
-# /Python generators
-# *.7z
-# *.txt
+*.7z
+*.txt
