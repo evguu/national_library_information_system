@@ -696,7 +696,6 @@ void initAuthorEditMenu()
 		initAuthorListMenu();
 		authorListMenu->addToStack();
 	});
-	DOOM_BUTTON(Author, author);
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
 	});
