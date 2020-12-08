@@ -839,6 +839,9 @@ void initDocumentEditMenu()
 	MI_END;
 }
 
+int _readerDebtListMenu_chosenReaderId = -1;
+int _readerDebtListMenu_chosenReaderVectorIndex = -1;
+
 // FINISHED
 void initReaderEditMenu()
 {
@@ -880,6 +883,13 @@ void initReaderEditMenu()
 		Menu::multiPopMenuStack(2);
 		initReaderListMenu();
 		readerListMenu->addToStack();
+	});
+	NME_FUNC_BUTTON("Перейти к управлению задолженностями", []() {
+		initReaderDebtListMenu(); 
+		readerDebtListMenu->addToStack();
+		GET_CTX(Reader, reader, 2);
+		((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption() = ctxIndex;
+		((MenuElementFunctionButton *)(readerDebtListMenu->getElements()[3]))->getFunc()();
 	});
 	NME_FUNC_BUTTON("Отмена", []() {
 		Menu::multiPopMenuStack(1);
@@ -1062,9 +1072,6 @@ void initDocumentGivingMenu()
 	});
 	MI_END;
 }
-
-int _readerDebtListMenu_chosenReaderId = -1;
-int _readerDebtListMenu_chosenReaderVectorIndex = -1;
 
 // FINISHED
 void initReaderDebtListMenu()

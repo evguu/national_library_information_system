@@ -82,6 +82,7 @@ public:
 	bool recvCommand(int keyEvent);
 	bool isChoosable() { return true; };
 	void reset() {};
+	auto& getFunc() { return func; };
 };
 
 class MenuElementEditField : public MenuElement
