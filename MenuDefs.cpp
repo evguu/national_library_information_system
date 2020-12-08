@@ -554,7 +554,6 @@ void initDocumentAddMenu()
 		ELK;
 		cout << "Добавление успешно." << endl;
 		EULK;
-		system("pause");
 		documentAddMenu->reset();
 		Menu::multiPopMenuStack(2);
 		initDocumentListMenu();
