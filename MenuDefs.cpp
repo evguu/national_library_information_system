@@ -517,12 +517,19 @@ void initDocumentAddMenu()
 	vector<string> publishers;
 	for (auto it : Publisher::getBinder().getRecords())
 	{
-		publishers.push_back(to_string(it->getId()));
+		publishers.push_back(it-> str());
 	}
-	NME_CHOICE("ID издателя", publishers);
+	NME_CHOICE("Издатель", publishers);
 	NME_CHOICE("Число страниц", 1, 2001);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Добавить", []() {
+		if (!Publisher::getBinder().getRecords().size())
+		{
+			ELK;
+			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
+			EULK;
+			return;
+		}
 		CH_INIT;
 		CH_MOVE(2);
 		CH_GET_AS_EF_AND_CHECK(Document, TITLE, title);
@@ -531,19 +538,12 @@ void initDocumentAddMenu()
 		CH_MOVE(1);
 		int language = ((MenuElementChoice *)(*it))->getActiveOption();
 		CH_MOVE(1);
-		string publisherId = ((MenuElementChoice *)(*it))->getChoice();
+		int publisherId = Publisher::getBinder().getRecords()[((MenuElementChoice *)(*it))->getActiveOption()]->getId();
 		CH_MOVE(1);
 		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
-		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
-		{
-			ELK;
-			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
-			EULK;
-			return;
-		}
 		for (auto it : Publisher::getBinder().getRecords())
 		{
-			if (it->getId() == stoi(publisherId))
+			if (it->getId() == publisherId)
 			{
 				Document::getBinder().getRecords().push_back(new Document((Document::Type)type, (Document::Language)language, it, title, pageCount));
 				break;
@@ -737,9 +737,9 @@ void initDocumentEditMenu()
 	vector<string> publishers;
 	for (auto it : Publisher::getBinder().getRecords())
 	{
-		publishers.push_back(to_string(it->getId()));
+		publishers.push_back(it->str());
 	}
-	NME_CHOICE("ID издателя", publishers); // 7 + results2.size()
+	NME_CHOICE("Издатель", publishers); // 7 + results2.size()
 	{
 		int localTmp = 0;
 		int searchFor = ctx->getPublisher()->getId();
@@ -774,19 +774,12 @@ void initDocumentEditMenu()
 		CH_MOVE(1);
 		int language = ((MenuElementChoice *)(*it))->getActiveOption();
 		CH_MOVE(1);
-		string publisherId = ((MenuElementChoice *)(*it))->getChoice();
+		int publisherId = Publisher::getBinder().getRecords()[((MenuElementChoice *)(*it))->getActiveOption()]->getId();
 		CH_MOVE(1);
 		int pageCount = stoi(((MenuElementChoice *)(*it))->getChoice());
-		if (publisherId == MenuElementChoice::noChoicesFoundMessage)
-		{
-			ELK;
-			cout << "Сохранение недопустимо -- список издателей пуст!" << endl;
-			EULK;
-			return;
-		}
 		for (auto it : Publisher::getBinder().getRecords())
 		{
-			if (it->getId() == stoi(publisherId))
+			if (it->getId() == publisherId)
 			{
 				GET_CTX(Document, document, 2);
 				ctx->getType() = (Document::Type)type;
