@@ -276,13 +276,17 @@ void initAuthorListMenu()
 			});
 		}
 		ELK;
+		ofstream fout;
+		fout.open("report.txt", ios::out);
 		for (auto it : sorted)
 		{
 			if (it->getFullName().find(t1) != string::npos)
 			{
 				cout << it->str() << endl;
+				fout << it->str() << endl;
 			}
 		}
+		fout.close();
 		EULK;
 	});
 	NME_SUBTITLE("Навигация");
@@ -336,13 +340,17 @@ void initDocumentListMenu()
 			});
 		}
 		ELK;
+		ofstream fout;
+		fout.open("report.txt", ios::out);
 		for (auto it : sorted)
 		{
 			if ((it->getTitle().find(t1) != string::npos)&& (it->getPublisher()->getName().find(t2) != string::npos))
 			{
 				cout << it->str() << endl;
+				fout << it->str() << endl;
 			}
 		}
+		fout.close();
 		EULK;
 	});
 	NME_SUBTITLE("Навигация");
@@ -387,13 +395,17 @@ void initReaderListMenu()
 			});
 		}
 		ELK;
+		ofstream fout;
+		fout.open("report.txt", ios::out);
 		for (auto it : sorted)
 		{
 			if (it->getFullName().find(t1) != string::npos)
 			{
 				cout << it->str() << endl;
+				fout << it->str() << endl;
 			}
 		}
+		fout.close();
 		EULK;
 	});
 	NME_SUBTITLE("Навигация");
@@ -438,13 +450,17 @@ void initPublisherListMenu()
 			});
 		}
 		ELK;
+		ofstream fout;
+		fout.open("report.txt", ios::out);
 		for (auto it : sorted)
 		{
 			if (it->getName().find(t1) != string::npos)
 			{
 				cout << it->str() << endl;
+				fout << it->str() << endl;
 			}
 		}
+		fout.close();
 		EULK;
 	});
 	NME_SUBTITLE("Навигация");
