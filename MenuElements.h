@@ -122,6 +122,7 @@ public:
 	// Создает элемент выбора с заданными вектором строк элементами.
 	MenuElementChoice(string text, vector<string> options) : MenuElement(text), options(options) {};
 
+	// Здесь есть перегрузка!
 	// Создает элемент выбора из чисел, заданных range параметрами.
 	MenuElementChoice(string text, int rangeStart, int rangeEnd, int rangeStep = 1) : MenuElement(text)
 	{
