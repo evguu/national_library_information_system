@@ -1003,39 +1003,34 @@ void initDocumentGivingMenu()
 	vector<string> readers;
 	for (auto it : Reader::getBinder().getRecords())
 	{
-		readers.push_back(to_string(it->getId()));
+		readers.push_back(it->str());
 	}
-	NME_CHOICE("ID читателя", readers);
+	NME_CHOICE("Читатель", readers);
 	vector<string> documents;
 	for (auto it : Document::getBinder().getRecords())
 	{
-		documents.push_back(to_string(it->getId()));
+		documents.push_back(it->str());
 	}
-	NME_CHOICE("ID документа", documents);
+	NME_CHOICE("Документ", documents);
 	NME_CHOICE("Выдать на какое время (в часах)", 1, 721);
 	NME_SUBTITLE("Навигация");
 	NME_FUNC_BUTTON("Подтвердить выдачу", [](){
-		string choiceReader = ((MenuElementChoice *)(documentGivingMenu->getElements()[2]))->getChoice();
-		if (choiceReader == MenuElementChoice::noChoicesFoundMessage)
+		if ((!Reader::getBinder().getRecords().size())||(!Document::getBinder().getRecords().size()))
 		{
 			documentGivingMenu->reset();
 			Menu::multiPopMenuStack(1);
 			return;
 		}
-		string choiceDocument = ((MenuElementChoice *)(documentGivingMenu->getElements()[3]))->getChoice();
-		if (choiceDocument == MenuElementChoice::noChoicesFoundMessage)
-		{
-			documentGivingMenu->reset();
-			Menu::multiPopMenuStack(1);
-			return;
-		}
+		int readerId = Reader::getBinder().getRecords()[((MenuElementChoice *)(documentGivingMenu->getElements()[2]))->getActiveOption()]->getId();
+		int documentId = Document::getBinder().getRecords()[((MenuElementChoice *)(documentGivingMenu->getElements()[3]))->getActiveOption()]->getId();;
+
 		for (auto reader_it : Reader::getBinder().getRecords())
 		{
-			if (reader_it->getId() == stoi(choiceReader))
+			if (reader_it->getId() == readerId)
 			{
 				for (auto document_it : Document::getBinder().getRecords())
 				{
-					if (document_it->getId() == stoi(choiceDocument))
+					if (document_it->getId() == documentId)
 					{
 						DocumentUseRecord::getBinder().getRecords().push_back(new DocumentUseRecord(
 							document_it,
@@ -1075,7 +1070,7 @@ void initReaderDebtListMenu()
 	{
 		readers.push_back(it->str());
 	}
-	NME_CHOICE("ID читателя", readers);
+	NME_CHOICE("Читатель", readers);
 	if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
 	{
 		((MenuElementChoice *)(ME_PREV))->getActiveOption() = _readerDebtListMenu_chosenReaderVectorIndex;
