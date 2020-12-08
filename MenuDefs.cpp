@@ -1073,7 +1073,7 @@ void initReaderDebtListMenu()
 	vector<string> readers;
 	for (auto it : Reader::getBinder().getRecords())
 	{
-		readers.push_back(to_string(it->getId()));
+		readers.push_back(it->str());
 	}
 	NME_CHOICE("ID читател€", readers);
 	if (_readerDebtListMenu_chosenReaderVectorIndex != -1)
@@ -1083,7 +1083,7 @@ void initReaderDebtListMenu()
 	NME_FUNC_BUTTON("¬ыбрать читател€ без сохранени€ данных", []() {
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
-			_readerDebtListMenu_chosenReaderId = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_readerDebtListMenu_chosenReaderId = Reader::getBinder().getRecords()[((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption()]->getId();
 			_readerDebtListMenu_chosenReaderVectorIndex = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
@@ -1128,7 +1128,7 @@ void initReaderDebtListMenu()
 		DocumentUseRecord::getBinder().saveRecords();
 		if (((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getOptions().size())
 		{
-			_readerDebtListMenu_chosenReaderId = stoi(((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getChoice());
+			_readerDebtListMenu_chosenReaderId = Reader::getBinder().getRecords()[((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption()]->getId();
 			_readerDebtListMenu_chosenReaderVectorIndex = ((MenuElementChoice *)(readerDebtListMenu->getElements()[2]))->getActiveOption();
 		}
 		else
